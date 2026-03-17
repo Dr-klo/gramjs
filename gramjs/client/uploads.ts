@@ -557,7 +557,12 @@ export async function _sendAlbum(
     if (!attributes) {
         attributes = [];
     }
-
+    let thumbs = [];
+    if (!Array.isArray(thumb)) {
+        thumbs = [thumb];
+    } else {
+        thumbs = thumb;
+    }
     let index = 0;
     const albumFiles = [];
     for (const file of files) {
@@ -568,7 +573,7 @@ export async function _sendAlbum(
             progressCallback: progressCallback,
             // @ts-ignore
             attributes: attributes[index],
-            thumb: thumb,
+            thumb: index < thumbs.length ? thumbs[index]: thumbs[thumbs.length-1],
             voiceNote: voiceNote,
             videoNote: videoNote,
             supportsStreaming: supportsStreaming,
@@ -687,6 +692,8 @@ export async function sendFile(
             silent: silent,
             scheduleDate: scheduleDate,
             supportsStreaming: supportsStreaming,
+            progressCallback: progressCallback,
+            thumb: thumb,
             clearDraft: clearDraft,
             forceDocument: forceDocument,
             noforwards: noforwards,
