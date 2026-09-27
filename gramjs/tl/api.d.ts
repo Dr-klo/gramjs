@@ -156,20 +156,24 @@ export namespace Api {
         userId: long;
     }
     export class InputPhoneContact extends VirtualClass<{
+        // flags: null;
         clientId: long;
         phone: string;
         firstName: string;
         lastName: string;
+        note?: Api.TypeTextWithEntities;
     }> {
-        CONSTRUCTOR_ID: 4086478836;
+        CONSTRUCTOR_ID: 1780335806;
         SUBCLASS_OF_ID: 2926144130;
         classType: "constructor";
         className: "InputPhoneContact";
         static fromReader(reader: Reader): InputPhoneContact;
+        // flags: null;
         clientId: long;
         phone: string;
         firstName: string;
         lastName: string;
+        note?: Api.TypeTextWithEntities;
     }
     export class InputFile extends VirtualClass<{
         id: long;
@@ -288,9 +292,11 @@ export namespace Api {
         mimeType: string;
         attributes: Api.TypeDocumentAttribute[];
         stickers?: Api.TypeInputDocument[];
+        videoCover?: Api.TypeInputPhoto;
+        videoTimestamp?: int;
         ttlSeconds?: int;
     }> {
-        CONSTRUCTOR_ID: 1530447553;
+        CONSTRUCTOR_ID: 58495792;
         SUBCLASS_OF_ID: 4210575092;
         classType: "constructor";
         className: "InputMediaUploadedDocument";
@@ -304,16 +310,20 @@ export namespace Api {
         mimeType: string;
         attributes: Api.TypeDocumentAttribute[];
         stickers?: Api.TypeInputDocument[];
+        videoCover?: Api.TypeInputPhoto;
+        videoTimestamp?: int;
         ttlSeconds?: int;
     }
     export class InputMediaDocument extends VirtualClass<{
         // flags: null;
         spoiler?: boolean;
         id: Api.TypeInputDocument;
+        videoCover?: Api.TypeInputPhoto;
+        videoTimestamp?: int;
         ttlSeconds?: int;
         query?: string;
     }> {
-        CONSTRUCTOR_ID: 860303448;
+        CONSTRUCTOR_ID: 2826320565;
         SUBCLASS_OF_ID: 4210575092;
         classType: "constructor";
         className: "InputMediaDocument";
@@ -321,6 +331,8 @@ export namespace Api {
         // flags: null;
         spoiler?: boolean;
         id: Api.TypeInputDocument;
+        videoCover?: Api.TypeInputPhoto;
+        videoTimestamp?: int;
         ttlSeconds?: int;
         query?: string;
     }
@@ -365,8 +377,10 @@ export namespace Api {
         spoiler?: boolean;
         url: string;
         ttlSeconds?: int;
+        videoCover?: Api.TypeInputPhoto;
+        videoTimestamp?: int;
     }> {
-        CONSTRUCTOR_ID: 4216511641;
+        CONSTRUCTOR_ID: 2006319353;
         SUBCLASS_OF_ID: 4210575092;
         classType: "constructor";
         className: "InputMediaDocumentExternal";
@@ -375,6 +389,8 @@ export namespace Api {
         spoiler?: boolean;
         url: string;
         ttlSeconds?: int;
+        videoCover?: Api.TypeInputPhoto;
+        videoTimestamp?: int;
     }
     export class InputMediaGame extends VirtualClass<{
         id: Api.TypeInputGame;
@@ -507,6 +523,30 @@ export namespace Api {
         starsAmount: long;
         extendedMedia: Api.TypeInputMedia[];
         payload?: string;
+    }
+    export class InputMediaTodo extends VirtualClass<{
+        todo: Api.TypeTodoList;
+    }> {
+        CONSTRUCTOR_ID: 2680512478;
+        SUBCLASS_OF_ID: 4210575092;
+        classType: "constructor";
+        className: "InputMediaTodo";
+        static fromReader(reader: Reader): InputMediaTodo;
+        todo: Api.TypeTodoList;
+    }
+    export class InputMediaStakeDice extends VirtualClass<{
+        gameHash: string;
+        tonAmount: long;
+        clientSeed: bytes;
+    }> {
+        CONSTRUCTOR_ID: 4087948362;
+        SUBCLASS_OF_ID: 4210575092;
+        classType: "constructor";
+        className: "InputMediaStakeDice";
+        static fromReader(reader: Reader): InputMediaStakeDice;
+        gameHash: string;
+        tonAmount: long;
+        clientSeed: bytes;
     }
     export class InputChatPhotoEmpty extends VirtualClass<void> {
         CONSTRUCTOR_ID: 480546647;
@@ -802,6 +842,8 @@ export namespace Api {
         contactRequirePremium?: boolean;
         botBusiness?: boolean;
         botHasMainApp?: boolean;
+        botForumView?: boolean;
+        botForumCanManageTopics?: boolean;
         id: long;
         accessHash?: long;
         firstName?: string;
@@ -816,12 +858,14 @@ export namespace Api {
         langCode?: string;
         emojiStatus?: Api.TypeEmojiStatus;
         usernames?: Api.TypeUsername[];
-        storiesMaxId?: int;
+        storiesMaxId?: Api.TypeRecentStory;
         color?: Api.TypePeerColor;
         profileColor?: Api.TypePeerColor;
         botActiveUsers?: int;
+        botVerificationIcon?: long;
+        sendPaidMessagesStars?: long;
     }> {
-        CONSTRUCTOR_ID: 2201046986;
+        CONSTRUCTOR_ID: 829899656;
         SUBCLASS_OF_ID: 765557111;
         classType: "constructor";
         className: "User";
@@ -853,6 +897,8 @@ export namespace Api {
         contactRequirePremium?: boolean;
         botBusiness?: boolean;
         botHasMainApp?: boolean;
+        botForumView?: boolean;
+        botForumCanManageTopics?: boolean;
         id: long;
         accessHash?: long;
         firstName?: string;
@@ -867,10 +913,12 @@ export namespace Api {
         langCode?: string;
         emojiStatus?: Api.TypeEmojiStatus;
         usernames?: Api.TypeUsername[];
-        storiesMaxId?: int;
+        storiesMaxId?: Api.TypeRecentStory;
         color?: Api.TypePeerColor;
         profileColor?: Api.TypePeerColor;
         botActiveUsers?: int;
+        botVerificationIcon?: long;
+        sendPaidMessagesStars?: long;
     }
     export class UserProfilePhotoEmpty extends VirtualClass<void> {
         CONSTRUCTOR_ID: 1326562017;
@@ -1051,6 +1099,10 @@ export namespace Api {
         storiesHiddenMin?: boolean;
         storiesUnavailable?: boolean;
         signatureProfiles?: boolean;
+        autotranslation?: boolean;
+        broadcastMessagesAllowed?: boolean;
+        monoforum?: boolean;
+        forumTabs?: boolean;
         id: long;
         accessHash?: long;
         title: string;
@@ -1063,14 +1115,17 @@ export namespace Api {
         defaultBannedRights?: Api.TypeChatBannedRights;
         participantsCount?: int;
         usernames?: Api.TypeUsername[];
-        storiesMaxId?: int;
+        storiesMaxId?: Api.TypeRecentStory;
         color?: Api.TypePeerColor;
         profileColor?: Api.TypePeerColor;
         emojiStatus?: Api.TypeEmojiStatus;
         level?: int;
         subscriptionUntilDate?: int;
+        botVerificationIcon?: long;
+        sendPaidMessagesStars?: long;
+        linkedMonoforumId?: long;
     }> {
-        CONSTRUCTOR_ID: 4265900221;
+        CONSTRUCTOR_ID: 473084188;
         SUBCLASS_OF_ID: 3316604308;
         classType: "constructor";
         className: "Channel";
@@ -1101,6 +1156,10 @@ export namespace Api {
         storiesHiddenMin?: boolean;
         storiesUnavailable?: boolean;
         signatureProfiles?: boolean;
+        autotranslation?: boolean;
+        broadcastMessagesAllowed?: boolean;
+        monoforum?: boolean;
+        forumTabs?: boolean;
         id: long;
         accessHash?: long;
         title: string;
@@ -1113,17 +1172,21 @@ export namespace Api {
         defaultBannedRights?: Api.TypeChatBannedRights;
         participantsCount?: int;
         usernames?: Api.TypeUsername[];
-        storiesMaxId?: int;
+        storiesMaxId?: Api.TypeRecentStory;
         color?: Api.TypePeerColor;
         profileColor?: Api.TypePeerColor;
         emojiStatus?: Api.TypeEmojiStatus;
         level?: int;
         subscriptionUntilDate?: int;
+        botVerificationIcon?: long;
+        sendPaidMessagesStars?: long;
+        linkedMonoforumId?: long;
     }
     export class ChannelForbidden extends VirtualClass<{
         // flags: null;
         broadcast?: boolean;
         megagroup?: boolean;
+        monoforum?: boolean;
         id: long;
         accessHash: long;
         title: string;
@@ -1137,6 +1200,7 @@ export namespace Api {
         // flags: null;
         broadcast?: boolean;
         megagroup?: boolean;
+        monoforum?: boolean;
         id: long;
         accessHash: long;
         title: string;
@@ -1214,6 +1278,8 @@ export namespace Api {
         paidMediaAllowed?: boolean;
         canViewStarsRevenue?: boolean;
         paidReactionsAvailable?: boolean;
+        stargiftsAvailable?: boolean;
+        paidMessagesAvailable?: boolean;
         id: long;
         about: string;
         participantsCount?: int;
@@ -1255,8 +1321,12 @@ export namespace Api {
         boostsApplied?: int;
         boostsUnrestrict?: int;
         emojiset?: Api.TypeStickerSet;
+        botVerification?: Api.TypeBotVerification;
+        stargiftsCount?: int;
+        sendPaidMessagesStars?: long;
+        mainTab?: Api.TypeProfileTab;
     }> {
-        CONSTRUCTOR_ID: 3148559501;
+        CONSTRUCTOR_ID: 3839931037;
         SUBCLASS_OF_ID: 3566872215;
         classType: "constructor";
         className: "ChannelFull";
@@ -1282,6 +1352,8 @@ export namespace Api {
         paidMediaAllowed?: boolean;
         canViewStarsRevenue?: boolean;
         paidReactionsAvailable?: boolean;
+        stargiftsAvailable?: boolean;
+        paidMessagesAvailable?: boolean;
         id: long;
         about: string;
         participantsCount?: int;
@@ -1323,44 +1395,60 @@ export namespace Api {
         boostsApplied?: int;
         boostsUnrestrict?: int;
         emojiset?: Api.TypeStickerSet;
+        botVerification?: Api.TypeBotVerification;
+        stargiftsCount?: int;
+        sendPaidMessagesStars?: long;
+        mainTab?: Api.TypeProfileTab;
     }
     export class ChatParticipant extends VirtualClass<{
+        // flags: null;
         userId: long;
         inviterId: long;
         date: int;
+        rank?: string;
     }> {
-        CONSTRUCTOR_ID: 3224190983;
+        CONSTRUCTOR_ID: 954703838;
         SUBCLASS_OF_ID: 2105307014;
         classType: "constructor";
         className: "ChatParticipant";
         static fromReader(reader: Reader): ChatParticipant;
+        // flags: null;
         userId: long;
         inviterId: long;
         date: int;
+        rank?: string;
     }
     export class ChatParticipantCreator extends VirtualClass<{
+        // flags: null;
         userId: long;
+        rank?: string;
     }> {
-        CONSTRUCTOR_ID: 3832270564;
+        CONSTRUCTOR_ID: 3791153080;
         SUBCLASS_OF_ID: 2105307014;
         classType: "constructor";
         className: "ChatParticipantCreator";
         static fromReader(reader: Reader): ChatParticipantCreator;
+        // flags: null;
         userId: long;
+        rank?: string;
     }
     export class ChatParticipantAdmin extends VirtualClass<{
+        // flags: null;
         userId: long;
         inviterId: long;
         date: int;
+        rank?: string;
     }> {
-        CONSTRUCTOR_ID: 2694004571;
+        CONSTRUCTOR_ID: 56677842;
         SUBCLASS_OF_ID: 2105307014;
         classType: "constructor";
         className: "ChatParticipantAdmin";
         static fromReader(reader: Reader): ChatParticipantAdmin;
+        // flags: null;
         userId: long;
         inviterId: long;
         date: int;
+        rank?: string;
     }
     export class ChatParticipantsForbidden extends VirtualClass<{
         // flags: null;
@@ -1430,14 +1518,14 @@ export namespace Api {
         peerId?: Api.TypePeer;
     }
     export class Message extends CustomMessage {
-        CONSTRUCTOR_ID: 2486456898;
+        CONSTRUCTOR_ID: 988112002;
         SUBCLASS_OF_ID: 2030045667;
         classType: "request";
         className: "Message";
         static fromReader(reader: Reader): Message;
     }
     export class MessageService extends CustomMessage {
-        CONSTRUCTOR_ID: 721967202;
+        CONSTRUCTOR_ID: 2055212554;
         SUBCLASS_OF_ID: 2030045667;
         classType: "request";
         className: "MessageService";
@@ -1510,9 +1598,11 @@ export namespace Api {
         voice?: boolean;
         document?: Api.TypeDocument;
         altDocuments?: Api.TypeDocument[];
+        videoCover?: Api.TypePhoto;
+        videoTimestamp?: int;
         ttlSeconds?: int;
     }> {
-        CONSTRUCTOR_ID: 3713469397;
+        CONSTRUCTOR_ID: 1389939929;
         SUBCLASS_OF_ID: 1198308914;
         classType: "constructor";
         className: "MessageMediaDocument";
@@ -1525,6 +1615,8 @@ export namespace Api {
         voice?: boolean;
         document?: Api.TypeDocument;
         altDocuments?: Api.TypeDocument[];
+        videoCover?: Api.TypePhoto;
+        videoTimestamp?: int;
         ttlSeconds?: int;
     }
     export class MessageMediaWebPage extends VirtualClass<{
@@ -1638,16 +1730,20 @@ export namespace Api {
         results: Api.TypePollResults;
     }
     export class MessageMediaDice extends VirtualClass<{
+        // flags: null;
         value: int;
         emoticon: string;
+        gameOutcome?: messages.TypeEmojiGameOutcome;
     }> {
-        CONSTRUCTOR_ID: 1065280907;
+        CONSTRUCTOR_ID: 147581959;
         SUBCLASS_OF_ID: 1198308914;
         classType: "constructor";
         className: "MessageMediaDice";
         static fromReader(reader: Reader): MessageMediaDice;
+        // flags: null;
         value: int;
         emoticon: string;
+        gameOutcome?: messages.TypeEmojiGameOutcome;
     }
     export class MessageMediaStory extends VirtualClass<{
         // flags: null;
@@ -1740,6 +1836,34 @@ export namespace Api {
         static fromReader(reader: Reader): MessageMediaPaidMedia;
         starsAmount: long;
         extendedMedia: Api.TypeMessageExtendedMedia[];
+    }
+    export class MessageMediaToDo extends VirtualClass<{
+        // flags: null;
+        todo: Api.TypeTodoList;
+        completions?: Api.TypeTodoCompletion[];
+    }> {
+        CONSTRUCTOR_ID: 2320740372;
+        SUBCLASS_OF_ID: 1198308914;
+        classType: "constructor";
+        className: "MessageMediaToDo";
+        static fromReader(reader: Reader): MessageMediaToDo;
+        // flags: null;
+        todo: Api.TypeTodoList;
+        completions?: Api.TypeTodoCompletion[];
+    }
+    export class MessageMediaVideoStream extends VirtualClass<{
+        // flags: null;
+        rtmpStream?: boolean;
+        call: Api.TypeInputGroupCall;
+    }> {
+        CONSTRUCTOR_ID: 3395070857;
+        SUBCLASS_OF_ID: 1198308914;
+        classType: "constructor";
+        className: "MessageMediaVideoStream";
+        static fromReader(reader: Reader): MessageMediaVideoStream;
+        // flags: null;
+        rtmpStream?: boolean;
+        call: Api.TypeInputGroupCall;
     }
     export class MessageActionEmpty extends VirtualClass<void> {
         CONSTRUCTOR_ID: 3064919984;
@@ -1885,8 +2009,9 @@ export namespace Api {
         info?: Api.TypePaymentRequestedInfo;
         shippingOptionId?: string;
         charge: Api.TypePaymentCharge;
+        subscriptionUntilDate?: int;
     }> {
-        CONSTRUCTOR_ID: 2402399015;
+        CONSTRUCTOR_ID: 4288679116;
         SUBCLASS_OF_ID: 2256589094;
         classType: "constructor";
         className: "MessageActionPaymentSentMe";
@@ -1900,6 +2025,7 @@ export namespace Api {
         info?: Api.TypePaymentRequestedInfo;
         shippingOptionId?: string;
         charge: Api.TypePaymentCharge;
+        subscriptionUntilDate?: int;
     }
     export class MessageActionPaymentSent extends VirtualClass<{
         // flags: null;
@@ -1908,8 +2034,9 @@ export namespace Api {
         currency: string;
         totalAmount: long;
         invoiceSlug?: string;
+        subscriptionUntilDate?: int;
     }> {
-        CONSTRUCTOR_ID: 2518040406;
+        CONSTRUCTOR_ID: 3324293486;
         SUBCLASS_OF_ID: 2256589094;
         classType: "constructor";
         className: "MessageActionPaymentSent";
@@ -1920,6 +2047,7 @@ export namespace Api {
         currency: string;
         totalAmount: long;
         invoiceSlug?: string;
+        subscriptionUntilDate?: int;
     }
     export class MessageActionPhoneCall extends VirtualClass<{
         // flags: null;
@@ -2070,14 +2198,14 @@ export namespace Api {
         scheduleDate: int;
     }
     export class MessageActionSetChatTheme extends VirtualClass<{
-        emoticon: string;
+        theme: Api.TypeChatTheme;
     }> {
-        CONSTRUCTOR_ID: 2860016453;
+        CONSTRUCTOR_ID: 3105602874;
         SUBCLASS_OF_ID: 2256589094;
         classType: "constructor";
         className: "MessageActionSetChatTheme";
         static fromReader(reader: Reader): MessageActionSetChatTheme;
-        emoticon: string;
+        theme: Api.TypeChatTheme;
     }
     export class MessageActionChatJoinedByRequest extends VirtualClass<void> {
         CONSTRUCTOR_ID: 3955008459;
@@ -2112,12 +2240,12 @@ export namespace Api {
         // flags: null;
         currency: string;
         amount: long;
-        months: int;
+        days: int;
         cryptoCurrency?: string;
         cryptoAmount?: long;
         message?: Api.TypeTextWithEntities;
     }> {
-        CONSTRUCTOR_ID: 1818391802;
+        CONSTRUCTOR_ID: 1223234306;
         SUBCLASS_OF_ID: 2256589094;
         classType: "constructor";
         className: "MessageActionGiftPremium";
@@ -2125,13 +2253,14 @@ export namespace Api {
         // flags: null;
         currency: string;
         amount: long;
-        months: int;
+        days: int;
         cryptoCurrency?: string;
         cryptoAmount?: long;
         message?: Api.TypeTextWithEntities;
     }
     export class MessageActionTopicCreate extends VirtualClass<{
         // flags: null;
+        titleMissing?: boolean;
         title: string;
         iconColor: int;
         iconEmojiId?: long;
@@ -2142,6 +2271,7 @@ export namespace Api {
         className: "MessageActionTopicCreate";
         static fromReader(reader: Reader): MessageActionTopicCreate;
         // flags: null;
+        titleMissing?: boolean;
         title: string;
         iconColor: int;
         iconEmojiId?: long;
@@ -2207,7 +2337,7 @@ export namespace Api {
         viaGiveaway?: boolean;
         unclaimed?: boolean;
         boostPeer?: Api.TypePeer;
-        months: int;
+        days: int;
         slug: string;
         currency?: string;
         amount?: long;
@@ -2215,7 +2345,7 @@ export namespace Api {
         cryptoAmount?: long;
         message?: Api.TypeTextWithEntities;
     }> {
-        CONSTRUCTOR_ID: 1456486804;
+        CONSTRUCTOR_ID: 834962247;
         SUBCLASS_OF_ID: 2256589094;
         classType: "constructor";
         className: "MessageActionGiftCode";
@@ -2224,7 +2354,7 @@ export namespace Api {
         viaGiveaway?: boolean;
         unclaimed?: boolean;
         boostPeer?: Api.TypePeer;
-        months: int;
+        days: int;
         slug: string;
         currency?: string;
         amount?: long;
@@ -2349,11 +2479,26 @@ export namespace Api {
         nameHidden?: boolean;
         saved?: boolean;
         converted?: boolean;
+        upgraded?: boolean;
+        refunded?: boolean;
+        canUpgrade?: boolean;
+        prepaidUpgrade?: boolean;
+        upgradeSeparate?: boolean;
+        auctionAcquired?: boolean;
         gift: Api.TypeStarGift;
         message?: Api.TypeTextWithEntities;
         convertStars?: long;
+        upgradeMsgId?: int;
+        upgradeStars?: long;
+        fromId?: Api.TypePeer;
+        peer?: Api.TypePeer;
+        savedId?: long;
+        prepaidUpgradeHash?: string;
+        giftMsgId?: int;
+        toId?: Api.TypePeer;
+        giftNum?: int;
     }> {
-        CONSTRUCTOR_ID: 139818551;
+        CONSTRUCTOR_ID: 3928764883;
         SUBCLASS_OF_ID: 2256589094;
         classType: "constructor";
         className: "MessageActionStarGift";
@@ -2362,9 +2507,300 @@ export namespace Api {
         nameHidden?: boolean;
         saved?: boolean;
         converted?: boolean;
+        upgraded?: boolean;
+        refunded?: boolean;
+        canUpgrade?: boolean;
+        prepaidUpgrade?: boolean;
+        upgradeSeparate?: boolean;
+        auctionAcquired?: boolean;
         gift: Api.TypeStarGift;
         message?: Api.TypeTextWithEntities;
         convertStars?: long;
+        upgradeMsgId?: int;
+        upgradeStars?: long;
+        fromId?: Api.TypePeer;
+        peer?: Api.TypePeer;
+        savedId?: long;
+        prepaidUpgradeHash?: string;
+        giftMsgId?: int;
+        toId?: Api.TypePeer;
+        giftNum?: int;
+    }
+    export class MessageActionStarGiftUnique extends VirtualClass<{
+        // flags: null;
+        upgrade?: boolean;
+        transferred?: boolean;
+        saved?: boolean;
+        refunded?: boolean;
+        prepaidUpgrade?: boolean;
+        assigned?: boolean;
+        fromOffer?: boolean;
+        craft?: boolean;
+        gift: Api.TypeStarGift;
+        canExportAt?: int;
+        transferStars?: long;
+        fromId?: Api.TypePeer;
+        peer?: Api.TypePeer;
+        savedId?: long;
+        resaleAmount?: Api.TypeStarsAmount;
+        canTransferAt?: int;
+        canResellAt?: int;
+        dropOriginalDetailsStars?: long;
+        canCraftAt?: int;
+    }> {
+        CONSTRUCTOR_ID: 3871544610;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionStarGiftUnique";
+        static fromReader(reader: Reader): MessageActionStarGiftUnique;
+        // flags: null;
+        upgrade?: boolean;
+        transferred?: boolean;
+        saved?: boolean;
+        refunded?: boolean;
+        prepaidUpgrade?: boolean;
+        assigned?: boolean;
+        fromOffer?: boolean;
+        craft?: boolean;
+        gift: Api.TypeStarGift;
+        canExportAt?: int;
+        transferStars?: long;
+        fromId?: Api.TypePeer;
+        peer?: Api.TypePeer;
+        savedId?: long;
+        resaleAmount?: Api.TypeStarsAmount;
+        canTransferAt?: int;
+        canResellAt?: int;
+        dropOriginalDetailsStars?: long;
+        canCraftAt?: int;
+    }
+    export class MessageActionPaidMessagesRefunded extends VirtualClass<{
+        count: int;
+        stars: long;
+    }> {
+        CONSTRUCTOR_ID: 2887720909;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionPaidMessagesRefunded";
+        static fromReader(reader: Reader): MessageActionPaidMessagesRefunded;
+        count: int;
+        stars: long;
+    }
+    export class MessageActionPaidMessagesPrice extends VirtualClass<{
+        // flags: null;
+        broadcastMessagesAllowed?: boolean;
+        stars: long;
+    }> {
+        CONSTRUCTOR_ID: 2226685304;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionPaidMessagesPrice";
+        static fromReader(reader: Reader): MessageActionPaidMessagesPrice;
+        // flags: null;
+        broadcastMessagesAllowed?: boolean;
+        stars: long;
+    }
+    export class MessageActionConferenceCall extends VirtualClass<{
+        // flags: null;
+        missed?: boolean;
+        active?: boolean;
+        video?: boolean;
+        callId: long;
+        duration?: int;
+        otherParticipants?: Api.TypePeer[];
+    }> {
+        CONSTRUCTOR_ID: 805187450;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionConferenceCall";
+        static fromReader(reader: Reader): MessageActionConferenceCall;
+        // flags: null;
+        missed?: boolean;
+        active?: boolean;
+        video?: boolean;
+        callId: long;
+        duration?: int;
+        otherParticipants?: Api.TypePeer[];
+    }
+    export class MessageActionTodoCompletions extends VirtualClass<{
+        completed: int[];
+        incompleted: int[];
+    }> {
+        CONSTRUCTOR_ID: 3430702217;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionTodoCompletions";
+        static fromReader(reader: Reader): MessageActionTodoCompletions;
+        completed: int[];
+        incompleted: int[];
+    }
+    export class MessageActionTodoAppendTasks extends VirtualClass<{
+        list: Api.TypeTodoItem[];
+    }> {
+        CONSTRUCTOR_ID: 3354246275;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionTodoAppendTasks";
+        static fromReader(reader: Reader): MessageActionTodoAppendTasks;
+        list: Api.TypeTodoItem[];
+    }
+    export class MessageActionSuggestedPostApproval extends VirtualClass<{
+        // flags: null;
+        rejected?: boolean;
+        balanceTooLow?: boolean;
+        rejectComment?: string;
+        scheduleDate?: int;
+        price?: Api.TypeStarsAmount;
+    }> {
+        CONSTRUCTOR_ID: 4000978326;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionSuggestedPostApproval";
+        static fromReader(reader: Reader): MessageActionSuggestedPostApproval;
+        // flags: null;
+        rejected?: boolean;
+        balanceTooLow?: boolean;
+        rejectComment?: string;
+        scheduleDate?: int;
+        price?: Api.TypeStarsAmount;
+    }
+    export class MessageActionSuggestedPostSuccess extends VirtualClass<{
+        price: Api.TypeStarsAmount;
+    }> {
+        CONSTRUCTOR_ID: 2514341737;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionSuggestedPostSuccess";
+        static fromReader(reader: Reader): MessageActionSuggestedPostSuccess;
+        price: Api.TypeStarsAmount;
+    }
+    export class MessageActionSuggestedPostRefund extends VirtualClass<{
+        // flags: null;
+        payerInitiated?: boolean;
+    }> {
+        CONSTRUCTOR_ID: 1777932024;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionSuggestedPostRefund";
+        static fromReader(reader: Reader): MessageActionSuggestedPostRefund;
+        // flags: null;
+        payerInitiated?: boolean;
+    }
+    export class MessageActionGiftTon extends VirtualClass<{
+        // flags: null;
+        currency: string;
+        amount: long;
+        cryptoCurrency: string;
+        cryptoAmount: long;
+        transactionId?: string;
+    }> {
+        CONSTRUCTOR_ID: 2829305497;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionGiftTon";
+        static fromReader(reader: Reader): MessageActionGiftTon;
+        // flags: null;
+        currency: string;
+        amount: long;
+        cryptoCurrency: string;
+        cryptoAmount: long;
+        transactionId?: string;
+    }
+    export class MessageActionSuggestBirthday extends VirtualClass<{
+        birthday: Api.TypeBirthday;
+    }> {
+        CONSTRUCTOR_ID: 747579941;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionSuggestBirthday";
+        static fromReader(reader: Reader): MessageActionSuggestBirthday;
+        birthday: Api.TypeBirthday;
+    }
+    export class MessageActionStarGiftPurchaseOffer extends VirtualClass<{
+        // flags: null;
+        accepted?: boolean;
+        declined?: boolean;
+        gift: Api.TypeStarGift;
+        price: Api.TypeStarsAmount;
+        expiresAt: int;
+    }> {
+        CONSTRUCTOR_ID: 2000845012;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionStarGiftPurchaseOffer";
+        static fromReader(reader: Reader): MessageActionStarGiftPurchaseOffer;
+        // flags: null;
+        accepted?: boolean;
+        declined?: boolean;
+        gift: Api.TypeStarGift;
+        price: Api.TypeStarsAmount;
+        expiresAt: int;
+    }
+    export class MessageActionStarGiftPurchaseOfferDeclined extends VirtualClass<{
+        // flags: null;
+        expired?: boolean;
+        gift: Api.TypeStarGift;
+        price: Api.TypeStarsAmount;
+    }> {
+        CONSTRUCTOR_ID: 1940760427;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionStarGiftPurchaseOfferDeclined";
+        static fromReader(
+            reader: Reader
+        ): MessageActionStarGiftPurchaseOfferDeclined;
+        // flags: null;
+        expired?: boolean;
+        gift: Api.TypeStarGift;
+        price: Api.TypeStarsAmount;
+    }
+    export class MessageActionNewCreatorPending extends VirtualClass<{
+        newCreatorId: long;
+    }> {
+        CONSTRUCTOR_ID: 2961100933;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionNewCreatorPending";
+        static fromReader(reader: Reader): MessageActionNewCreatorPending;
+        newCreatorId: long;
+    }
+    export class MessageActionChangeCreator extends VirtualClass<{
+        newCreatorId: long;
+    }> {
+        CONSTRUCTOR_ID: 3783807035;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionChangeCreator";
+        static fromReader(reader: Reader): MessageActionChangeCreator;
+        newCreatorId: long;
+    }
+    export class MessageActionNoForwardsToggle extends VirtualClass<{
+        prevValue: Bool;
+        newValue: Bool;
+    }> {
+        CONSTRUCTOR_ID: 3212666226;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionNoForwardsToggle";
+        static fromReader(reader: Reader): MessageActionNoForwardsToggle;
+        prevValue: Bool;
+        newValue: Bool;
+    }
+    export class MessageActionNoForwardsRequest extends VirtualClass<{
+        // flags: null;
+        expired?: boolean;
+        prevValue: Bool;
+        newValue: Bool;
+    }> {
+        CONSTRUCTOR_ID: 1042781114;
+        SUBCLASS_OF_ID: 2256589094;
+        classType: "constructor";
+        className: "MessageActionNoForwardsRequest";
+        static fromReader(reader: Reader): MessageActionNoForwardsRequest;
+        // flags: null;
+        expired?: boolean;
+        prevValue: Bool;
+        newValue: Bool;
     }
     export class Dialog extends VirtualClass<{
         // flags: null;
@@ -2692,8 +3128,13 @@ export namespace Api {
         requestChatDate?: int;
         businessBotId?: long;
         businessBotManageUrl?: string;
+        chargePaidMessageStars?: long;
+        registrationMonth?: string;
+        phoneCountry?: string;
+        nameChangeDate?: int;
+        photoChangeDate?: int;
     }> {
-        CONSTRUCTOR_ID: 2899733598;
+        CONSTRUCTOR_ID: 4101456375;
         SUBCLASS_OF_ID: 4138180484;
         classType: "constructor";
         className: "PeerSettings";
@@ -2715,6 +3156,11 @@ export namespace Api {
         requestChatDate?: int;
         businessBotId?: long;
         businessBotManageUrl?: string;
+        chargePaidMessageStars?: long;
+        registrationMonth?: string;
+        phoneCountry?: string;
+        nameChangeDate?: int;
+        photoChangeDate?: int;
     }
     export class WallPaper extends VirtualClass<{
         id: long;
@@ -2851,6 +3297,9 @@ export namespace Api {
         sponsoredEnabled?: boolean;
         canViewRevenue?: boolean;
         botCanManageEmojiStatus?: boolean;
+        displayGiftsButton?: boolean;
+        noforwardsMyEnabled?: boolean;
+        noforwardsPeerEnabled?: boolean;
         id: long;
         about?: string;
         settings: Api.TypePeerSettings;
@@ -2863,11 +3312,10 @@ export namespace Api {
         commonChatsCount: int;
         folderId?: int;
         ttlPeriod?: int;
-        themeEmoticon?: string;
+        theme?: Api.TypeChatTheme;
         privateForwardName?: string;
         botGroupAdminRights?: Api.TypeChatAdminRights;
         botBroadcastAdminRights?: Api.TypeChatAdminRights;
-        premiumGifts?: Api.TypePremiumGiftOption[];
         wallpaper?: Api.TypeWallPaper;
         stories?: Api.TypePeerStories;
         businessWorkHours?: Api.TypeBusinessWorkHours;
@@ -2879,8 +3327,18 @@ export namespace Api {
         personalChannelId?: long;
         personalChannelMessage?: int;
         stargiftsCount?: int;
+        starrefProgram?: Api.TypeStarRefProgram;
+        botVerification?: Api.TypeBotVerification;
+        sendPaidMessagesStars?: long;
+        disallowedGifts?: Api.TypeDisallowedGiftsSettings;
+        starsRating?: Api.TypeStarsRating;
+        starsMyPendingRating?: Api.TypeStarsRating;
+        starsMyPendingRatingDate?: int;
+        mainTab?: Api.TypeProfileTab;
+        savedMusic?: Api.TypeDocument;
+        note?: Api.TypeTextWithEntities;
     }> {
-        CONSTRUCTOR_ID: 525919081;
+        CONSTRUCTOR_ID: 2687222078;
         SUBCLASS_OF_ID: 524706233;
         classType: "constructor";
         className: "UserFull";
@@ -2903,6 +3361,9 @@ export namespace Api {
         sponsoredEnabled?: boolean;
         canViewRevenue?: boolean;
         botCanManageEmojiStatus?: boolean;
+        displayGiftsButton?: boolean;
+        noforwardsMyEnabled?: boolean;
+        noforwardsPeerEnabled?: boolean;
         id: long;
         about?: string;
         settings: Api.TypePeerSettings;
@@ -2915,11 +3376,10 @@ export namespace Api {
         commonChatsCount: int;
         folderId?: int;
         ttlPeriod?: int;
-        themeEmoticon?: string;
+        theme?: Api.TypeChatTheme;
         privateForwardName?: string;
         botGroupAdminRights?: Api.TypeChatAdminRights;
         botBroadcastAdminRights?: Api.TypeChatAdminRights;
-        premiumGifts?: Api.TypePremiumGiftOption[];
         wallpaper?: Api.TypeWallPaper;
         stories?: Api.TypePeerStories;
         businessWorkHours?: Api.TypeBusinessWorkHours;
@@ -2931,6 +3391,16 @@ export namespace Api {
         personalChannelId?: long;
         personalChannelMessage?: int;
         stargiftsCount?: int;
+        starrefProgram?: Api.TypeStarRefProgram;
+        botVerification?: Api.TypeBotVerification;
+        sendPaidMessagesStars?: long;
+        disallowedGifts?: Api.TypeDisallowedGiftsSettings;
+        starsRating?: Api.TypeStarsRating;
+        starsMyPendingRating?: Api.TypeStarsRating;
+        starsMyPendingRatingDate?: int;
+        mainTab?: Api.TypeProfileTab;
+        savedMusic?: Api.TypeDocument;
+        note?: Api.TypeTextWithEntities;
     }
     export class Contact extends VirtualClass<{
         userId: long;
@@ -3133,15 +3603,19 @@ export namespace Api {
         ptsCount: int;
     }
     export class UpdateUserTyping extends VirtualClass<{
+        // flags: null;
         userId: long;
+        topMsgId?: int;
         action: Api.TypeSendMessageAction;
     }> {
-        CONSTRUCTOR_ID: 3223225727;
+        CONSTRUCTOR_ID: 706199388;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateUserTyping";
         static fromReader(reader: Reader): UpdateUserTyping;
+        // flags: null;
         userId: long;
+        topMsgId?: int;
         action: Api.TypeSendMessageAction;
     }
     export class UpdateChatUserTyping extends VirtualClass<{
@@ -3370,12 +3844,13 @@ export namespace Api {
         // flags: null;
         folderId?: int;
         peer: Api.TypePeer;
+        topMsgId?: int;
         maxId: int;
         stillUnreadCount: int;
         pts: int;
         ptsCount: int;
     }> {
-        CONSTRUCTOR_ID: 2627162079;
+        CONSTRUCTOR_ID: 2659499161;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateReadHistoryInbox";
@@ -3383,6 +3858,7 @@ export namespace Api {
         // flags: null;
         folderId?: int;
         peer: Api.TypePeer;
+        topMsgId?: int;
         maxId: int;
         stillUnreadCount: int;
         pts: int;
@@ -3719,9 +4195,10 @@ export namespace Api {
         // flags: null;
         peer: Api.TypePeer;
         topMsgId?: int;
+        savedPeerId?: Api.TypePeer;
         draft: Api.TypeDraftMessage;
     }> {
-        CONSTRUCTOR_ID: 457829485;
+        CONSTRUCTOR_ID: 3992719646;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateDraftMessage";
@@ -3729,6 +4206,7 @@ export namespace Api {
         // flags: null;
         peer: Api.TypePeer;
         topMsgId?: int;
+        savedPeerId?: Api.TypePeer;
         draft: Api.TypeDraftMessage;
     }
     export class UpdateReadFeaturedStickers extends VirtualClass<void> {
@@ -3910,9 +4388,10 @@ export namespace Api {
         // flags: null;
         channelId: long;
         topMsgId?: int;
+        savedPeerId?: Api.TypePeer;
         messages: int[];
     }> {
-        CONSTRUCTOR_ID: 3928556893;
+        CONSTRUCTOR_ID: 636691703;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateChannelReadMessagesContents";
@@ -3920,6 +4399,7 @@ export namespace Api {
         // flags: null;
         channelId: long;
         topMsgId?: int;
+        savedPeerId?: Api.TypePeer;
         messages: int[];
     }
     export class UpdateContactsReset extends VirtualClass<void> {
@@ -3945,8 +4425,9 @@ export namespace Api {
         // flags: null;
         unread?: boolean;
         peer: Api.TypeDialogPeer;
+        savedPeerId?: Api.TypePeer;
     }> {
-        CONSTRUCTOR_ID: 3781450179;
+        CONSTRUCTOR_ID: 3059282494;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateDialogUnreadMark";
@@ -3954,6 +4435,7 @@ export namespace Api {
         // flags: null;
         unread?: boolean;
         peer: Api.TypeDialogPeer;
+        savedPeerId?: Api.TypePeer;
     }
     export class UpdateMessagePoll extends VirtualClass<{
         // flags: null;
@@ -4282,15 +4764,19 @@ export namespace Api {
         version: int;
     }
     export class UpdateGroupCall extends VirtualClass<{
-        chatId: long;
+        // flags: null;
+        liveStory?: boolean;
+        peer?: Api.TypePeer;
         call: Api.TypeGroupCall;
     }> {
-        CONSTRUCTOR_ID: 347227392;
+        CONSTRUCTOR_ID: 2636256992;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateGroupCall";
         static fromReader(reader: Reader): UpdateGroupCall;
-        chatId: long;
+        // flags: null;
+        liveStory?: boolean;
+        peer?: Api.TypePeer;
         call: Api.TypeGroupCall;
     }
     export class UpdatePeerHistoryTTL extends VirtualClass<{
@@ -4444,9 +4930,10 @@ export namespace Api {
         peer: Api.TypePeer;
         msgId: int;
         topMsgId?: int;
+        savedPeerId?: Api.TypePeer;
         reactions: Api.TypeMessageReactions;
     }> {
-        CONSTRUCTOR_ID: 1578843320;
+        CONSTRUCTOR_ID: 506035194;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateMessageReactions";
@@ -4455,6 +4942,7 @@ export namespace Api {
         peer: Api.TypePeer;
         msgId: int;
         topMsgId?: int;
+        savedPeerId?: Api.TypePeer;
         reactions: Api.TypeMessageReactions;
     }
     export class UpdateAttachMenuBots extends VirtualClass<void> {
@@ -4575,36 +5063,6 @@ export namespace Api {
         peer: Api.TypePeer;
         msgId: int;
         extendedMedia: Api.TypeMessageExtendedMedia[];
-    }
-    export class UpdateChannelPinnedTopic extends VirtualClass<{
-        // flags: null;
-        pinned?: boolean;
-        channelId: long;
-        topicId: int;
-    }> {
-        CONSTRUCTOR_ID: 422509539;
-        SUBCLASS_OF_ID: 2676568142;
-        classType: "constructor";
-        className: "UpdateChannelPinnedTopic";
-        static fromReader(reader: Reader): UpdateChannelPinnedTopic;
-        // flags: null;
-        pinned?: boolean;
-        channelId: long;
-        topicId: int;
-    }
-    export class UpdateChannelPinnedTopics extends VirtualClass<{
-        // flags: null;
-        channelId: long;
-        order?: int[];
-    }> {
-        CONSTRUCTOR_ID: 4263085570;
-        SUBCLASS_OF_ID: 2676568142;
-        classType: "constructor";
-        className: "UpdateChannelPinnedTopics";
-        static fromReader(reader: Reader): UpdateChannelPinnedTopics;
-        // flags: null;
-        channelId: long;
-        order?: int[];
     }
     export class UpdateUser extends VirtualClass<{
         userId: long;
@@ -4938,27 +5396,15 @@ export namespace Api {
         peer: Api.TypePeer;
         reaction: Api.TypeReaction;
     }
-    export class UpdateBroadcastRevenueTransactions extends VirtualClass<{
-        peer: Api.TypePeer;
-        balances: Api.TypeBroadcastRevenueBalances;
-    }> {
-        CONSTRUCTOR_ID: 3755565557;
-        SUBCLASS_OF_ID: 2676568142;
-        classType: "constructor";
-        className: "UpdateBroadcastRevenueTransactions";
-        static fromReader(reader: Reader): UpdateBroadcastRevenueTransactions;
-        peer: Api.TypePeer;
-        balances: Api.TypeBroadcastRevenueBalances;
-    }
     export class UpdateStarsBalance extends VirtualClass<{
-        balance: long;
+        balance: Api.TypeStarsAmount;
     }> {
-        CONSTRUCTOR_ID: 263737752;
+        CONSTRUCTOR_ID: 1317053305;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdateStarsBalance";
         static fromReader(reader: Reader): UpdateStarsBalance;
-        balance: long;
+        balance: Api.TypeStarsAmount;
     }
     export class UpdateBusinessBotCallbackQuery extends VirtualClass<{
         // flags: null;
@@ -5011,32 +5457,209 @@ export namespace Api {
         qts: int;
     }
     export class UpdatePaidReactionPrivacy extends VirtualClass<{
-        private: Bool;
+        private: Api.TypePaidReactionPrivacy;
     }> {
-        CONSTRUCTOR_ID: 1372224236;
+        CONSTRUCTOR_ID: 2339528654;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
         className: "UpdatePaidReactionPrivacy";
         static fromReader(reader: Reader): UpdatePaidReactionPrivacy;
-        private: Bool;
+        private: Api.TypePaidReactionPrivacy;
     }
-    export class UpdateBotSubscriptionExpire extends VirtualClass<{
-        userId: long;
-        payload: string;
-        invoiceSlug: string;
-        untilDate: int;
-        qts: int;
+    export class UpdateSentPhoneCode extends VirtualClass<{
+        sentCode: auth.TypeSentCode;
     }> {
-        CONSTRUCTOR_ID: 756270830;
+        CONSTRUCTOR_ID: 1347068303;
         SUBCLASS_OF_ID: 2676568142;
         classType: "constructor";
-        className: "UpdateBotSubscriptionExpire";
-        static fromReader(reader: Reader): UpdateBotSubscriptionExpire;
+        className: "UpdateSentPhoneCode";
+        static fromReader(reader: Reader): UpdateSentPhoneCode;
+        sentCode: auth.TypeSentCode;
+    }
+    export class UpdateGroupCallChainBlocks extends VirtualClass<{
+        call: Api.TypeInputGroupCall;
+        subChainId: int;
+        blocks: bytes[];
+        nextOffset: int;
+    }> {
+        CONSTRUCTOR_ID: 2759272591;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateGroupCallChainBlocks";
+        static fromReader(reader: Reader): UpdateGroupCallChainBlocks;
+        call: Api.TypeInputGroupCall;
+        subChainId: int;
+        blocks: bytes[];
+        nextOffset: int;
+    }
+    export class UpdateReadMonoForumInbox extends VirtualClass<{
+        channelId: long;
+        savedPeerId: Api.TypePeer;
+        readMaxId: int;
+    }> {
+        CONSTRUCTOR_ID: 2008081266;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateReadMonoForumInbox";
+        static fromReader(reader: Reader): UpdateReadMonoForumInbox;
+        channelId: long;
+        savedPeerId: Api.TypePeer;
+        readMaxId: int;
+    }
+    export class UpdateReadMonoForumOutbox extends VirtualClass<{
+        channelId: long;
+        savedPeerId: Api.TypePeer;
+        readMaxId: int;
+    }> {
+        CONSTRUCTOR_ID: 2762445686;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateReadMonoForumOutbox";
+        static fromReader(reader: Reader): UpdateReadMonoForumOutbox;
+        channelId: long;
+        savedPeerId: Api.TypePeer;
+        readMaxId: int;
+    }
+    export class UpdateMonoForumNoPaidException extends VirtualClass<{
+        // flags: null;
+        exception?: boolean;
+        channelId: long;
+        savedPeerId: Api.TypePeer;
+    }> {
+        CONSTRUCTOR_ID: 2676042504;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateMonoForumNoPaidException";
+        static fromReader(reader: Reader): UpdateMonoForumNoPaidException;
+        // flags: null;
+        exception?: boolean;
+        channelId: long;
+        savedPeerId: Api.TypePeer;
+    }
+    export class UpdateGroupCallMessage extends VirtualClass<{
+        call: Api.TypeInputGroupCall;
+        message: Api.TypeGroupCallMessage;
+    }> {
+        CONSTRUCTOR_ID: 3627183885;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateGroupCallMessage";
+        static fromReader(reader: Reader): UpdateGroupCallMessage;
+        call: Api.TypeInputGroupCall;
+        message: Api.TypeGroupCallMessage;
+    }
+    export class UpdateGroupCallEncryptedMessage extends VirtualClass<{
+        call: Api.TypeInputGroupCall;
+        fromId: Api.TypePeer;
+        encryptedMessage: bytes;
+    }> {
+        CONSTRUCTOR_ID: 3377964902;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateGroupCallEncryptedMessage";
+        static fromReader(reader: Reader): UpdateGroupCallEncryptedMessage;
+        call: Api.TypeInputGroupCall;
+        fromId: Api.TypePeer;
+        encryptedMessage: bytes;
+    }
+    export class UpdatePinnedForumTopic extends VirtualClass<{
+        // flags: null;
+        pinned?: boolean;
+        peer: Api.TypePeer;
+        topicId: int;
+    }> {
+        CONSTRUCTOR_ID: 1748708434;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdatePinnedForumTopic";
+        static fromReader(reader: Reader): UpdatePinnedForumTopic;
+        // flags: null;
+        pinned?: boolean;
+        peer: Api.TypePeer;
+        topicId: int;
+    }
+    export class UpdatePinnedForumTopics extends VirtualClass<{
+        // flags: null;
+        peer: Api.TypePeer;
+        order?: int[];
+    }> {
+        CONSTRUCTOR_ID: 3740353488;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdatePinnedForumTopics";
+        static fromReader(reader: Reader): UpdatePinnedForumTopics;
+        // flags: null;
+        peer: Api.TypePeer;
+        order?: int[];
+    }
+    export class UpdateDeleteGroupCallMessages extends VirtualClass<{
+        call: Api.TypeInputGroupCall;
+        messages: int[];
+    }> {
+        CONSTRUCTOR_ID: 1048963372;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateDeleteGroupCallMessages";
+        static fromReader(reader: Reader): UpdateDeleteGroupCallMessages;
+        call: Api.TypeInputGroupCall;
+        messages: int[];
+    }
+    export class UpdateStarGiftAuctionState extends VirtualClass<{
+        giftId: long;
+        state: Api.TypeStarGiftAuctionState;
+    }> {
+        CONSTRUCTOR_ID: 1222788802;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateStarGiftAuctionState";
+        static fromReader(reader: Reader): UpdateStarGiftAuctionState;
+        giftId: long;
+        state: Api.TypeStarGiftAuctionState;
+    }
+    export class UpdateStarGiftAuctionUserState extends VirtualClass<{
+        giftId: long;
+        userState: Api.TypeStarGiftAuctionUserState;
+    }> {
+        CONSTRUCTOR_ID: 3696816926;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateStarGiftAuctionUserState";
+        static fromReader(reader: Reader): UpdateStarGiftAuctionUserState;
+        giftId: long;
+        userState: Api.TypeStarGiftAuctionUserState;
+    }
+    export class UpdateEmojiGameInfo extends VirtualClass<{
+        info: messages.TypeEmojiGameInfo;
+    }> {
+        CONSTRUCTOR_ID: 4221326458;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateEmojiGameInfo";
+        static fromReader(reader: Reader): UpdateEmojiGameInfo;
+        info: messages.TypeEmojiGameInfo;
+    }
+    export class UpdateStarGiftCraftFail extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 2886149188;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateStarGiftCraftFail";
+        static fromReader(reader: Reader): UpdateStarGiftCraftFail;
+    }
+    export class UpdateChatParticipantRank extends VirtualClass<{
+        chatId: long;
         userId: long;
-        payload: string;
-        invoiceSlug: string;
-        untilDate: int;
-        qts: int;
+        rank: string;
+        version: int;
+    }> {
+        CONSTRUCTOR_ID: 3179505593;
+        SUBCLASS_OF_ID: 2676568142;
+        classType: "constructor";
+        className: "UpdateChatParticipantRank";
+        static fromReader(reader: Reader): UpdateChatParticipantRank;
+        chatId: long;
+        userId: long;
+        rank: string;
+        version: int;
     }
     export class UpdatesTooLong extends VirtualClass<void> {
         CONSTRUCTOR_ID: 3809980286;
@@ -5817,6 +6440,18 @@ export namespace Api {
         static fromReader(reader: Reader): SendMessageEmojiInteractionSeen;
         emoticon: string;
     }
+    export class SendMessageTextDraftAction extends VirtualClass<{
+        randomId?: long;
+        text: Api.TypeTextWithEntities;
+    }> {
+        CONSTRUCTOR_ID: 929929052;
+        SUBCLASS_OF_ID: 548588577;
+        classType: "constructor";
+        className: "SendMessageTextDraftAction";
+        static fromReader(reader: Reader): SendMessageTextDraftAction;
+        randomId?: long;
+        text: Api.TypeTextWithEntities;
+    }
     export class InputPrivacyKeyStatusTimestamp extends VirtualClass<void> {
         CONSTRUCTOR_ID: 1335282456;
         SUBCLASS_OF_ID: 87435256;
@@ -5901,6 +6536,20 @@ export namespace Api {
         className: "InputPrivacyKeyStarGiftsAutoSave";
         static fromReader(reader: Reader): InputPrivacyKeyStarGiftsAutoSave;
     }
+    export class InputPrivacyKeyNoPaidMessages extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 3183843252;
+        SUBCLASS_OF_ID: 87435256;
+        classType: "constructor";
+        className: "InputPrivacyKeyNoPaidMessages";
+        static fromReader(reader: Reader): InputPrivacyKeyNoPaidMessages;
+    }
+    export class InputPrivacyKeySavedMusic extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 1304334886;
+        SUBCLASS_OF_ID: 87435256;
+        classType: "constructor";
+        className: "InputPrivacyKeySavedMusic";
+        static fromReader(reader: Reader): InputPrivacyKeySavedMusic;
+    }
     export class PrivacyKeyStatusTimestamp extends VirtualClass<void> {
         CONSTRUCTOR_ID: 3157175088;
         SUBCLASS_OF_ID: 2185646531;
@@ -5984,6 +6633,20 @@ export namespace Api {
         classType: "constructor";
         className: "PrivacyKeyStarGiftsAutoSave";
         static fromReader(reader: Reader): PrivacyKeyStarGiftsAutoSave;
+    }
+    export class PrivacyKeyNoPaidMessages extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 399722706;
+        SUBCLASS_OF_ID: 2185646531;
+        classType: "constructor";
+        className: "PrivacyKeyNoPaidMessages";
+        static fromReader(reader: Reader): PrivacyKeyNoPaidMessages;
+    }
+    export class PrivacyKeySavedMusic extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 4286207771;
+        SUBCLASS_OF_ID: 2185646531;
+        classType: "constructor";
+        className: "PrivacyKeySavedMusic";
+        static fromReader(reader: Reader): PrivacyKeySavedMusic;
     }
     export class InputPrivacyValueAllowContacts extends VirtualClass<void> {
         CONSTRUCTOR_ID: 218751099;
@@ -6356,6 +7019,7 @@ export namespace Api {
     export class WebPage extends VirtualClass<{
         // flags: null;
         hasLargeMedia?: boolean;
+        videoCoverPhoto?: boolean;
         id: long;
         url: string;
         displayUrl: string;
@@ -6382,6 +7046,7 @@ export namespace Api {
         static fromReader(reader: Reader): WebPage;
         // flags: null;
         hasLargeMedia?: boolean;
+        videoCoverPhoto?: boolean;
         id: long;
         url: string;
         displayUrl: string;
@@ -6545,8 +7210,9 @@ export namespace Api {
         color: int;
         subscriptionPricing?: Api.TypeStarsSubscriptionPricing;
         subscriptionFormId?: long;
+        botVerification?: Api.TypeBotVerification;
     }> {
-        CONSTRUCTOR_ID: 4268046493;
+        CONSTRUCTOR_ID: 1553807106;
         SUBCLASS_OF_ID: 72750902;
         classType: "constructor";
         className: "ChatInvite";
@@ -6569,6 +7235,7 @@ export namespace Api {
         color: int;
         subscriptionPricing?: Api.TypeStarsSubscriptionPricing;
         subscriptionFormId?: long;
+        botVerification?: Api.TypeBotVerification;
     }
     export class ChatInvitePeek extends VirtualClass<{
         chat: Api.TypeChat;
@@ -6678,6 +7345,13 @@ export namespace Api {
             reader: Reader
         ): InputStickerSetEmojiChannelDefaultStatuses;
     }
+    export class InputStickerSetTonGifts extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 485912992;
+        SUBCLASS_OF_ID: 1034127786;
+        classType: "constructor";
+        className: "InputStickerSetTonGifts";
+        static fromReader(reader: Reader): InputStickerSetTonGifts;
+    }
     export class StickerSet extends VirtualClass<{
         // flags: null;
         archived?: boolean;
@@ -6747,8 +7421,9 @@ export namespace Api {
         menuButton?: Api.TypeBotMenuButton;
         privacyPolicyUrl?: string;
         appSettings?: Api.TypeBotAppSettings;
+        verifierSettings?: Api.TypeBotVerifierSettings;
     }> {
-        CONSTRUCTOR_ID: 912290611;
+        CONSTRUCTOR_ID: 1300890265;
         SUBCLASS_OF_ID: 4059496923;
         classType: "constructor";
         className: "BotInfo";
@@ -6763,116 +7438,147 @@ export namespace Api {
         menuButton?: Api.TypeBotMenuButton;
         privacyPolicyUrl?: string;
         appSettings?: Api.TypeBotAppSettings;
+        verifierSettings?: Api.TypeBotVerifierSettings;
     }
     export class KeyboardButton extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }> {
-        CONSTRUCTOR_ID: 2734311552;
+        CONSTRUCTOR_ID: 2098662655;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButton";
         static fromReader(reader: Reader): KeyboardButton;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }
     export class KeyboardButtonUrl extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         url: string;
     }> {
-        CONSTRUCTOR_ID: 629866245;
+        CONSTRUCTOR_ID: 3624674796;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonUrl";
         static fromReader(reader: Reader): KeyboardButtonUrl;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         url: string;
     }
     export class KeyboardButtonCallback extends VirtualClass<{
         // flags: null;
         requiresPassword?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         data: bytes;
     }> {
-        CONSTRUCTOR_ID: 901503851;
+        CONSTRUCTOR_ID: 3861629280;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonCallback";
         static fromReader(reader: Reader): KeyboardButtonCallback;
         // flags: null;
         requiresPassword?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         data: bytes;
     }
     export class KeyboardButtonRequestPhone extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }> {
-        CONSTRUCTOR_ID: 2976541737;
+        CONSTRUCTOR_ID: 1098841487;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonRequestPhone";
         static fromReader(reader: Reader): KeyboardButtonRequestPhone;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }
     export class KeyboardButtonRequestGeoLocation extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }> {
-        CONSTRUCTOR_ID: 4235815743;
+        CONSTRUCTOR_ID: 2856384845;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonRequestGeoLocation";
         static fromReader(reader: Reader): KeyboardButtonRequestGeoLocation;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }
     export class KeyboardButtonSwitchInline extends VirtualClass<{
         // flags: null;
         samePeer?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         query: string;
         peerTypes?: Api.TypeInlineQueryPeerType[];
     }> {
-        CONSTRUCTOR_ID: 2478439349;
+        CONSTRUCTOR_ID: 2568198652;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonSwitchInline";
         static fromReader(reader: Reader): KeyboardButtonSwitchInline;
         // flags: null;
         samePeer?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         query: string;
         peerTypes?: Api.TypeInlineQueryPeerType[];
     }
     export class KeyboardButtonGame extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }> {
-        CONSTRUCTOR_ID: 1358175439;
+        CONSTRUCTOR_ID: 2311426297;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonGame";
         static fromReader(reader: Reader): KeyboardButtonGame;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }
     export class KeyboardButtonBuy extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }> {
-        CONSTRUCTOR_ID: 2950250427;
+        CONSTRUCTOR_ID: 1067792645;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonBuy";
         static fromReader(reader: Reader): KeyboardButtonBuy;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
     }
     export class KeyboardButtonUrlAuth extends VirtualClass<{
         // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         fwdText?: string;
         url: string;
         buttonId: int;
     }> {
-        CONSTRUCTOR_ID: 280464681;
+        CONSTRUCTOR_ID: 4111468281;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonUrlAuth";
         static fromReader(reader: Reader): KeyboardButtonUrlAuth;
         // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         fwdText?: string;
         url: string;
@@ -6881,18 +7587,20 @@ export namespace Api {
     export class InputKeyboardButtonUrlAuth extends VirtualClass<{
         // flags: null;
         requestWriteAccess?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         fwdText?: string;
         url: string;
         bot: Api.TypeInputUser;
     }> {
-        CONSTRUCTOR_ID: 3492708308;
+        CONSTRUCTOR_ID: 1744911986;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "InputKeyboardButtonUrlAuth";
         static fromReader(reader: Reader): InputKeyboardButtonUrlAuth;
         // flags: null;
         requestWriteAccess?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         fwdText?: string;
         url: string;
@@ -6900,77 +7608,99 @@ export namespace Api {
     }
     export class KeyboardButtonRequestPoll extends VirtualClass<{
         // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         quiz?: Bool;
         text: string;
     }> {
-        CONSTRUCTOR_ID: 3150401885;
+        CONSTRUCTOR_ID: 2047989634;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonRequestPoll";
         static fromReader(reader: Reader): KeyboardButtonRequestPoll;
         // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         quiz?: Bool;
         text: string;
     }
     export class InputKeyboardButtonUserProfile extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         userId: Api.TypeInputUser;
     }> {
-        CONSTRUCTOR_ID: 3918005115;
+        CONSTRUCTOR_ID: 2103314375;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "InputKeyboardButtonUserProfile";
         static fromReader(reader: Reader): InputKeyboardButtonUserProfile;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         userId: Api.TypeInputUser;
     }
     export class KeyboardButtonUserProfile extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         userId: long;
     }> {
-        CONSTRUCTOR_ID: 814112961;
+        CONSTRUCTOR_ID: 3237829897;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonUserProfile";
         static fromReader(reader: Reader): KeyboardButtonUserProfile;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         userId: long;
     }
     export class KeyboardButtonWebView extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         url: string;
     }> {
-        CONSTRUCTOR_ID: 326529584;
+        CONSTRUCTOR_ID: 3896947104;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonWebView";
         static fromReader(reader: Reader): KeyboardButtonWebView;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         url: string;
     }
     export class KeyboardButtonSimpleWebView extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         url: string;
     }> {
-        CONSTRUCTOR_ID: 2696958044;
+        CONSTRUCTOR_ID: 3780920176;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonSimpleWebView";
         static fromReader(reader: Reader): KeyboardButtonSimpleWebView;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         url: string;
     }
     export class KeyboardButtonRequestPeer extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         buttonId: int;
         peerType: Api.TypeRequestPeerType;
         maxQuantity: int;
     }> {
-        CONSTRUCTOR_ID: 1406648280;
+        CONSTRUCTOR_ID: 1527715317;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonRequestPeer";
         static fromReader(reader: Reader): KeyboardButtonRequestPeer;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         buttonId: int;
         peerType: Api.TypeRequestPeerType;
@@ -6981,12 +7711,13 @@ export namespace Api {
         nameRequested?: boolean;
         usernameRequested?: boolean;
         photoRequested?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         buttonId: int;
         peerType: Api.TypeRequestPeerType;
         maxQuantity: int;
     }> {
-        CONSTRUCTOR_ID: 3378916613;
+        CONSTRUCTOR_ID: 45580630;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "InputKeyboardButtonRequestPeer";
@@ -6995,20 +7726,25 @@ export namespace Api {
         nameRequested?: boolean;
         usernameRequested?: boolean;
         photoRequested?: boolean;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         buttonId: int;
         peerType: Api.TypeRequestPeerType;
         maxQuantity: int;
     }
     export class KeyboardButtonCopy extends VirtualClass<{
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         copyText: string;
     }> {
-        CONSTRUCTOR_ID: 1976723854;
+        CONSTRUCTOR_ID: 3167006480;
         SUBCLASS_OF_ID: 195916963;
         classType: "constructor";
         className: "KeyboardButtonCopy";
         static fromReader(reader: Reader): KeyboardButtonCopy;
+        // flags: null;
+        style?: Api.TypeKeyboardButtonStyle;
         text: string;
         copyText: string;
     }
@@ -7348,6 +8084,34 @@ export namespace Api {
         offset: int;
         length: int;
     }
+    export class MessageEntityFormattedDate extends VirtualClass<{
+        // flags: null;
+        relative?: boolean;
+        shortTime?: boolean;
+        longTime?: boolean;
+        shortDate?: boolean;
+        longDate?: boolean;
+        dayOfWeek?: boolean;
+        offset: int;
+        length: int;
+        date: int;
+    }> {
+        CONSTRUCTOR_ID: 2420819911;
+        SUBCLASS_OF_ID: 3479443932;
+        classType: "constructor";
+        className: "MessageEntityFormattedDate";
+        static fromReader(reader: Reader): MessageEntityFormattedDate;
+        // flags: null;
+        relative?: boolean;
+        shortTime?: boolean;
+        longTime?: boolean;
+        shortDate?: boolean;
+        longDate?: boolean;
+        dayOfWeek?: boolean;
+        offset: int;
+        length: int;
+        date: int;
+    }
     export class InputChannelEmpty extends VirtualClass<void> {
         CONSTRUCTOR_ID: 4002160262;
         SUBCLASS_OF_ID: 1089602301;
@@ -7419,8 +8183,9 @@ export namespace Api {
         userId: long;
         date: int;
         subscriptionUntilDate?: int;
+        rank?: string;
     }> {
-        CONSTRUCTOR_ID: 3409540633;
+        CONSTRUCTOR_ID: 466961494;
         SUBCLASS_OF_ID: 3653762072;
         classType: "constructor";
         className: "ChannelParticipant";
@@ -7429,6 +8194,7 @@ export namespace Api {
         userId: long;
         date: int;
         subscriptionUntilDate?: int;
+        rank?: string;
     }
     export class ChannelParticipantSelf extends VirtualClass<{
         // flags: null;
@@ -7437,8 +8203,9 @@ export namespace Api {
         inviterId: long;
         date: int;
         subscriptionUntilDate?: int;
+        rank?: string;
     }> {
-        CONSTRUCTOR_ID: 1331723247;
+        CONSTRUCTOR_ID: 2840037914;
         SUBCLASS_OF_ID: 3653762072;
         classType: "constructor";
         className: "ChannelParticipantSelf";
@@ -7449,6 +8216,7 @@ export namespace Api {
         inviterId: long;
         date: int;
         subscriptionUntilDate?: int;
+        rank?: string;
     }
     export class ChannelParticipantCreator extends VirtualClass<{
         // flags: null;
@@ -7499,8 +8267,9 @@ export namespace Api {
         kickedBy: long;
         date: int;
         bannedRights: Api.TypeChatBannedRights;
+        rank?: string;
     }> {
-        CONSTRUCTOR_ID: 1844969806;
+        CONSTRUCTOR_ID: 3589320081;
         SUBCLASS_OF_ID: 3653762072;
         classType: "constructor";
         className: "ChannelParticipantBanned";
@@ -7511,6 +8280,7 @@ export namespace Api {
         kickedBy: long;
         date: int;
         bannedRights: Api.TypeChatBannedRights;
+        rank?: string;
     }
     export class ChannelParticipantLeft extends VirtualClass<{
         peer: Api.TypePeer;
@@ -8248,8 +9018,9 @@ export namespace Api {
         media?: Api.TypeInputMedia;
         date: int;
         effect?: long;
+        suggestedPost?: Api.TypeSuggestedPost;
     }> {
-        CONSTRUCTOR_ID: 761606687;
+        CONSTRUCTOR_ID: 2531960299;
         SUBCLASS_OF_ID: 869564229;
         classType: "constructor";
         className: "DraftMessage";
@@ -8263,6 +9034,7 @@ export namespace Api {
         media?: Api.TypeInputMedia;
         date: int;
         effect?: long;
+        suggestedPost?: Api.TypeSuggestedPost;
     }
     export class StickerSetCovered extends VirtualClass<{
         set: Api.TypeStickerSet;
@@ -8977,6 +9749,18 @@ export namespace Api {
         className: "PhoneCallDiscardReasonBusy";
         static fromReader(reader: Reader): PhoneCallDiscardReasonBusy;
     }
+    export class PhoneCallDiscardReasonMigrateConferenceCall extends VirtualClass<{
+        slug: string;
+    }> {
+        CONSTRUCTOR_ID: 2679894519;
+        SUBCLASS_OF_ID: 3634081085;
+        classType: "constructor";
+        className: "PhoneCallDiscardReasonMigrateConferenceCall";
+        static fromReader(
+            reader: Reader
+        ): PhoneCallDiscardReasonMigrateConferenceCall;
+        slug: string;
+    }
     export class DataJSON extends VirtualClass<{
         data: string;
     }> {
@@ -9383,6 +10167,7 @@ export namespace Api {
         // flags: null;
         p2pAllowed?: boolean;
         video?: boolean;
+        conferenceSupported?: boolean;
         id: long;
         accessHash: long;
         date: int;
@@ -9403,6 +10188,7 @@ export namespace Api {
         // flags: null;
         p2pAllowed?: boolean;
         video?: boolean;
+        conferenceSupported?: boolean;
         id: long;
         accessHash: long;
         date: int;
@@ -10265,6 +11051,34 @@ export namespace Api {
         prevParticipant: Api.TypeChannelParticipant;
         newParticipant: Api.TypeChannelParticipant;
     }
+    export class ChannelAdminLogEventActionToggleAutotranslation extends VirtualClass<{
+        newValue: Bool;
+    }> {
+        CONSTRUCTOR_ID: 3306682238;
+        SUBCLASS_OF_ID: 2998503411;
+        classType: "constructor";
+        className: "ChannelAdminLogEventActionToggleAutotranslation";
+        static fromReader(
+            reader: Reader
+        ): ChannelAdminLogEventActionToggleAutotranslation;
+        newValue: Bool;
+    }
+    export class ChannelAdminLogEventActionParticipantEditRank extends VirtualClass<{
+        userId: long;
+        prevRank: string;
+        newRank: string;
+    }> {
+        CONSTRUCTOR_ID: 1476834540;
+        SUBCLASS_OF_ID: 2998503411;
+        classType: "constructor";
+        className: "ChannelAdminLogEventActionParticipantEditRank";
+        static fromReader(
+            reader: Reader
+        ): ChannelAdminLogEventActionParticipantEditRank;
+        userId: long;
+        prevRank: string;
+        newRank: string;
+    }
     export class ChannelAdminLogEvent extends VirtualClass<{
         id: long;
         date: int;
@@ -10302,6 +11116,7 @@ export namespace Api {
         send?: boolean;
         forums?: boolean;
         subExtend?: boolean;
+        editRank?: boolean;
     }> {
         CONSTRUCTOR_ID: 3926948580;
         SUBCLASS_OF_ID: 2092692249;
@@ -10328,6 +11143,7 @@ export namespace Api {
         send?: boolean;
         forums?: boolean;
         subExtend?: boolean;
+        editRank?: boolean;
     }
     export class PopularContact extends VirtualClass<{
         clientId: long;
@@ -11417,6 +12233,8 @@ export namespace Api {
         postStories?: boolean;
         editStories?: boolean;
         deleteStories?: boolean;
+        manageDirectMessages?: boolean;
+        manageRanks?: boolean;
     }> {
         CONSTRUCTOR_ID: 1605510357;
         SUBCLASS_OF_ID: 2252195780;
@@ -11439,6 +12257,8 @@ export namespace Api {
         postStories?: boolean;
         editStories?: boolean;
         deleteStories?: boolean;
+        manageDirectMessages?: boolean;
+        manageRanks?: boolean;
     }
     export class ChatBannedRights extends VirtualClass<{
         // flags: null;
@@ -11462,6 +12282,7 @@ export namespace Api {
         sendVoices?: boolean;
         sendDocs?: boolean;
         sendPlain?: boolean;
+        editRank?: boolean;
         untilDate: int;
     }> {
         CONSTRUCTOR_ID: 2668758040;
@@ -11490,6 +12311,7 @@ export namespace Api {
         sendVoices?: boolean;
         sendDocs?: boolean;
         sendPlain?: boolean;
+        editRank?: boolean;
         untilDate: int;
     }
     export class InputWallPaper extends VirtualClass<{
@@ -11721,28 +12543,46 @@ export namespace Api {
     export class UrlAuthResultRequest extends VirtualClass<{
         // flags: null;
         requestWriteAccess?: boolean;
+        requestPhoneNumber?: boolean;
+        matchCodesFirst?: boolean;
         bot: Api.TypeUser;
         domain: string;
+        browser?: string;
+        platform?: string;
+        ip?: string;
+        region?: string;
+        matchCodes?: string[];
+        userIdHint?: long;
     }> {
-        CONSTRUCTOR_ID: 2463316494;
+        CONSTRUCTOR_ID: 4177062686;
         SUBCLASS_OF_ID: 2003159838;
         classType: "constructor";
         className: "UrlAuthResultRequest";
         static fromReader(reader: Reader): UrlAuthResultRequest;
         // flags: null;
         requestWriteAccess?: boolean;
+        requestPhoneNumber?: boolean;
+        matchCodesFirst?: boolean;
         bot: Api.TypeUser;
         domain: string;
+        browser?: string;
+        platform?: string;
+        ip?: string;
+        region?: string;
+        matchCodes?: string[];
+        userIdHint?: long;
     }
     export class UrlAuthResultAccepted extends VirtualClass<{
-        url: string;
+        // flags: null;
+        url?: string;
     }> {
-        CONSTRUCTOR_ID: 2408320590;
+        CONSTRUCTOR_ID: 1648005024;
         SUBCLASS_OF_ID: 2003159838;
         classType: "constructor";
         className: "UrlAuthResultAccepted";
         static fromReader(reader: Reader): UrlAuthResultAccepted;
-        url: string;
+        // flags: null;
+        url?: string;
     }
     export class UrlAuthResultDefault extends VirtualClass<void> {
         CONSTRUCTOR_ID: 2849430303;
@@ -11989,6 +12829,38 @@ export namespace Api {
         textColor?: boolean;
         stickers: Api.TypeDocument[];
     }
+    export class WebPageAttributeUniqueStarGift extends VirtualClass<{
+        gift: Api.TypeStarGift;
+    }> {
+        CONSTRUCTOR_ID: 3480186296;
+        SUBCLASS_OF_ID: 2949638599;
+        classType: "constructor";
+        className: "WebPageAttributeUniqueStarGift";
+        static fromReader(reader: Reader): WebPageAttributeUniqueStarGift;
+        gift: Api.TypeStarGift;
+    }
+    export class WebPageAttributeStarGiftCollection extends VirtualClass<{
+        icons: Api.TypeDocument[];
+    }> {
+        CONSTRUCTOR_ID: 835375875;
+        SUBCLASS_OF_ID: 2949638599;
+        classType: "constructor";
+        className: "WebPageAttributeStarGiftCollection";
+        static fromReader(reader: Reader): WebPageAttributeStarGiftCollection;
+        icons: Api.TypeDocument[];
+    }
+    export class WebPageAttributeStarGiftAuction extends VirtualClass<{
+        gift: Api.TypeStarGift;
+        endDate: int;
+    }> {
+        CONSTRUCTOR_ID: 29770178;
+        SUBCLASS_OF_ID: 2949638599;
+        classType: "constructor";
+        className: "WebPageAttributeStarGiftAuction";
+        static fromReader(reader: Reader): WebPageAttributeStarGiftAuction;
+        gift: Api.TypeStarGift;
+        endDate: int;
+    }
     export class BankCardOpenUrl extends VirtualClass<{
         url: string;
         name: string;
@@ -12011,15 +12883,16 @@ export namespace Api {
         excludeMuted?: boolean;
         excludeRead?: boolean;
         excludeArchived?: boolean;
+        titleNoanimate?: boolean;
         id: int;
-        title: string;
+        title: Api.TypeTextWithEntities;
         emoticon?: string;
         color?: int;
         pinnedPeers: Api.TypeInputPeer[];
         includePeers: Api.TypeInputPeer[];
         excludePeers: Api.TypeInputPeer[];
     }> {
-        CONSTRUCTOR_ID: 1605718587;
+        CONSTRUCTOR_ID: 2856789585;
         SUBCLASS_OF_ID: 1764475991;
         classType: "constructor";
         className: "DialogFilter";
@@ -12033,8 +12906,9 @@ export namespace Api {
         excludeMuted?: boolean;
         excludeRead?: boolean;
         excludeArchived?: boolean;
+        titleNoanimate?: boolean;
         id: int;
-        title: string;
+        title: Api.TypeTextWithEntities;
         emoticon?: string;
         color?: int;
         pinnedPeers: Api.TypeInputPeer[];
@@ -12051,22 +12925,24 @@ export namespace Api {
     export class DialogFilterChatlist extends VirtualClass<{
         // flags: null;
         hasMyInvites?: boolean;
+        titleNoanimate?: boolean;
         id: int;
-        title: string;
+        title: Api.TypeTextWithEntities;
         emoticon?: string;
         color?: int;
         pinnedPeers: Api.TypeInputPeer[];
         includePeers: Api.TypeInputPeer[];
     }> {
-        CONSTRUCTOR_ID: 2682424996;
+        CONSTRUCTOR_ID: 2522053591;
         SUBCLASS_OF_ID: 1764475991;
         classType: "constructor";
         className: "DialogFilterChatlist";
         static fromReader(reader: Reader): DialogFilterChatlist;
         // flags: null;
         hasMyInvites?: boolean;
+        titleNoanimate?: boolean;
         id: int;
-        title: string;
+        title: Api.TypeTextWithEntities;
         emoticon?: string;
         color?: int;
         pinnedPeers: Api.TypeInputPeer[];
@@ -12249,8 +13125,11 @@ export namespace Api {
         keepArchivedFolders?: boolean;
         hideReadMarks?: boolean;
         newNoncontactPeersRequirePremium?: boolean;
+        displayGiftsButton?: boolean;
+        noncontactPeersPaidStars?: long;
+        disallowedGifts?: Api.TypeDisallowedGiftsSettings;
     }> {
-        CONSTRUCTOR_ID: 1934380235;
+        CONSTRUCTOR_ID: 4265718607;
         SUBCLASS_OF_ID: 3373160304;
         classType: "constructor";
         className: "GlobalPrivacySettings";
@@ -12261,6 +13140,9 @@ export namespace Api {
         keepArchivedFolders?: boolean;
         hideReadMarks?: boolean;
         newNoncontactPeersRequirePremium?: boolean;
+        displayGiftsButton?: boolean;
+        noncontactPeersPaidStars?: long;
+        disallowedGifts?: Api.TypeDisallowedGiftsSettings;
     }
     export class MessageViews extends VirtualClass<{
         // flags: null;
@@ -12291,8 +13173,9 @@ export namespace Api {
         quoteText?: string;
         quoteEntities?: Api.TypeMessageEntity[];
         quoteOffset?: int;
+        todoItemId?: int;
     }> {
-        CONSTRUCTOR_ID: 2948336091;
+        CONSTRUCTOR_ID: 1763137035;
         SUBCLASS_OF_ID: 1531810151;
         classType: "constructor";
         className: "MessageReplyHeader";
@@ -12309,6 +13192,7 @@ export namespace Api {
         quoteText?: string;
         quoteEntities?: Api.TypeMessageEntity[];
         quoteOffset?: int;
+        todoItemId?: int;
     }
     export class MessageReplyStoryHeader extends VirtualClass<{
         peer: Api.TypePeer;
@@ -12382,6 +13266,11 @@ export namespace Api {
         recordVideoActive?: boolean;
         rtmpStream?: boolean;
         listenersHidden?: boolean;
+        conference?: boolean;
+        creator?: boolean;
+        messagesEnabled?: boolean;
+        canChangeMessagesEnabled?: boolean;
+        min?: boolean;
         id: long;
         accessHash: long;
         participantsCount: int;
@@ -12392,8 +13281,11 @@ export namespace Api {
         unmutedVideoCount?: int;
         unmutedVideoLimit: int;
         version: int;
+        inviteLink?: string;
+        sendPaidMessagesStars?: long;
+        defaultSendAs?: Api.TypePeer;
     }> {
-        CONSTRUCTOR_ID: 3583468812;
+        CONSTRUCTOR_ID: 4021466647;
         SUBCLASS_OF_ID: 548729632;
         classType: "constructor";
         className: "GroupCall";
@@ -12407,6 +13299,11 @@ export namespace Api {
         recordVideoActive?: boolean;
         rtmpStream?: boolean;
         listenersHidden?: boolean;
+        conference?: boolean;
+        creator?: boolean;
+        messagesEnabled?: boolean;
+        canChangeMessagesEnabled?: boolean;
+        min?: boolean;
         id: long;
         accessHash: long;
         participantsCount: int;
@@ -12417,6 +13314,9 @@ export namespace Api {
         unmutedVideoCount?: int;
         unmutedVideoLimit: int;
         version: int;
+        inviteLink?: string;
+        sendPaidMessagesStars?: long;
+        defaultSendAs?: Api.TypePeer;
     }
     export class InputGroupCall extends VirtualClass<{
         id: long;
@@ -12429,6 +13329,26 @@ export namespace Api {
         static fromReader(reader: Reader): InputGroupCall;
         id: long;
         accessHash: long;
+    }
+    export class InputGroupCallSlug extends VirtualClass<{
+        slug: string;
+    }> {
+        CONSTRUCTOR_ID: 4261839423;
+        SUBCLASS_OF_ID: 1482758833;
+        classType: "constructor";
+        className: "InputGroupCallSlug";
+        static fromReader(reader: Reader): InputGroupCallSlug;
+        slug: string;
+    }
+    export class InputGroupCallInviteMessage extends VirtualClass<{
+        msgId: int;
+    }> {
+        CONSTRUCTOR_ID: 2349883455;
+        SUBCLASS_OF_ID: 1482758833;
+        classType: "constructor";
+        className: "InputGroupCallInviteMessage";
+        static fromReader(reader: Reader): InputGroupCallInviteMessage;
+        msgId: int;
     }
     export class GroupCallParticipant extends VirtualClass<{
         // flags: null;
@@ -12451,8 +13371,9 @@ export namespace Api {
         raiseHandRating?: long;
         video?: Api.TypeGroupCallParticipantVideo;
         presentation?: Api.TypeGroupCallParticipantVideo;
+        paidStarsTotal?: long;
     }> {
-        CONSTRUCTOR_ID: 3953538814;
+        CONSTRUCTOR_ID: 708691884;
         SUBCLASS_OF_ID: 3222974284;
         classType: "constructor";
         className: "GroupCallParticipant";
@@ -12477,6 +13398,7 @@ export namespace Api {
         raiseHandRating?: long;
         video?: Api.TypeGroupCallParticipantVideo;
         presentation?: Api.TypeGroupCallParticipantVideo;
+        paidStarsTotal?: long;
     }
     export class InlineQueryPeerTypeSameBotPM extends VirtualClass<void> {
         CONSTRUCTOR_ID: 813821341;
@@ -12646,6 +13568,28 @@ export namespace Api {
         peer: Api.TypeInputPeer;
         userId: Api.TypeInputUser;
     }
+    export class ChatTheme extends VirtualClass<{
+        emoticon: string;
+    }> {
+        CONSTRUCTOR_ID: 3286236164;
+        SUBCLASS_OF_ID: 805087221;
+        classType: "constructor";
+        className: "ChatTheme";
+        static fromReader(reader: Reader): ChatTheme;
+        emoticon: string;
+    }
+    export class ChatThemeUniqueGift extends VirtualClass<{
+        gift: Api.TypeStarGift;
+        themeSettings: Api.TypeThemeSettings[];
+    }> {
+        CONSTRUCTOR_ID: 878246344;
+        SUBCLASS_OF_ID: 805087221;
+        classType: "constructor";
+        className: "ChatThemeUniqueGift";
+        static fromReader(reader: Reader): ChatThemeUniqueGift;
+        gift: Api.TypeStarGift;
+        themeSettings: Api.TypeThemeSettings[];
+    }
     export class SponsoredMessage extends VirtualClass<{
         // flags: null;
         recommended?: boolean;
@@ -12661,8 +13605,10 @@ export namespace Api {
         buttonText: string;
         sponsorInfo?: string;
         additionalInfo?: string;
+        minDisplayDuration?: int;
+        maxDisplayDuration?: int;
     }> {
-        CONSTRUCTOR_ID: 1301522832;
+        CONSTRUCTOR_ID: 2109703795;
         SUBCLASS_OF_ID: 3780630582;
         classType: "constructor";
         className: "SponsoredMessage";
@@ -12681,6 +13627,8 @@ export namespace Api {
         buttonText: string;
         sponsorInfo?: string;
         additionalInfo?: string;
+        minDisplayDuration?: int;
+        maxDisplayDuration?: int;
     }
     export class SearchResultsCalendarPeriod extends VirtualClass<{
         date: int;
@@ -13093,19 +14041,147 @@ export namespace Api {
     export class InputInvoiceStarGift extends VirtualClass<{
         // flags: null;
         hideName?: boolean;
-        userId: Api.TypeInputUser;
+        includeUpgrade?: boolean;
+        peer: Api.TypeInputPeer;
         giftId: long;
         message?: Api.TypeTextWithEntities;
     }> {
-        CONSTRUCTOR_ID: 634962392;
+        CONSTRUCTOR_ID: 3898760850;
         SUBCLASS_OF_ID: 1919851518;
         classType: "constructor";
         className: "InputInvoiceStarGift";
         static fromReader(reader: Reader): InputInvoiceStarGift;
         // flags: null;
         hideName?: boolean;
-        userId: Api.TypeInputUser;
+        includeUpgrade?: boolean;
+        peer: Api.TypeInputPeer;
         giftId: long;
+        message?: Api.TypeTextWithEntities;
+    }
+    export class InputInvoiceStarGiftUpgrade extends VirtualClass<{
+        // flags: null;
+        keepOriginalDetails?: boolean;
+        stargift: Api.TypeInputSavedStarGift;
+    }> {
+        CONSTRUCTOR_ID: 1300335965;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoiceStarGiftUpgrade";
+        static fromReader(reader: Reader): InputInvoiceStarGiftUpgrade;
+        // flags: null;
+        keepOriginalDetails?: boolean;
+        stargift: Api.TypeInputSavedStarGift;
+    }
+    export class InputInvoiceStarGiftTransfer extends VirtualClass<{
+        stargift: Api.TypeInputSavedStarGift;
+        toId: Api.TypeInputPeer;
+    }> {
+        CONSTRUCTOR_ID: 1247763417;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoiceStarGiftTransfer";
+        static fromReader(reader: Reader): InputInvoiceStarGiftTransfer;
+        stargift: Api.TypeInputSavedStarGift;
+        toId: Api.TypeInputPeer;
+    }
+    export class InputInvoicePremiumGiftStars extends VirtualClass<{
+        // flags: null;
+        userId: Api.TypeInputUser;
+        months: int;
+        message?: Api.TypeTextWithEntities;
+    }> {
+        CONSTRUCTOR_ID: 3669668591;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoicePremiumGiftStars";
+        static fromReader(reader: Reader): InputInvoicePremiumGiftStars;
+        // flags: null;
+        userId: Api.TypeInputUser;
+        months: int;
+        message?: Api.TypeTextWithEntities;
+    }
+    export class InputInvoiceBusinessBotTransferStars extends VirtualClass<{
+        bot: Api.TypeInputUser;
+        stars: long;
+    }> {
+        CONSTRUCTOR_ID: 4103700034;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoiceBusinessBotTransferStars";
+        static fromReader(reader: Reader): InputInvoiceBusinessBotTransferStars;
+        bot: Api.TypeInputUser;
+        stars: long;
+    }
+    export class InputInvoiceStarGiftResale extends VirtualClass<{
+        // flags: null;
+        ton?: boolean;
+        slug: string;
+        toId: Api.TypeInputPeer;
+    }> {
+        CONSTRUCTOR_ID: 3281998628;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoiceStarGiftResale";
+        static fromReader(reader: Reader): InputInvoiceStarGiftResale;
+        // flags: null;
+        ton?: boolean;
+        slug: string;
+        toId: Api.TypeInputPeer;
+    }
+    export class InputInvoiceStarGiftPrepaidUpgrade extends VirtualClass<{
+        peer: Api.TypeInputPeer;
+        hash: string;
+    }> {
+        CONSTRUCTOR_ID: 2584430776;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoiceStarGiftPrepaidUpgrade";
+        static fromReader(reader: Reader): InputInvoiceStarGiftPrepaidUpgrade;
+        peer: Api.TypeInputPeer;
+        hash: string;
+    }
+    export class InputInvoicePremiumAuthCode extends VirtualClass<{
+        purpose: Api.TypeInputStorePaymentPurpose;
+    }> {
+        CONSTRUCTOR_ID: 1048049172;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoicePremiumAuthCode";
+        static fromReader(reader: Reader): InputInvoicePremiumAuthCode;
+        purpose: Api.TypeInputStorePaymentPurpose;
+    }
+    export class InputInvoiceStarGiftDropOriginalDetails extends VirtualClass<{
+        stargift: Api.TypeInputSavedStarGift;
+    }> {
+        CONSTRUCTOR_ID: 153344209;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoiceStarGiftDropOriginalDetails";
+        static fromReader(
+            reader: Reader
+        ): InputInvoiceStarGiftDropOriginalDetails;
+        stargift: Api.TypeInputSavedStarGift;
+    }
+    export class InputInvoiceStarGiftAuctionBid extends VirtualClass<{
+        // flags: null;
+        hideName?: boolean;
+        updateBid?: boolean;
+        peer?: Api.TypeInputPeer;
+        giftId: long;
+        bidAmount: long;
+        message?: Api.TypeTextWithEntities;
+    }> {
+        CONSTRUCTOR_ID: 516618768;
+        SUBCLASS_OF_ID: 1919851518;
+        classType: "constructor";
+        className: "InputInvoiceStarGiftAuctionBid";
+        static fromReader(reader: Reader): InputInvoiceStarGiftAuctionBid;
+        // flags: null;
+        hideName?: boolean;
+        updateBid?: boolean;
+        peer?: Api.TypeInputPeer;
+        giftId: long;
+        bidAmount: long;
         message?: Api.TypeTextWithEntities;
     }
     export class InputStorePaymentPremiumSubscription extends VirtualClass<{
@@ -13187,18 +14263,22 @@ export namespace Api {
         amount: long;
     }
     export class InputStorePaymentStarsTopup extends VirtualClass<{
+        // flags: null;
         stars: long;
         currency: string;
         amount: long;
+        spendPurposePeer?: Api.TypeInputPeer;
     }> {
-        CONSTRUCTOR_ID: 3722252118;
+        CONSTRUCTOR_ID: 4188186315;
         SUBCLASS_OF_ID: 3886290765;
         classType: "constructor";
         className: "InputStorePaymentStarsTopup";
         static fromReader(reader: Reader): InputStorePaymentStarsTopup;
+        // flags: null;
         stars: long;
         currency: string;
         amount: long;
+        spendPurposePeer?: Api.TypeInputPeer;
     }
     export class InputStorePaymentStarsGift extends VirtualClass<{
         userId: Api.TypeInputUser;
@@ -13250,25 +14330,25 @@ export namespace Api {
         amount: long;
         users: int;
     }
-    export class PremiumGiftOption extends VirtualClass<{
+    export class InputStorePaymentAuthCode extends VirtualClass<{
         // flags: null;
-        months: int;
+        restore?: boolean;
+        phoneNumber: string;
+        phoneCodeHash: string;
         currency: string;
         amount: long;
-        botUrl: string;
-        storeProduct?: string;
     }> {
-        CONSTRUCTOR_ID: 1958953753;
-        SUBCLASS_OF_ID: 1367519294;
+        CONSTRUCTOR_ID: 2612159341;
+        SUBCLASS_OF_ID: 3886290765;
         classType: "constructor";
-        className: "PremiumGiftOption";
-        static fromReader(reader: Reader): PremiumGiftOption;
+        className: "InputStorePaymentAuthCode";
+        static fromReader(reader: Reader): InputStorePaymentAuthCode;
         // flags: null;
-        months: int;
+        restore?: boolean;
+        phoneNumber: string;
+        phoneCodeHash: string;
         currency: string;
         amount: long;
-        botUrl: string;
-        storeProduct?: string;
     }
     export class PaymentFormMethod extends VirtualClass<{
         url: string;
@@ -13290,26 +14370,62 @@ export namespace Api {
         static fromReader(reader: Reader): EmojiStatusEmpty;
     }
     export class EmojiStatus extends VirtualClass<{
+        // flags: null;
         documentId: long;
+        until?: int;
     }> {
-        CONSTRUCTOR_ID: 2459656605;
+        CONSTRUCTOR_ID: 3892250250;
         SUBCLASS_OF_ID: 4180717880;
         classType: "constructor";
         className: "EmojiStatus";
         static fromReader(reader: Reader): EmojiStatus;
+        // flags: null;
         documentId: long;
+        until?: int;
     }
-    export class EmojiStatusUntil extends VirtualClass<{
+    export class EmojiStatusCollectible extends VirtualClass<{
+        // flags: null;
+        collectibleId: long;
         documentId: long;
-        until: int;
+        title: string;
+        slug: string;
+        patternDocumentId: long;
+        centerColor: int;
+        edgeColor: int;
+        patternColor: int;
+        textColor: int;
+        until?: int;
     }> {
-        CONSTRUCTOR_ID: 4197492935;
+        CONSTRUCTOR_ID: 1904500795;
         SUBCLASS_OF_ID: 4180717880;
         classType: "constructor";
-        className: "EmojiStatusUntil";
-        static fromReader(reader: Reader): EmojiStatusUntil;
+        className: "EmojiStatusCollectible";
+        static fromReader(reader: Reader): EmojiStatusCollectible;
+        // flags: null;
+        collectibleId: long;
         documentId: long;
-        until: int;
+        title: string;
+        slug: string;
+        patternDocumentId: long;
+        centerColor: int;
+        edgeColor: int;
+        patternColor: int;
+        textColor: int;
+        until?: int;
+    }
+    export class InputEmojiStatusCollectible extends VirtualClass<{
+        // flags: null;
+        collectibleId: long;
+        until?: int;
+    }> {
+        CONSTRUCTOR_ID: 118758847;
+        SUBCLASS_OF_ID: 4180717880;
+        classType: "constructor";
+        className: "InputEmojiStatusCollectible";
+        static fromReader(reader: Reader): InputEmojiStatusCollectible;
+        // flags: null;
+        collectibleId: long;
+        until?: int;
     }
     export class ReactionEmpty extends VirtualClass<void> {
         CONSTRUCTOR_ID: 2046153753;
@@ -13543,8 +14659,10 @@ export namespace Api {
         pinned?: boolean;
         short?: boolean;
         hidden?: boolean;
+        titleMissing?: boolean;
         id: int;
         date: int;
+        peer: Api.TypePeer;
         title: string;
         iconColor: int;
         iconEmojiId?: long;
@@ -13558,7 +14676,7 @@ export namespace Api {
         notifySettings: Api.TypePeerNotifySettings;
         draft?: Api.TypeDraftMessage;
     }> {
-        CONSTRUCTOR_ID: 1903173033;
+        CONSTRUCTOR_ID: 3456044746;
         SUBCLASS_OF_ID: 2367169027;
         classType: "constructor";
         className: "ForumTopic";
@@ -13569,8 +14687,10 @@ export namespace Api {
         pinned?: boolean;
         short?: boolean;
         hidden?: boolean;
+        titleMissing?: boolean;
         id: int;
         date: int;
+        peer: Api.TypePeer;
         title: string;
         iconColor: int;
         iconEmojiId?: long;
@@ -13941,6 +15061,7 @@ export namespace Api {
     export class StoryItemSkipped extends VirtualClass<{
         // flags: null;
         closeFriends?: boolean;
+        live?: boolean;
         id: int;
         date: int;
         expireDate: int;
@@ -13952,6 +15073,7 @@ export namespace Api {
         static fromReader(reader: Reader): StoryItemSkipped;
         // flags: null;
         closeFriends?: boolean;
+        live?: boolean;
         id: int;
         date: int;
         expireDate: int;
@@ -13979,8 +15101,9 @@ export namespace Api {
         privacy?: Api.TypePrivacyRule[];
         views?: Api.TypeStoryViews;
         sentReaction?: Api.TypeReaction;
+        albums?: int[];
     }> {
-        CONSTRUCTOR_ID: 2041735716;
+        CONSTRUCTOR_ID: 3992020209;
         SUBCLASS_OF_ID: 3564613939;
         classType: "constructor";
         className: "StoryItem";
@@ -14007,6 +15130,7 @@ export namespace Api {
         privacy?: Api.TypePrivacyRule[];
         views?: Api.TypeStoryViews;
         sentReaction?: Api.TypeReaction;
+        albums?: int[];
     }
     export class StoryView extends VirtualClass<{
         // flags: null;
@@ -14070,8 +15194,10 @@ export namespace Api {
         quoteText?: string;
         quoteEntities?: Api.TypeMessageEntity[];
         quoteOffset?: int;
+        monoforumPeerId?: Api.TypeInputPeer;
+        todoItemId?: int;
     }> {
-        CONSTRUCTOR_ID: 583071445;
+        CONSTRUCTOR_ID: 2258615824;
         SUBCLASS_OF_ID: 2356220701;
         classType: "constructor";
         className: "InputReplyToMessage";
@@ -14083,6 +15209,8 @@ export namespace Api {
         quoteText?: string;
         quoteEntities?: Api.TypeMessageEntity[];
         quoteOffset?: int;
+        monoforumPeerId?: Api.TypeInputPeer;
+        todoItemId?: int;
     }
     export class InputReplyToStory extends VirtualClass<{
         peer: Api.TypeInputPeer;
@@ -14095,6 +15223,16 @@ export namespace Api {
         static fromReader(reader: Reader): InputReplyToStory;
         peer: Api.TypeInputPeer;
         storyId: int;
+    }
+    export class InputReplyToMonoForum extends VirtualClass<{
+        monoforumPeerId: Api.TypeInputPeer;
+    }> {
+        CONSTRUCTOR_ID: 1775660101;
+        SUBCLASS_OF_ID: 2356220701;
+        classType: "constructor";
+        className: "InputReplyToMonoForum";
+        static fromReader(reader: Reader): InputReplyToMonoForum;
+        monoforumPeerId: Api.TypeInputPeer;
     }
     export class ExportedStoryLink extends VirtualClass<{
         link: string;
@@ -14267,6 +15405,18 @@ export namespace Api {
         emoji: string;
         temperatureC: double;
         color: int;
+    }
+    export class MediaAreaStarGift extends VirtualClass<{
+        coordinates: Api.TypeMediaAreaCoordinates;
+        slug: string;
+    }> {
+        CONSTRUCTOR_ID: 1468491885;
+        SUBCLASS_OF_ID: 4084038642;
+        classType: "constructor";
+        className: "MediaAreaStarGift";
+        static fromReader(reader: Reader): MediaAreaStarGift;
+        coordinates: Api.TypeMediaAreaCoordinates;
+        slug: string;
     }
     export class PeerStories extends VirtualClass<{
         // flags: null;
@@ -14478,6 +15628,40 @@ export namespace Api {
         color?: int;
         backgroundEmojiId?: long;
     }
+    export class PeerColorCollectible extends VirtualClass<{
+        // flags: null;
+        collectibleId: long;
+        giftEmojiId: long;
+        backgroundEmojiId: long;
+        accentColor: int;
+        colors: int[];
+        darkAccentColor?: int;
+        darkColors?: int[];
+    }> {
+        CONSTRUCTOR_ID: 3116393370;
+        SUBCLASS_OF_ID: 4068582527;
+        classType: "constructor";
+        className: "PeerColorCollectible";
+        static fromReader(reader: Reader): PeerColorCollectible;
+        // flags: null;
+        collectibleId: long;
+        giftEmojiId: long;
+        backgroundEmojiId: long;
+        accentColor: int;
+        colors: int[];
+        darkAccentColor?: int;
+        darkColors?: int[];
+    }
+    export class InputPeerColorCollectible extends VirtualClass<{
+        collectibleId: long;
+    }> {
+        CONSTRUCTOR_ID: 3102377641;
+        SUBCLASS_OF_ID: 4068582527;
+        classType: "constructor";
+        className: "InputPeerColorCollectible";
+        static fromReader(reader: Reader): InputPeerColorCollectible;
+        collectibleId: long;
+    }
     export class StoryReaction extends VirtualClass<{
         peerId: Api.TypePeer;
         date: int;
@@ -14529,6 +15713,34 @@ export namespace Api {
         pinned?: boolean;
         peer: Api.TypePeer;
         topMessage: int;
+    }
+    export class MonoForumDialog extends VirtualClass<{
+        // flags: null;
+        unreadMark?: boolean;
+        nopaidMessagesException?: boolean;
+        peer: Api.TypePeer;
+        topMessage: int;
+        readInboxMaxId: int;
+        readOutboxMaxId: int;
+        unreadCount: int;
+        unreadReactionsCount: int;
+        draft?: Api.TypeDraftMessage;
+    }> {
+        CONSTRUCTOR_ID: 1681948327;
+        SUBCLASS_OF_ID: 599418118;
+        classType: "constructor";
+        className: "MonoForumDialog";
+        static fromReader(reader: Reader): MonoForumDialog;
+        // flags: null;
+        unreadMark?: boolean;
+        nopaidMessagesException?: boolean;
+        peer: Api.TypePeer;
+        topMessage: int;
+        readInboxMaxId: int;
+        readOutboxMaxId: int;
+        unreadCount: int;
+        unreadReactionsCount: int;
+        draft?: Api.TypeDraftMessage;
     }
     export class SavedReactionTag extends VirtualClass<{
         // flags: null;
@@ -14800,19 +16012,19 @@ export namespace Api {
     }
     export class ConnectedBot extends VirtualClass<{
         // flags: null;
-        canReply?: boolean;
         botId: long;
         recipients: Api.TypeBusinessBotRecipients;
+        rights: Api.TypeBusinessBotRights;
     }> {
-        CONSTRUCTOR_ID: 3171321345;
+        CONSTRUCTOR_ID: 3445908332;
         SUBCLASS_OF_ID: 904403870;
         classType: "constructor";
         className: "ConnectedBot";
         static fromReader(reader: Reader): ConnectedBot;
         // flags: null;
-        canReply?: boolean;
         botId: long;
         recipients: Api.TypeBusinessBotRecipients;
+        rights: Api.TypeBusinessBotRights;
     }
     export class Birthday extends VirtualClass<{
         // flags: null;
@@ -14832,25 +16044,25 @@ export namespace Api {
     }
     export class BotBusinessConnection extends VirtualClass<{
         // flags: null;
-        canReply?: boolean;
         disabled?: boolean;
         connectionId: string;
         userId: long;
         dcId: int;
         date: int;
+        rights?: Api.TypeBusinessBotRights;
     }> {
-        CONSTRUCTOR_ID: 2305045428;
+        CONSTRUCTOR_ID: 2402595573;
         SUBCLASS_OF_ID: 2601715014;
         classType: "constructor";
         className: "BotBusinessConnection";
         static fromReader(reader: Reader): BotBusinessConnection;
         // flags: null;
-        canReply?: boolean;
         disabled?: boolean;
         connectionId: string;
         userId: long;
         dcId: int;
         date: int;
+        rights?: Api.TypeBusinessBotRights;
     }
     export class InputBusinessIntro extends VirtualClass<{
         // flags: null;
@@ -15082,60 +16294,6 @@ export namespace Api {
         text: string;
         option: bytes;
     }
-    export class BroadcastRevenueTransactionProceeds extends VirtualClass<{
-        amount: long;
-        fromDate: int;
-        toDate: int;
-    }> {
-        CONSTRUCTOR_ID: 1434332356;
-        SUBCLASS_OF_ID: 1962590909;
-        classType: "constructor";
-        className: "BroadcastRevenueTransactionProceeds";
-        static fromReader(reader: Reader): BroadcastRevenueTransactionProceeds;
-        amount: long;
-        fromDate: int;
-        toDate: int;
-    }
-    export class BroadcastRevenueTransactionWithdrawal extends VirtualClass<{
-        // flags: null;
-        pending?: boolean;
-        failed?: boolean;
-        amount: long;
-        date: int;
-        provider: string;
-        transactionDate?: int;
-        transactionUrl?: string;
-    }> {
-        CONSTRUCTOR_ID: 1515784568;
-        SUBCLASS_OF_ID: 1962590909;
-        classType: "constructor";
-        className: "BroadcastRevenueTransactionWithdrawal";
-        static fromReader(
-            reader: Reader
-        ): BroadcastRevenueTransactionWithdrawal;
-        // flags: null;
-        pending?: boolean;
-        failed?: boolean;
-        amount: long;
-        date: int;
-        provider: string;
-        transactionDate?: int;
-        transactionUrl?: string;
-    }
-    export class BroadcastRevenueTransactionRefund extends VirtualClass<{
-        amount: long;
-        date: int;
-        provider: string;
-    }> {
-        CONSTRUCTOR_ID: 1121127726;
-        SUBCLASS_OF_ID: 1962590909;
-        classType: "constructor";
-        className: "BroadcastRevenueTransactionRefund";
-        static fromReader(reader: Reader): BroadcastRevenueTransactionRefund;
-        amount: long;
-        date: int;
-        provider: string;
-    }
     export class ReactionNotificationsFromContacts extends VirtualClass<void> {
         CONSTRUCTOR_ID: 3133384218;
         SUBCLASS_OF_ID: 878672192;
@@ -15167,24 +16325,6 @@ export namespace Api {
         storiesNotifyFrom?: Api.TypeReactionNotificationsFrom;
         sound: Api.TypeNotificationSound;
         showPreviews: Bool;
-    }
-    export class BroadcastRevenueBalances extends VirtualClass<{
-        // flags: null;
-        withdrawalEnabled?: boolean;
-        currentBalance: long;
-        availableBalance: long;
-        overallRevenue: long;
-    }> {
-        CONSTRUCTOR_ID: 3288297959;
-        SUBCLASS_OF_ID: 365072370;
-        classType: "constructor";
-        className: "BroadcastRevenueBalances";
-        static fromReader(reader: Reader): BroadcastRevenueBalances;
-        // flags: null;
-        withdrawalEnabled?: boolean;
-        currentBalance: long;
-        availableBalance: long;
-        overallRevenue: long;
     }
     export class AvailableEffect extends VirtualClass<{
         // flags: null;
@@ -15312,8 +16452,17 @@ export namespace Api {
         failed?: boolean;
         gift?: boolean;
         reaction?: boolean;
+        stargiftUpgrade?: boolean;
+        businessTransfer?: boolean;
+        stargiftResale?: boolean;
+        postsSearch?: boolean;
+        stargiftPrepaidUpgrade?: boolean;
+        stargiftDropOriginalDetails?: boolean;
+        phonegroupMessage?: boolean;
+        stargiftAuctionBid?: boolean;
+        offer?: boolean;
         id: string;
-        stars: long;
+        amount: Api.TypeStarsAmount;
         date: int;
         peer: Api.TypeStarsTransactionPeer;
         title?: string;
@@ -15328,8 +16477,15 @@ export namespace Api {
         giveawayPostId?: int;
         stargift?: Api.TypeStarGift;
         floodskipNumber?: int;
+        starrefCommissionPermille?: int;
+        starrefPeer?: Api.TypePeer;
+        starrefAmount?: Api.TypeStarsAmount;
+        paidMessages?: int;
+        premiumGiftMonths?: int;
+        adsProceedsFromDate?: int;
+        adsProceedsToDate?: int;
     }> {
-        CONSTRUCTOR_ID: 903148150;
+        CONSTRUCTOR_ID: 325426864;
         SUBCLASS_OF_ID: 2257078130;
         classType: "constructor";
         className: "StarsTransaction";
@@ -15340,8 +16496,17 @@ export namespace Api {
         failed?: boolean;
         gift?: boolean;
         reaction?: boolean;
+        stargiftUpgrade?: boolean;
+        businessTransfer?: boolean;
+        stargiftResale?: boolean;
+        postsSearch?: boolean;
+        stargiftPrepaidUpgrade?: boolean;
+        stargiftDropOriginalDetails?: boolean;
+        phonegroupMessage?: boolean;
+        stargiftAuctionBid?: boolean;
+        offer?: boolean;
         id: string;
-        stars: long;
+        amount: Api.TypeStarsAmount;
         date: int;
         peer: Api.TypeStarsTransactionPeer;
         title?: string;
@@ -15356,6 +16521,13 @@ export namespace Api {
         giveawayPostId?: int;
         stargift?: Api.TypeStarGift;
         floodskipNumber?: int;
+        starrefCommissionPermille?: int;
+        starrefPeer?: Api.TypePeer;
+        starrefAmount?: Api.TypeStarsAmount;
+        paidMessages?: int;
+        premiumGiftMonths?: int;
+        adsProceedsFromDate?: int;
+        adsProceedsToDate?: int;
     }
     export class FoundStory extends VirtualClass<{
         peer: Api.TypePeer;
@@ -15390,21 +16562,21 @@ export namespace Api {
     export class StarsRevenueStatus extends VirtualClass<{
         // flags: null;
         withdrawalEnabled?: boolean;
-        currentBalance: long;
-        availableBalance: long;
-        overallRevenue: long;
+        currentBalance: Api.TypeStarsAmount;
+        availableBalance: Api.TypeStarsAmount;
+        overallRevenue: Api.TypeStarsAmount;
         nextWithdrawalAt?: int;
     }> {
-        CONSTRUCTOR_ID: 2033461574;
+        CONSTRUCTOR_ID: 4273886353;
         SUBCLASS_OF_ID: 1031643121;
         classType: "constructor";
         className: "StarsRevenueStatus";
         static fromReader(reader: Reader): StarsRevenueStatus;
         // flags: null;
         withdrawalEnabled?: boolean;
-        currentBalance: long;
-        availableBalance: long;
-        overallRevenue: long;
+        currentBalance: Api.TypeStarsAmount;
+        availableBalance: Api.TypeStarsAmount;
+        overallRevenue: Api.TypeStarsAmount;
         nextWithdrawalAt?: int;
     }
     export class InputStarsTransaction extends VirtualClass<{
@@ -15566,16 +16738,33 @@ export namespace Api {
         limited?: boolean;
         soldOut?: boolean;
         birthday?: boolean;
+        requirePremium?: boolean;
+        limitedPerUser?: boolean;
+        peerColorAvailable?: boolean;
+        auction?: boolean;
         id: long;
         sticker: Api.TypeDocument;
         stars: long;
         availabilityRemains?: int;
         availabilityTotal?: int;
+        availabilityResale?: long;
         convertStars: long;
         firstSaleDate?: int;
         lastSaleDate?: int;
+        upgradeStars?: long;
+        resellMinStars?: long;
+        title?: string;
+        releasedBy?: Api.TypePeer;
+        perUserTotal?: int;
+        perUserRemains?: int;
+        lockedUntilDate?: int;
+        auctionSlug?: string;
+        giftsPerRound?: int;
+        auctionStartDate?: int;
+        upgradeVariants?: int;
+        background?: Api.TypeStarGiftBackground;
     }> {
-        CONSTRUCTOR_ID: 1237678029;
+        CONSTRUCTOR_ID: 825922887;
         SUBCLASS_OF_ID: 3273414923;
         classType: "constructor";
         className: "StarGift";
@@ -15584,40 +16773,95 @@ export namespace Api {
         limited?: boolean;
         soldOut?: boolean;
         birthday?: boolean;
+        requirePremium?: boolean;
+        limitedPerUser?: boolean;
+        peerColorAvailable?: boolean;
+        auction?: boolean;
         id: long;
         sticker: Api.TypeDocument;
         stars: long;
         availabilityRemains?: int;
         availabilityTotal?: int;
+        availabilityResale?: long;
         convertStars: long;
         firstSaleDate?: int;
         lastSaleDate?: int;
+        upgradeStars?: long;
+        resellMinStars?: long;
+        title?: string;
+        releasedBy?: Api.TypePeer;
+        perUserTotal?: int;
+        perUserRemains?: int;
+        lockedUntilDate?: int;
+        auctionSlug?: string;
+        giftsPerRound?: int;
+        auctionStartDate?: int;
+        upgradeVariants?: int;
+        background?: Api.TypeStarGiftBackground;
     }
-    export class UserStarGift extends VirtualClass<{
+    export class StarGiftUnique extends VirtualClass<{
         // flags: null;
-        nameHidden?: boolean;
-        unsaved?: boolean;
-        fromId?: long;
-        date: int;
-        gift: Api.TypeStarGift;
-        message?: Api.TypeTextWithEntities;
-        msgId?: int;
-        convertStars?: long;
+        requirePremium?: boolean;
+        resaleTonOnly?: boolean;
+        themeAvailable?: boolean;
+        burned?: boolean;
+        crafted?: boolean;
+        id: long;
+        giftId: long;
+        title: string;
+        slug: string;
+        num: int;
+        ownerId?: Api.TypePeer;
+        ownerName?: string;
+        ownerAddress?: string;
+        attributes: Api.TypeStarGiftAttribute[];
+        availabilityIssued: int;
+        availabilityTotal: int;
+        giftAddress?: string;
+        resellAmount?: Api.TypeStarsAmount[];
+        releasedBy?: Api.TypePeer;
+        valueAmount?: long;
+        valueCurrency?: string;
+        valueUsdAmount?: long;
+        themePeer?: Api.TypePeer;
+        peerColor?: Api.TypePeerColor;
+        hostId?: Api.TypePeer;
+        offerMinStars?: int;
+        craftChancePermille?: int;
     }> {
-        CONSTRUCTOR_ID: 4003764846;
-        SUBCLASS_OF_ID: 4150820228;
+        CONSTRUCTOR_ID: 2247141837;
+        SUBCLASS_OF_ID: 3273414923;
         classType: "constructor";
-        className: "UserStarGift";
-        static fromReader(reader: Reader): UserStarGift;
+        className: "StarGiftUnique";
+        static fromReader(reader: Reader): StarGiftUnique;
         // flags: null;
-        nameHidden?: boolean;
-        unsaved?: boolean;
-        fromId?: long;
-        date: int;
-        gift: Api.TypeStarGift;
-        message?: Api.TypeTextWithEntities;
-        msgId?: int;
-        convertStars?: long;
+        requirePremium?: boolean;
+        resaleTonOnly?: boolean;
+        themeAvailable?: boolean;
+        burned?: boolean;
+        crafted?: boolean;
+        id: long;
+        giftId: long;
+        title: string;
+        slug: string;
+        num: int;
+        ownerId?: Api.TypePeer;
+        ownerName?: string;
+        ownerAddress?: string;
+        attributes: Api.TypeStarGiftAttribute[];
+        availabilityIssued: int;
+        availabilityTotal: int;
+        giftAddress?: string;
+        resellAmount?: Api.TypeStarsAmount[];
+        releasedBy?: Api.TypePeer;
+        valueAmount?: long;
+        valueCurrency?: string;
+        valueUsdAmount?: long;
+        themePeer?: Api.TypePeer;
+        peerColor?: Api.TypePeerColor;
+        hostId?: Api.TypePeer;
+        offerMinStars?: int;
+        craftChancePermille?: int;
     }
     export class MessageReportOption extends VirtualClass<{
         text: string;
@@ -15683,6 +16927,1062 @@ export namespace Api {
         backgroundDarkColor?: int;
         headerColor?: int;
         headerDarkColor?: int;
+    }
+    export class StarRefProgram extends VirtualClass<{
+        // flags: null;
+        botId: long;
+        commissionPermille: int;
+        durationMonths?: int;
+        endDate?: int;
+        dailyRevenuePerUser?: Api.TypeStarsAmount;
+    }> {
+        CONSTRUCTOR_ID: 3708577522;
+        SUBCLASS_OF_ID: 2559107074;
+        classType: "constructor";
+        className: "StarRefProgram";
+        static fromReader(reader: Reader): StarRefProgram;
+        // flags: null;
+        botId: long;
+        commissionPermille: int;
+        durationMonths?: int;
+        endDate?: int;
+        dailyRevenuePerUser?: Api.TypeStarsAmount;
+    }
+    export class ConnectedBotStarRef extends VirtualClass<{
+        // flags: null;
+        revoked?: boolean;
+        url: string;
+        date: int;
+        botId: long;
+        commissionPermille: int;
+        durationMonths?: int;
+        participants: long;
+        revenue: long;
+    }> {
+        CONSTRUCTOR_ID: 429997937;
+        SUBCLASS_OF_ID: 2689765260;
+        classType: "constructor";
+        className: "ConnectedBotStarRef";
+        static fromReader(reader: Reader): ConnectedBotStarRef;
+        // flags: null;
+        revoked?: boolean;
+        url: string;
+        date: int;
+        botId: long;
+        commissionPermille: int;
+        durationMonths?: int;
+        participants: long;
+        revenue: long;
+    }
+    export class StarsAmount extends VirtualClass<{
+        amount: long;
+        nanos: int;
+    }> {
+        CONSTRUCTOR_ID: 3149313187;
+        SUBCLASS_OF_ID: 895169088;
+        classType: "constructor";
+        className: "StarsAmount";
+        static fromReader(reader: Reader): StarsAmount;
+        amount: long;
+        nanos: int;
+    }
+    export class StarsTonAmount extends VirtualClass<{
+        amount: long;
+    }> {
+        CONSTRUCTOR_ID: 1957618656;
+        SUBCLASS_OF_ID: 895169088;
+        classType: "constructor";
+        className: "StarsTonAmount";
+        static fromReader(reader: Reader): StarsTonAmount;
+        amount: long;
+    }
+    export class BotVerifierSettings extends VirtualClass<{
+        // flags: null;
+        canModifyCustomDescription?: boolean;
+        icon: long;
+        company: string;
+        customDescription?: string;
+    }> {
+        CONSTRUCTOR_ID: 2966251031;
+        SUBCLASS_OF_ID: 4057334604;
+        classType: "constructor";
+        className: "BotVerifierSettings";
+        static fromReader(reader: Reader): BotVerifierSettings;
+        // flags: null;
+        canModifyCustomDescription?: boolean;
+        icon: long;
+        company: string;
+        customDescription?: string;
+    }
+    export class BotVerification extends VirtualClass<{
+        botId: long;
+        icon: long;
+        description: string;
+    }> {
+        CONSTRUCTOR_ID: 4181513308;
+        SUBCLASS_OF_ID: 750730330;
+        classType: "constructor";
+        className: "BotVerification";
+        static fromReader(reader: Reader): BotVerification;
+        botId: long;
+        icon: long;
+        description: string;
+    }
+    export class StarGiftAttributeModel extends VirtualClass<{
+        // flags: null;
+        crafted?: boolean;
+        name: string;
+        document: Api.TypeDocument;
+        rarity: Api.TypeStarGiftAttributeRarity;
+    }> {
+        CONSTRUCTOR_ID: 1448235490;
+        SUBCLASS_OF_ID: 2276819400;
+        classType: "constructor";
+        className: "StarGiftAttributeModel";
+        static fromReader(reader: Reader): StarGiftAttributeModel;
+        // flags: null;
+        crafted?: boolean;
+        name: string;
+        document: Api.TypeDocument;
+        rarity: Api.TypeStarGiftAttributeRarity;
+    }
+    export class StarGiftAttributePattern extends VirtualClass<{
+        name: string;
+        document: Api.TypeDocument;
+        rarity: Api.TypeStarGiftAttributeRarity;
+    }> {
+        CONSTRUCTOR_ID: 1315997162;
+        SUBCLASS_OF_ID: 2276819400;
+        classType: "constructor";
+        className: "StarGiftAttributePattern";
+        static fromReader(reader: Reader): StarGiftAttributePattern;
+        name: string;
+        document: Api.TypeDocument;
+        rarity: Api.TypeStarGiftAttributeRarity;
+    }
+    export class StarGiftAttributeBackdrop extends VirtualClass<{
+        name: string;
+        backdropId: int;
+        centerColor: int;
+        edgeColor: int;
+        patternColor: int;
+        textColor: int;
+        rarity: Api.TypeStarGiftAttributeRarity;
+    }> {
+        CONSTRUCTOR_ID: 2670003428;
+        SUBCLASS_OF_ID: 2276819400;
+        classType: "constructor";
+        className: "StarGiftAttributeBackdrop";
+        static fromReader(reader: Reader): StarGiftAttributeBackdrop;
+        name: string;
+        backdropId: int;
+        centerColor: int;
+        edgeColor: int;
+        patternColor: int;
+        textColor: int;
+        rarity: Api.TypeStarGiftAttributeRarity;
+    }
+    export class StarGiftAttributeOriginalDetails extends VirtualClass<{
+        // flags: null;
+        senderId?: Api.TypePeer;
+        recipientId: Api.TypePeer;
+        date: int;
+        message?: Api.TypeTextWithEntities;
+    }> {
+        CONSTRUCTOR_ID: 3770675820;
+        SUBCLASS_OF_ID: 2276819400;
+        classType: "constructor";
+        className: "StarGiftAttributeOriginalDetails";
+        static fromReader(reader: Reader): StarGiftAttributeOriginalDetails;
+        // flags: null;
+        senderId?: Api.TypePeer;
+        recipientId: Api.TypePeer;
+        date: int;
+        message?: Api.TypeTextWithEntities;
+    }
+    export class SavedStarGift extends VirtualClass<{
+        // flags: null;
+        nameHidden?: boolean;
+        unsaved?: boolean;
+        refunded?: boolean;
+        canUpgrade?: boolean;
+        pinnedToTop?: boolean;
+        upgradeSeparate?: boolean;
+        fromId?: Api.TypePeer;
+        date: int;
+        gift: Api.TypeStarGift;
+        message?: Api.TypeTextWithEntities;
+        msgId?: int;
+        savedId?: long;
+        convertStars?: long;
+        upgradeStars?: long;
+        canExportAt?: int;
+        transferStars?: long;
+        canTransferAt?: int;
+        canResellAt?: int;
+        collectionId?: int[];
+        prepaidUpgradeHash?: string;
+        dropOriginalDetailsStars?: long;
+        giftNum?: int;
+        canCraftAt?: int;
+    }> {
+        CONSTRUCTOR_ID: 1105150972;
+        SUBCLASS_OF_ID: 2385198100;
+        classType: "constructor";
+        className: "SavedStarGift";
+        static fromReader(reader: Reader): SavedStarGift;
+        // flags: null;
+        nameHidden?: boolean;
+        unsaved?: boolean;
+        refunded?: boolean;
+        canUpgrade?: boolean;
+        pinnedToTop?: boolean;
+        upgradeSeparate?: boolean;
+        fromId?: Api.TypePeer;
+        date: int;
+        gift: Api.TypeStarGift;
+        message?: Api.TypeTextWithEntities;
+        msgId?: int;
+        savedId?: long;
+        convertStars?: long;
+        upgradeStars?: long;
+        canExportAt?: int;
+        transferStars?: long;
+        canTransferAt?: int;
+        canResellAt?: int;
+        collectionId?: int[];
+        prepaidUpgradeHash?: string;
+        dropOriginalDetailsStars?: long;
+        giftNum?: int;
+        canCraftAt?: int;
+    }
+    export class InputSavedStarGiftUser extends VirtualClass<{
+        msgId: int;
+    }> {
+        CONSTRUCTOR_ID: 1764202389;
+        SUBCLASS_OF_ID: 2406848942;
+        classType: "constructor";
+        className: "InputSavedStarGiftUser";
+        static fromReader(reader: Reader): InputSavedStarGiftUser;
+        msgId: int;
+    }
+    export class InputSavedStarGiftChat extends VirtualClass<{
+        peer: Api.TypeInputPeer;
+        savedId: long;
+    }> {
+        CONSTRUCTOR_ID: 4043418239;
+        SUBCLASS_OF_ID: 2406848942;
+        classType: "constructor";
+        className: "InputSavedStarGiftChat";
+        static fromReader(reader: Reader): InputSavedStarGiftChat;
+        peer: Api.TypeInputPeer;
+        savedId: long;
+    }
+    export class InputSavedStarGiftSlug extends VirtualClass<{
+        slug: string;
+    }> {
+        CONSTRUCTOR_ID: 545636920;
+        SUBCLASS_OF_ID: 2406848942;
+        classType: "constructor";
+        className: "InputSavedStarGiftSlug";
+        static fromReader(reader: Reader): InputSavedStarGiftSlug;
+        slug: string;
+    }
+    export class PaidReactionPrivacyDefault extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 543872158;
+        SUBCLASS_OF_ID: 1708619318;
+        classType: "constructor";
+        className: "PaidReactionPrivacyDefault";
+        static fromReader(reader: Reader): PaidReactionPrivacyDefault;
+    }
+    export class PaidReactionPrivacyAnonymous extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 520887001;
+        SUBCLASS_OF_ID: 1708619318;
+        classType: "constructor";
+        className: "PaidReactionPrivacyAnonymous";
+        static fromReader(reader: Reader): PaidReactionPrivacyAnonymous;
+    }
+    export class PaidReactionPrivacyPeer extends VirtualClass<{
+        peer: Api.TypeInputPeer;
+    }> {
+        CONSTRUCTOR_ID: 3698130160;
+        SUBCLASS_OF_ID: 1708619318;
+        classType: "constructor";
+        className: "PaidReactionPrivacyPeer";
+        static fromReader(reader: Reader): PaidReactionPrivacyPeer;
+        peer: Api.TypeInputPeer;
+    }
+    export class RequirementToContactEmpty extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 84580409;
+        SUBCLASS_OF_ID: 2373280657;
+        classType: "constructor";
+        className: "RequirementToContactEmpty";
+        static fromReader(reader: Reader): RequirementToContactEmpty;
+    }
+    export class RequirementToContactPremium extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 3850495209;
+        SUBCLASS_OF_ID: 2373280657;
+        classType: "constructor";
+        className: "RequirementToContactPremium";
+        static fromReader(reader: Reader): RequirementToContactPremium;
+    }
+    export class RequirementToContactPaidMessages extends VirtualClass<{
+        starsAmount: long;
+    }> {
+        CONSTRUCTOR_ID: 3036053139;
+        SUBCLASS_OF_ID: 2373280657;
+        classType: "constructor";
+        className: "RequirementToContactPaidMessages";
+        static fromReader(reader: Reader): RequirementToContactPaidMessages;
+        starsAmount: long;
+    }
+    export class BusinessBotRights extends VirtualClass<{
+        // flags: null;
+        reply?: boolean;
+        readMessages?: boolean;
+        deleteSentMessages?: boolean;
+        deleteReceivedMessages?: boolean;
+        editName?: boolean;
+        editBio?: boolean;
+        editProfilePhoto?: boolean;
+        editUsername?: boolean;
+        viewGifts?: boolean;
+        sellGifts?: boolean;
+        changeGiftSettings?: boolean;
+        transferAndUpgradeGifts?: boolean;
+        transferStars?: boolean;
+        manageStories?: boolean;
+    }> {
+        CONSTRUCTOR_ID: 2690796791;
+        SUBCLASS_OF_ID: 3101455770;
+        classType: "constructor";
+        className: "BusinessBotRights";
+        static fromReader(reader: Reader): BusinessBotRights;
+        // flags: null;
+        reply?: boolean;
+        readMessages?: boolean;
+        deleteSentMessages?: boolean;
+        deleteReceivedMessages?: boolean;
+        editName?: boolean;
+        editBio?: boolean;
+        editProfilePhoto?: boolean;
+        editUsername?: boolean;
+        viewGifts?: boolean;
+        sellGifts?: boolean;
+        changeGiftSettings?: boolean;
+        transferAndUpgradeGifts?: boolean;
+        transferStars?: boolean;
+        manageStories?: boolean;
+    }
+    export class DisallowedGiftsSettings extends VirtualClass<{
+        // flags: null;
+        disallowUnlimitedStargifts?: boolean;
+        disallowLimitedStargifts?: boolean;
+        disallowUniqueStargifts?: boolean;
+        disallowPremiumGifts?: boolean;
+        disallowStargiftsFromChannels?: boolean;
+    }> {
+        CONSTRUCTOR_ID: 1911715524;
+        SUBCLASS_OF_ID: 58911147;
+        classType: "constructor";
+        className: "DisallowedGiftsSettings";
+        static fromReader(reader: Reader): DisallowedGiftsSettings;
+        // flags: null;
+        disallowUnlimitedStargifts?: boolean;
+        disallowLimitedStargifts?: boolean;
+        disallowUniqueStargifts?: boolean;
+        disallowPremiumGifts?: boolean;
+        disallowStargiftsFromChannels?: boolean;
+    }
+    export class SponsoredPeer extends VirtualClass<{
+        // flags: null;
+        randomId: bytes;
+        peer: Api.TypePeer;
+        sponsorInfo?: string;
+        additionalInfo?: string;
+    }> {
+        CONSTRUCTOR_ID: 3331786963;
+        SUBCLASS_OF_ID: 1064665102;
+        classType: "constructor";
+        className: "SponsoredPeer";
+        static fromReader(reader: Reader): SponsoredPeer;
+        // flags: null;
+        randomId: bytes;
+        peer: Api.TypePeer;
+        sponsorInfo?: string;
+        additionalInfo?: string;
+    }
+    export class StarGiftAttributeIdModel extends VirtualClass<{
+        documentId: long;
+    }> {
+        CONSTRUCTOR_ID: 1219145276;
+        SUBCLASS_OF_ID: 3005295287;
+        classType: "constructor";
+        className: "StarGiftAttributeIdModel";
+        static fromReader(reader: Reader): StarGiftAttributeIdModel;
+        documentId: long;
+    }
+    export class StarGiftAttributeIdPattern extends VirtualClass<{
+        documentId: long;
+    }> {
+        CONSTRUCTOR_ID: 1242965043;
+        SUBCLASS_OF_ID: 3005295287;
+        classType: "constructor";
+        className: "StarGiftAttributeIdPattern";
+        static fromReader(reader: Reader): StarGiftAttributeIdPattern;
+        documentId: long;
+    }
+    export class StarGiftAttributeIdBackdrop extends VirtualClass<{
+        backdropId: int;
+    }> {
+        CONSTRUCTOR_ID: 520210263;
+        SUBCLASS_OF_ID: 3005295287;
+        classType: "constructor";
+        className: "StarGiftAttributeIdBackdrop";
+        static fromReader(reader: Reader): StarGiftAttributeIdBackdrop;
+        backdropId: int;
+    }
+    export class StarGiftAttributeCounter extends VirtualClass<{
+        attribute: Api.TypeStarGiftAttributeId;
+        count: int;
+    }> {
+        CONSTRUCTOR_ID: 783398488;
+        SUBCLASS_OF_ID: 2351477395;
+        classType: "constructor";
+        className: "StarGiftAttributeCounter";
+        static fromReader(reader: Reader): StarGiftAttributeCounter;
+        attribute: Api.TypeStarGiftAttributeId;
+        count: int;
+    }
+    export class PendingSuggestion extends VirtualClass<{
+        suggestion: string;
+        title: Api.TypeTextWithEntities;
+        description: Api.TypeTextWithEntities;
+        url: string;
+    }> {
+        CONSTRUCTOR_ID: 3890753042;
+        SUBCLASS_OF_ID: 3126949031;
+        classType: "constructor";
+        className: "PendingSuggestion";
+        static fromReader(reader: Reader): PendingSuggestion;
+        suggestion: string;
+        title: Api.TypeTextWithEntities;
+        description: Api.TypeTextWithEntities;
+        url: string;
+    }
+    export class TodoItem extends VirtualClass<{
+        id: int;
+        title: Api.TypeTextWithEntities;
+    }> {
+        CONSTRUCTOR_ID: 3416892719;
+        SUBCLASS_OF_ID: 3755665077;
+        classType: "constructor";
+        className: "TodoItem";
+        static fromReader(reader: Reader): TodoItem;
+        id: int;
+        title: Api.TypeTextWithEntities;
+    }
+    export class TodoList extends VirtualClass<{
+        // flags: null;
+        othersCanAppend?: boolean;
+        othersCanComplete?: boolean;
+        title: Api.TypeTextWithEntities;
+        list: Api.TypeTodoItem[];
+    }> {
+        CONSTRUCTOR_ID: 1236871718;
+        SUBCLASS_OF_ID: 2215197619;
+        classType: "constructor";
+        className: "TodoList";
+        static fromReader(reader: Reader): TodoList;
+        // flags: null;
+        othersCanAppend?: boolean;
+        othersCanComplete?: boolean;
+        title: Api.TypeTextWithEntities;
+        list: Api.TypeTodoItem[];
+    }
+    export class TodoCompletion extends VirtualClass<{
+        id: int;
+        completedBy: Api.TypePeer;
+        date: int;
+    }> {
+        CONSTRUCTOR_ID: 572241380;
+        SUBCLASS_OF_ID: 3135658875;
+        classType: "constructor";
+        className: "TodoCompletion";
+        static fromReader(reader: Reader): TodoCompletion;
+        id: int;
+        completedBy: Api.TypePeer;
+        date: int;
+    }
+    export class SuggestedPost extends VirtualClass<{
+        // flags: null;
+        accepted?: boolean;
+        rejected?: boolean;
+        price?: Api.TypeStarsAmount;
+        scheduleDate?: int;
+    }> {
+        CONSTRUCTOR_ID: 244201445;
+        SUBCLASS_OF_ID: 2389869056;
+        classType: "constructor";
+        className: "SuggestedPost";
+        static fromReader(reader: Reader): SuggestedPost;
+        // flags: null;
+        accepted?: boolean;
+        rejected?: boolean;
+        price?: Api.TypeStarsAmount;
+        scheduleDate?: int;
+    }
+    export class StarsRating extends VirtualClass<{
+        // flags: null;
+        level: int;
+        currentLevelStars: long;
+        stars: long;
+        nextLevelStars?: long;
+    }> {
+        CONSTRUCTOR_ID: 453922567;
+        SUBCLASS_OF_ID: 1668506656;
+        classType: "constructor";
+        className: "StarsRating";
+        static fromReader(reader: Reader): StarsRating;
+        // flags: null;
+        level: int;
+        currentLevelStars: long;
+        stars: long;
+        nextLevelStars?: long;
+    }
+    export class StarGiftCollection extends VirtualClass<{
+        // flags: null;
+        collectionId: int;
+        title: string;
+        icon?: Api.TypeDocument;
+        giftsCount: int;
+        hash: long;
+    }> {
+        CONSTRUCTOR_ID: 2641040304;
+        SUBCLASS_OF_ID: 1138805578;
+        classType: "constructor";
+        className: "StarGiftCollection";
+        static fromReader(reader: Reader): StarGiftCollection;
+        // flags: null;
+        collectionId: int;
+        title: string;
+        icon?: Api.TypeDocument;
+        giftsCount: int;
+        hash: long;
+    }
+    export class StoryAlbum extends VirtualClass<{
+        // flags: null;
+        albumId: int;
+        title: string;
+        iconPhoto?: Api.TypePhoto;
+        iconVideo?: Api.TypeDocument;
+    }> {
+        CONSTRUCTOR_ID: 2468704346;
+        SUBCLASS_OF_ID: 2089574050;
+        classType: "constructor";
+        className: "StoryAlbum";
+        static fromReader(reader: Reader): StoryAlbum;
+        // flags: null;
+        albumId: int;
+        title: string;
+        iconPhoto?: Api.TypePhoto;
+        iconVideo?: Api.TypeDocument;
+    }
+    export class SearchPostsFlood extends VirtualClass<{
+        // flags: null;
+        queryIsFree?: boolean;
+        totalDaily: int;
+        remains: int;
+        waitTill?: int;
+        starsAmount: long;
+    }> {
+        CONSTRUCTOR_ID: 1040931690;
+        SUBCLASS_OF_ID: 3267415233;
+        classType: "constructor";
+        className: "SearchPostsFlood";
+        static fromReader(reader: Reader): SearchPostsFlood;
+        // flags: null;
+        queryIsFree?: boolean;
+        totalDaily: int;
+        remains: int;
+        waitTill?: int;
+        starsAmount: long;
+    }
+    export class ProfileTabPosts extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 3113014934;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabPosts";
+        static fromReader(reader: Reader): ProfileTabPosts;
+    }
+    export class ProfileTabGifts extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 1296815210;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabGifts";
+        static fromReader(reader: Reader): ProfileTabGifts;
+    }
+    export class ProfileTabMedia extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 1925597525;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabMedia";
+        static fromReader(reader: Reader): ProfileTabMedia;
+    }
+    export class ProfileTabFiles extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 2872286208;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabFiles";
+        static fromReader(reader: Reader): ProfileTabFiles;
+    }
+    export class ProfileTabMusic extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 2670187118;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabMusic";
+        static fromReader(reader: Reader): ProfileTabMusic;
+    }
+    export class ProfileTabVoice extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 3833006382;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabVoice";
+        static fromReader(reader: Reader): ProfileTabVoice;
+    }
+    export class ProfileTabLinks extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 3546637465;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabLinks";
+        static fromReader(reader: Reader): ProfileTabLinks;
+    }
+    export class ProfileTabGifs extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 2730555029;
+        SUBCLASS_OF_ID: 2924007860;
+        classType: "constructor";
+        className: "ProfileTabGifs";
+        static fromReader(reader: Reader): ProfileTabGifs;
+    }
+    export class InputChatThemeEmpty extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 2200339587;
+        SUBCLASS_OF_ID: 1462324836;
+        classType: "constructor";
+        className: "InputChatThemeEmpty";
+        static fromReader(reader: Reader): InputChatThemeEmpty;
+    }
+    export class InputChatTheme extends VirtualClass<{
+        emoticon: string;
+    }> {
+        CONSTRUCTOR_ID: 3376277852;
+        SUBCLASS_OF_ID: 1462324836;
+        classType: "constructor";
+        className: "InputChatTheme";
+        static fromReader(reader: Reader): InputChatTheme;
+        emoticon: string;
+    }
+    export class InputChatThemeUniqueGift extends VirtualClass<{
+        slug: string;
+    }> {
+        CONSTRUCTOR_ID: 2279989220;
+        SUBCLASS_OF_ID: 1462324836;
+        classType: "constructor";
+        className: "InputChatThemeUniqueGift";
+        static fromReader(reader: Reader): InputChatThemeUniqueGift;
+        slug: string;
+    }
+    export class StarGiftUpgradePrice extends VirtualClass<{
+        date: int;
+        upgradeStars: long;
+    }> {
+        CONSTRUCTOR_ID: 2582262557;
+        SUBCLASS_OF_ID: 4099078244;
+        classType: "constructor";
+        className: "StarGiftUpgradePrice";
+        static fromReader(reader: Reader): StarGiftUpgradePrice;
+        date: int;
+        upgradeStars: long;
+    }
+    export class GroupCallMessage extends VirtualClass<{
+        // flags: null;
+        fromAdmin?: boolean;
+        id: int;
+        fromId: Api.TypePeer;
+        date: int;
+        message: Api.TypeTextWithEntities;
+        paidMessageStars?: long;
+    }> {
+        CONSTRUCTOR_ID: 445316222;
+        SUBCLASS_OF_ID: 1624136226;
+        classType: "constructor";
+        className: "GroupCallMessage";
+        static fromReader(reader: Reader): GroupCallMessage;
+        // flags: null;
+        fromAdmin?: boolean;
+        id: int;
+        fromId: Api.TypePeer;
+        date: int;
+        message: Api.TypeTextWithEntities;
+        paidMessageStars?: long;
+    }
+    export class GroupCallDonor extends VirtualClass<{
+        // flags: null;
+        top?: boolean;
+        my?: boolean;
+        peerId?: Api.TypePeer;
+        stars: long;
+    }> {
+        CONSTRUCTOR_ID: 3997371525;
+        SUBCLASS_OF_ID: 351439792;
+        classType: "constructor";
+        className: "GroupCallDonor";
+        static fromReader(reader: Reader): GroupCallDonor;
+        // flags: null;
+        top?: boolean;
+        my?: boolean;
+        peerId?: Api.TypePeer;
+        stars: long;
+    }
+    export class RecentStory extends VirtualClass<{
+        // flags: null;
+        live?: boolean;
+        maxId?: int;
+    }> {
+        CONSTRUCTOR_ID: 1897752877;
+        SUBCLASS_OF_ID: 653372877;
+        classType: "constructor";
+        className: "RecentStory";
+        static fromReader(reader: Reader): RecentStory;
+        // flags: null;
+        live?: boolean;
+        maxId?: int;
+    }
+    export class AuctionBidLevel extends VirtualClass<{
+        pos: int;
+        amount: long;
+        date: int;
+    }> {
+        CONSTRUCTOR_ID: 822231244;
+        SUBCLASS_OF_ID: 3125037783;
+        classType: "constructor";
+        className: "AuctionBidLevel";
+        static fromReader(reader: Reader): AuctionBidLevel;
+        pos: int;
+        amount: long;
+        date: int;
+    }
+    export class StarGiftAuctionStateNotModified extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 4264769874;
+        SUBCLASS_OF_ID: 580130043;
+        classType: "constructor";
+        className: "StarGiftAuctionStateNotModified";
+        static fromReader(reader: Reader): StarGiftAuctionStateNotModified;
+    }
+    export class StarGiftAuctionState extends VirtualClass<{
+        version: int;
+        startDate: int;
+        endDate: int;
+        minBidAmount: long;
+        bidLevels: Api.TypeAuctionBidLevel[];
+        topBidders: long[];
+        nextRoundAt: int;
+        lastGiftNum: int;
+        giftsLeft: int;
+        currentRound: int;
+        totalRounds: int;
+        rounds: Api.TypeStarGiftAuctionRound[];
+    }> {
+        CONSTRUCTOR_ID: 1998212710;
+        SUBCLASS_OF_ID: 580130043;
+        classType: "constructor";
+        className: "StarGiftAuctionState";
+        static fromReader(reader: Reader): StarGiftAuctionState;
+        version: int;
+        startDate: int;
+        endDate: int;
+        minBidAmount: long;
+        bidLevels: Api.TypeAuctionBidLevel[];
+        topBidders: long[];
+        nextRoundAt: int;
+        lastGiftNum: int;
+        giftsLeft: int;
+        currentRound: int;
+        totalRounds: int;
+        rounds: Api.TypeStarGiftAuctionRound[];
+    }
+    export class StarGiftAuctionStateFinished extends VirtualClass<{
+        // flags: null;
+        startDate: int;
+        endDate: int;
+        averagePrice: long;
+        listedCount?: int;
+        fragmentListedCount?: int;
+        fragmentListedUrl?: string;
+    }> {
+        CONSTRUCTOR_ID: 2536352703;
+        SUBCLASS_OF_ID: 580130043;
+        classType: "constructor";
+        className: "StarGiftAuctionStateFinished";
+        static fromReader(reader: Reader): StarGiftAuctionStateFinished;
+        // flags: null;
+        startDate: int;
+        endDate: int;
+        averagePrice: long;
+        listedCount?: int;
+        fragmentListedCount?: int;
+        fragmentListedUrl?: string;
+    }
+    export class StarGiftAuctionUserState extends VirtualClass<{
+        // flags: null;
+        returned?: boolean;
+        bidAmount?: long;
+        bidDate?: int;
+        minBidAmount?: long;
+        bidPeer?: Api.TypePeer;
+        acquiredCount: int;
+    }> {
+        CONSTRUCTOR_ID: 787403204;
+        SUBCLASS_OF_ID: 86642350;
+        classType: "constructor";
+        className: "StarGiftAuctionUserState";
+        static fromReader(reader: Reader): StarGiftAuctionUserState;
+        // flags: null;
+        returned?: boolean;
+        bidAmount?: long;
+        bidDate?: int;
+        minBidAmount?: long;
+        bidPeer?: Api.TypePeer;
+        acquiredCount: int;
+    }
+    export class StarGiftAuctionAcquiredGift extends VirtualClass<{
+        // flags: null;
+        nameHidden?: boolean;
+        peer: Api.TypePeer;
+        date: int;
+        bidAmount: long;
+        round: int;
+        pos: int;
+        message?: Api.TypeTextWithEntities;
+        giftNum?: int;
+    }> {
+        CONSTRUCTOR_ID: 1118831432;
+        SUBCLASS_OF_ID: 655184435;
+        classType: "constructor";
+        className: "StarGiftAuctionAcquiredGift";
+        static fromReader(reader: Reader): StarGiftAuctionAcquiredGift;
+        // flags: null;
+        nameHidden?: boolean;
+        peer: Api.TypePeer;
+        date: int;
+        bidAmount: long;
+        round: int;
+        pos: int;
+        message?: Api.TypeTextWithEntities;
+        giftNum?: int;
+    }
+    export class StarGiftActiveAuctionState extends VirtualClass<{
+        gift: Api.TypeStarGift;
+        state: Api.TypeStarGiftAuctionState;
+        userState: Api.TypeStarGiftAuctionUserState;
+    }> {
+        CONSTRUCTOR_ID: 3541812317;
+        SUBCLASS_OF_ID: 3109811689;
+        classType: "constructor";
+        className: "StarGiftActiveAuctionState";
+        static fromReader(reader: Reader): StarGiftActiveAuctionState;
+        gift: Api.TypeStarGift;
+        state: Api.TypeStarGiftAuctionState;
+        userState: Api.TypeStarGiftAuctionUserState;
+    }
+    export class InputStarGiftAuction extends VirtualClass<{
+        giftId: long;
+    }> {
+        CONSTRUCTOR_ID: 48327832;
+        SUBCLASS_OF_ID: 1101130410;
+        classType: "constructor";
+        className: "InputStarGiftAuction";
+        static fromReader(reader: Reader): InputStarGiftAuction;
+        giftId: long;
+    }
+    export class InputStarGiftAuctionSlug extends VirtualClass<{
+        slug: string;
+    }> {
+        CONSTRUCTOR_ID: 2058715912;
+        SUBCLASS_OF_ID: 1101130410;
+        classType: "constructor";
+        className: "InputStarGiftAuctionSlug";
+        static fromReader(reader: Reader): InputStarGiftAuctionSlug;
+        slug: string;
+    }
+    export class Passkey extends VirtualClass<{
+        // flags: null;
+        id: string;
+        name: string;
+        date: int;
+        softwareEmojiId?: long;
+        lastUsageDate?: int;
+    }> {
+        CONSTRUCTOR_ID: 2556509887;
+        SUBCLASS_OF_ID: 3476557280;
+        classType: "constructor";
+        className: "Passkey";
+        static fromReader(reader: Reader): Passkey;
+        // flags: null;
+        id: string;
+        name: string;
+        date: int;
+        softwareEmojiId?: long;
+        lastUsageDate?: int;
+    }
+    export class InputPasskeyResponseRegister extends VirtualClass<{
+        clientData: Api.TypeDataJSON;
+        attestationData: bytes;
+    }> {
+        CONSTRUCTOR_ID: 1046713180;
+        SUBCLASS_OF_ID: 519096269;
+        classType: "constructor";
+        className: "InputPasskeyResponseRegister";
+        static fromReader(reader: Reader): InputPasskeyResponseRegister;
+        clientData: Api.TypeDataJSON;
+        attestationData: bytes;
+    }
+    export class InputPasskeyResponseLogin extends VirtualClass<{
+        clientData: Api.TypeDataJSON;
+        authenticatorData: bytes;
+        signature: bytes;
+        userHandle: string;
+    }> {
+        CONSTRUCTOR_ID: 3273638218;
+        SUBCLASS_OF_ID: 519096269;
+        classType: "constructor";
+        className: "InputPasskeyResponseLogin";
+        static fromReader(reader: Reader): InputPasskeyResponseLogin;
+        clientData: Api.TypeDataJSON;
+        authenticatorData: bytes;
+        signature: bytes;
+        userHandle: string;
+    }
+    export class InputPasskeyCredentialPublicKey extends VirtualClass<{
+        id: string;
+        rawId: string;
+        response: Api.TypeInputPasskeyResponse;
+    }> {
+        CONSTRUCTOR_ID: 1009235855;
+        SUBCLASS_OF_ID: 514925102;
+        classType: "constructor";
+        className: "InputPasskeyCredentialPublicKey";
+        static fromReader(reader: Reader): InputPasskeyCredentialPublicKey;
+        id: string;
+        rawId: string;
+        response: Api.TypeInputPasskeyResponse;
+    }
+    export class InputPasskeyCredentialFirebasePNV extends VirtualClass<{
+        pnvToken: string;
+    }> {
+        CONSTRUCTOR_ID: 1528613672;
+        SUBCLASS_OF_ID: 514925102;
+        classType: "constructor";
+        className: "InputPasskeyCredentialFirebasePNV";
+        static fromReader(reader: Reader): InputPasskeyCredentialFirebasePNV;
+        pnvToken: string;
+    }
+    export class StarGiftBackground extends VirtualClass<{
+        centerColor: int;
+        edgeColor: int;
+        textColor: int;
+    }> {
+        CONSTRUCTOR_ID: 2952094616;
+        SUBCLASS_OF_ID: 63248936;
+        classType: "constructor";
+        className: "StarGiftBackground";
+        static fromReader(reader: Reader): StarGiftBackground;
+        centerColor: int;
+        edgeColor: int;
+        textColor: int;
+    }
+    export class StarGiftAuctionRound extends VirtualClass<{
+        num: int;
+        duration: int;
+    }> {
+        CONSTRUCTOR_ID: 984483112;
+        SUBCLASS_OF_ID: 1156131892;
+        classType: "constructor";
+        className: "StarGiftAuctionRound";
+        static fromReader(reader: Reader): StarGiftAuctionRound;
+        num: int;
+        duration: int;
+    }
+    export class StarGiftAuctionRoundExtendable extends VirtualClass<{
+        num: int;
+        duration: int;
+        extendTop: int;
+        extendWindow: int;
+    }> {
+        CONSTRUCTOR_ID: 178266597;
+        SUBCLASS_OF_ID: 1156131892;
+        classType: "constructor";
+        className: "StarGiftAuctionRoundExtendable";
+        static fromReader(reader: Reader): StarGiftAuctionRoundExtendable;
+        num: int;
+        duration: int;
+        extendTop: int;
+        extendWindow: int;
+    }
+    export class StarGiftAttributeRarity extends VirtualClass<{
+        permille: int;
+    }> {
+        CONSTRUCTOR_ID: 910391095;
+        SUBCLASS_OF_ID: 260508966;
+        classType: "constructor";
+        className: "StarGiftAttributeRarity";
+        static fromReader(reader: Reader): StarGiftAttributeRarity;
+        permille: int;
+    }
+    export class StarGiftAttributeRarityUncommon extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 3687736201;
+        SUBCLASS_OF_ID: 260508966;
+        classType: "constructor";
+        className: "StarGiftAttributeRarityUncommon";
+        static fromReader(reader: Reader): StarGiftAttributeRarityUncommon;
+    }
+    export class StarGiftAttributeRarityRare extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 4035793259;
+        SUBCLASS_OF_ID: 260508966;
+        classType: "constructor";
+        className: "StarGiftAttributeRarityRare";
+        static fromReader(reader: Reader): StarGiftAttributeRarityRare;
+    }
+    export class StarGiftAttributeRarityEpic extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 2029777832;
+        SUBCLASS_OF_ID: 260508966;
+        classType: "constructor";
+        className: "StarGiftAttributeRarityEpic";
+        static fromReader(reader: Reader): StarGiftAttributeRarityEpic;
+    }
+    export class StarGiftAttributeRarityLegendary extends VirtualClass<void> {
+        CONSTRUCTOR_ID: 3472353192;
+        SUBCLASS_OF_ID: 260508966;
+        classType: "constructor";
+        className: "StarGiftAttributeRarityLegendary";
+        static fromReader(reader: Reader): StarGiftAttributeRarityLegendary;
+    }
+    export class KeyboardButtonStyle extends VirtualClass<{
+        // flags: null;
+        bgPrimary?: boolean;
+        bgDanger?: boolean;
+        bgSuccess?: boolean;
+        icon?: long;
+    }> {
+        CONSTRUCTOR_ID: 1339896880;
+        SUBCLASS_OF_ID: 334647835;
+        classType: "constructor";
+        className: "KeyboardButtonStyle";
+        static fromReader(reader: Reader): KeyboardButtonStyle;
+        // flags: null;
+        bgPrimary?: boolean;
+        bgDanger?: boolean;
+        bgSuccess?: boolean;
+        icon?: long;
     }
     export class ResPQ extends VirtualClass<{
         nonce: int128;
@@ -16469,6 +18769,21 @@ export namespace Api {
         secret: string;
         query: X;
     }
+    export class InvokeWithReCaptcha extends Request<
+        Partial<{
+            token: string;
+            query: X;
+        }>,
+        X
+    > {
+        CONSTRUCTOR_ID: 2914717588;
+        SUBCLASS_OF_ID: 3081909835;
+        classType: "request";
+        className: "InvokeWithReCaptcha";
+        static fromReader(reader: Reader): InvokeWithReCaptcha;
+        token: string;
+        query: X;
+    }
     export class ReqPq extends Request<
         Partial<{
             nonce: int128;
@@ -16715,6 +19030,26 @@ export namespace Api {
             className: "auth.SentCodeSuccess";
             static fromReader(reader: Reader): SentCodeSuccess;
             authorization: auth.TypeAuthorization;
+        }
+        export class SentCodePaymentRequired extends VirtualClass<{
+            storeProduct: string;
+            phoneCodeHash: string;
+            supportEmailAddress: string;
+            supportEmailSubject: string;
+            currency: string;
+            amount: long;
+        }> {
+            CONSTRUCTOR_ID: 3767884348;
+            SUBCLASS_OF_ID: 1827172481;
+            classType: "constructor";
+            className: "auth.SentCodePaymentRequired";
+            static fromReader(reader: Reader): SentCodePaymentRequired;
+            storeProduct: string;
+            phoneCodeHash: string;
+            supportEmailAddress: string;
+            supportEmailSubject: string;
+            currency: string;
+            amount: long;
         }
         export class Authorization extends VirtualClass<{
             // flags: null;
@@ -16997,6 +19332,16 @@ export namespace Api {
             // flags: null;
             futureAuthToken?: bytes;
         }
+        export class PasskeyLoginOptions extends VirtualClass<{
+            options: Api.TypeDataJSON;
+        }> {
+            CONSTRUCTOR_ID: 3791878025;
+            SUBCLASS_OF_ID: 3648598066;
+            classType: "constructor";
+            className: "auth.PasskeyLoginOptions";
+            static fromReader(reader: Reader): PasskeyLoginOptions;
+            options: Api.TypeDataJSON;
+        }
     }
 
     export namespace contacts {
@@ -17137,6 +19482,27 @@ export namespace Api {
             contacts: Api.TypeContactBirthday[];
             users: Api.TypeUser[];
         }
+        export class SponsoredPeersEmpty extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 3929191601;
+            SUBCLASS_OF_ID: 3026017484;
+            classType: "constructor";
+            className: "contacts.SponsoredPeersEmpty";
+            static fromReader(reader: Reader): SponsoredPeersEmpty;
+        }
+        export class SponsoredPeers extends VirtualClass<{
+            peers: Api.TypeSponsoredPeer[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 3942852740;
+            SUBCLASS_OF_ID: 3026017484;
+            classType: "constructor";
+            className: "contacts.SponsoredPeers";
+            static fromReader(reader: Reader): SponsoredPeers;
+            peers: Api.TypeSponsoredPeer[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }
     }
 
     export namespace messages {
@@ -17186,15 +19552,17 @@ export namespace Api {
         }
         export class Messages extends VirtualClass<{
             messages: Api.TypeMessage[];
+            topics: Api.TypeForumTopic[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 2356252295;
+            CONSTRUCTOR_ID: 494135274;
             SUBCLASS_OF_ID: 3568569182;
             classType: "constructor";
             className: "messages.Messages";
             static fromReader(reader: Reader): Messages;
             messages: Api.TypeMessage[];
+            topics: Api.TypeForumTopic[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }
@@ -17204,11 +19572,13 @@ export namespace Api {
             count: int;
             nextRate?: int;
             offsetIdOffset?: int;
+            searchFlood?: Api.TypeSearchPostsFlood;
             messages: Api.TypeMessage[];
+            topics: Api.TypeForumTopic[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 978610270;
+            CONSTRUCTOR_ID: 1595959062;
             SUBCLASS_OF_ID: 3568569182;
             classType: "constructor";
             className: "messages.MessagesSlice";
@@ -17218,7 +19588,9 @@ export namespace Api {
             count: int;
             nextRate?: int;
             offsetIdOffset?: int;
+            searchFlood?: Api.TypeSearchPostsFlood;
             messages: Api.TypeMessage[];
+            topics: Api.TypeForumTopic[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }
@@ -17869,17 +20241,21 @@ export namespace Api {
         export class SponsoredMessages extends VirtualClass<{
             // flags: null;
             postsBetween?: int;
+            startDelay?: int;
+            betweenDelay?: int;
             messages: Api.TypeSponsoredMessage[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 3387825543;
+            CONSTRUCTOR_ID: 4292502893;
             SUBCLASS_OF_ID: 2134993376;
             classType: "constructor";
             className: "messages.SponsoredMessages";
             static fromReader(reader: Reader): SponsoredMessages;
             // flags: null;
             postsBetween?: int;
+            startDelay?: int;
+            betweenDelay?: int;
             messages: Api.TypeSponsoredMessage[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
@@ -18282,6 +20658,89 @@ export namespace Api {
             peerTypes: Api.TypeInlineQueryPeerType[];
             cacheTime: int;
             users: Api.TypeUser[];
+        }
+        export class FoundStickersNotModified extends VirtualClass<{
+            // flags: null;
+            nextOffset?: int;
+        }> {
+            CONSTRUCTOR_ID: 1611711796;
+            SUBCLASS_OF_ID: 104866129;
+            classType: "constructor";
+            className: "messages.FoundStickersNotModified";
+            static fromReader(reader: Reader): FoundStickersNotModified;
+            // flags: null;
+            nextOffset?: int;
+        }
+        export class FoundStickers extends VirtualClass<{
+            // flags: null;
+            nextOffset?: int;
+            hash: long;
+            stickers: Api.TypeDocument[];
+        }> {
+            CONSTRUCTOR_ID: 2194268816;
+            SUBCLASS_OF_ID: 104866129;
+            classType: "constructor";
+            className: "messages.FoundStickers";
+            static fromReader(reader: Reader): FoundStickers;
+            // flags: null;
+            nextOffset?: int;
+            hash: long;
+            stickers: Api.TypeDocument[];
+        }
+        export class WebPagePreview extends VirtualClass<{
+            media: Api.TypeMessageMedia;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 2358937772;
+            SUBCLASS_OF_ID: 3801354434;
+            classType: "constructor";
+            className: "messages.WebPagePreview";
+            static fromReader(reader: Reader): WebPagePreview;
+            media: Api.TypeMessageMedia;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }
+        export class EmojiGameOutcome extends VirtualClass<{
+            seed: bytes;
+            stakeTonAmount: long;
+            tonAmount: long;
+        }> {
+            CONSTRUCTOR_ID: 3660240455;
+            SUBCLASS_OF_ID: 251090281;
+            classType: "constructor";
+            className: "messages.EmojiGameOutcome";
+            static fromReader(reader: Reader): EmojiGameOutcome;
+            seed: bytes;
+            stakeTonAmount: long;
+            tonAmount: long;
+        }
+        export class EmojiGameUnavailable extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 1508266805;
+            SUBCLASS_OF_ID: 105590818;
+            classType: "constructor";
+            className: "messages.EmojiGameUnavailable";
+            static fromReader(reader: Reader): EmojiGameUnavailable;
+        }
+        export class EmojiGameDiceInfo extends VirtualClass<{
+            // flags: null;
+            gameHash: string;
+            prevStake: long;
+            currentStreak: int;
+            params: int[];
+            playsLeft?: int;
+        }> {
+            CONSTRUCTOR_ID: 1155883043;
+            SUBCLASS_OF_ID: 105590818;
+            classType: "constructor";
+            className: "messages.EmojiGameDiceInfo";
+            static fromReader(reader: Reader): EmojiGameDiceInfo;
+            // flags: null;
+            gameHash: string;
+            prevStake: long;
+            currentStreak: int;
+            params: int[];
+            playsLeft?: int;
         }
     }
 
@@ -18745,13 +21204,16 @@ export namespace Api {
             // flags: null;
             proxy?: boolean;
             expires: int;
-            peer: Api.TypePeer;
-            chats: Api.TypeChat[];
-            users: Api.TypeUser[];
+            peer?: Api.TypePeer;
             psaType?: string;
             psaMessage?: string;
+            pendingSuggestions: string[];
+            dismissedSuggestions: string[];
+            customPendingSuggestion?: Api.TypePendingSuggestion;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 2352576831;
+            CONSTRUCTOR_ID: 145021050;
             SUBCLASS_OF_ID: 2639877442;
             classType: "constructor";
             className: "help.PromoData";
@@ -18759,11 +21221,14 @@ export namespace Api {
             // flags: null;
             proxy?: boolean;
             expires: int;
-            peer: Api.TypePeer;
-            chats: Api.TypeChat[];
-            users: Api.TypeUser[];
+            peer?: Api.TypePeer;
             psaType?: string;
             psaMessage?: string;
+            pendingSuggestions: string[];
+            dismissedSuggestions: string[];
+            customPendingSuggestion?: Api.TypePendingSuggestion;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
         }
         export class CountryCode extends VirtualClass<{
             // flags: null;
@@ -19215,6 +21680,33 @@ export namespace Api {
             className: "account.ResetPasswordOk";
             static fromReader(reader: Reader): ResetPasswordOk;
         }
+        export class ChatThemesNotModified extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 3759268292;
+            SUBCLASS_OF_ID: 364989096;
+            classType: "constructor";
+            className: "account.ChatThemesNotModified";
+            static fromReader(reader: Reader): ChatThemesNotModified;
+        }
+        export class ChatThemes extends VirtualClass<{
+            // flags: null;
+            hash: long;
+            themes: Api.TypeChatTheme[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+            nextOffset?: string;
+        }> {
+            CONSTRUCTOR_ID: 3188294003;
+            SUBCLASS_OF_ID: 364989096;
+            classType: "constructor";
+            className: "account.ChatThemes";
+            static fromReader(reader: Reader): ChatThemes;
+            // flags: null;
+            hash: long;
+            themes: Api.TypeChatTheme[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+            nextOffset?: string;
+        }
         export class SavedRingtonesNotModified extends VirtualClass<void> {
             CONSTRUCTOR_ID: 4227262641;
             SUBCLASS_OF_ID: 666683742;
@@ -19357,6 +21849,53 @@ export namespace Api {
             entities?: Api.TypeMessageEntity[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
+        }
+        export class PaidMessagesRevenue extends VirtualClass<{
+            starsAmount: long;
+        }> {
+            CONSTRUCTOR_ID: 504403720;
+            SUBCLASS_OF_ID: 355404887;
+            classType: "constructor";
+            className: "account.PaidMessagesRevenue";
+            static fromReader(reader: Reader): PaidMessagesRevenue;
+            starsAmount: long;
+        }
+        export class SavedMusicIdsNotModified extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 1338514798;
+            SUBCLASS_OF_ID: 1263203986;
+            classType: "constructor";
+            className: "account.SavedMusicIdsNotModified";
+            static fromReader(reader: Reader): SavedMusicIdsNotModified;
+        }
+        export class SavedMusicIds extends VirtualClass<{
+            ids: long[];
+        }> {
+            CONSTRUCTOR_ID: 2576180790;
+            SUBCLASS_OF_ID: 1263203986;
+            classType: "constructor";
+            className: "account.SavedMusicIds";
+            static fromReader(reader: Reader): SavedMusicIds;
+            ids: long[];
+        }
+        export class Passkeys extends VirtualClass<{
+            passkeys: Api.TypePasskey[];
+        }> {
+            CONSTRUCTOR_ID: 4175473180;
+            SUBCLASS_OF_ID: 618471518;
+            classType: "constructor";
+            className: "account.Passkeys";
+            static fromReader(reader: Reader): Passkeys;
+            passkeys: Api.TypePasskey[];
+        }
+        export class PasskeyRegistrationOptions extends VirtualClass<{
+            options: Api.TypeDataJSON;
+        }> {
+            CONSTRUCTOR_ID: 3781909729;
+            SUBCLASS_OF_ID: 874349540;
+            classType: "constructor";
+            className: "account.PasskeyRegistrationOptions";
+            static fromReader(reader: Reader): PasskeyRegistrationOptions;
+            options: Api.TypeDataJSON;
         }
     }
 
@@ -19684,12 +22223,12 @@ export namespace Api {
             giveawayMsgId?: int;
             toId?: long;
             date: int;
-            months: int;
+            days: int;
             usedDate?: int;
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 675942550;
+            CONSTRUCTOR_ID: 3952623503;
             SUBCLASS_OF_ID: 1529452520;
             classType: "constructor";
             className: "payments.CheckedGiftCode";
@@ -19700,7 +22239,7 @@ export namespace Api {
             giveawayMsgId?: int;
             toId?: long;
             date: int;
-            months: int;
+            days: int;
             usedDate?: int;
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
@@ -19755,7 +22294,7 @@ export namespace Api {
         }
         export class StarsStatus extends VirtualClass<{
             // flags: null;
-            balance: long;
+            balance: Api.TypeStarsAmount;
             subscriptions?: Api.TypeStarsSubscription[];
             subscriptionsNextOffset?: string;
             subscriptionsMissingBalance?: long;
@@ -19764,13 +22303,13 @@ export namespace Api {
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 3153736044;
+            CONSTRUCTOR_ID: 1822222573;
             SUBCLASS_OF_ID: 1855724911;
             classType: "constructor";
             className: "payments.StarsStatus";
             static fromReader(reader: Reader): StarsStatus;
             // flags: null;
-            balance: long;
+            balance: Api.TypeStarsAmount;
             subscriptions?: Api.TypeStarsSubscription[];
             subscriptionsNextOffset?: string;
             subscriptionsMissingBalance?: long;
@@ -19780,15 +22319,19 @@ export namespace Api {
             users: Api.TypeUser[];
         }
         export class StarsRevenueStats extends VirtualClass<{
+            // flags: null;
+            topHoursGraph?: Api.TypeStatsGraph;
             revenueGraph: Api.TypeStatsGraph;
             status: Api.TypeStarsRevenueStatus;
             usdRate: double;
         }> {
-            CONSTRUCTOR_ID: 3375085371;
+            CONSTRUCTOR_ID: 1814066038;
             SUBCLASS_OF_ID: 2772915699;
             classType: "constructor";
             className: "payments.StarsRevenueStats";
             static fromReader(reader: Reader): StarsRevenueStats;
+            // flags: null;
+            topHoursGraph?: Api.TypeStatsGraph;
             revenueGraph: Api.TypeStatsGraph;
             status: Api.TypeStarsRevenueStatus;
             usdRate: double;
@@ -19823,32 +22366,275 @@ export namespace Api {
         export class StarGifts extends VirtualClass<{
             hash: int;
             gifts: Api.TypeStarGift[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 2417396202;
+            CONSTRUCTOR_ID: 785918357;
             SUBCLASS_OF_ID: 1635309988;
             classType: "constructor";
             className: "payments.StarGifts";
             static fromReader(reader: Reader): StarGifts;
             hash: int;
             gifts: Api.TypeStarGift[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
         }
-        export class UserStarGifts extends VirtualClass<{
-            // flags: null;
+        export class ConnectedStarRefBots extends VirtualClass<{
             count: int;
-            gifts: Api.TypeUserStarGift[];
-            nextOffset?: string;
+            connectedBots: Api.TypeConnectedBotStarRef[];
             users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 1801827607;
-            SUBCLASS_OF_ID: 17096492;
+            CONSTRUCTOR_ID: 2564155933;
+            SUBCLASS_OF_ID: 593369703;
             classType: "constructor";
-            className: "payments.UserStarGifts";
-            static fromReader(reader: Reader): UserStarGifts;
+            className: "payments.ConnectedStarRefBots";
+            static fromReader(reader: Reader): ConnectedStarRefBots;
+            count: int;
+            connectedBots: Api.TypeConnectedBotStarRef[];
+            users: Api.TypeUser[];
+        }
+        export class SuggestedStarRefBots extends VirtualClass<{
             // flags: null;
             count: int;
-            gifts: Api.TypeUserStarGift[];
-            nextOffset?: string;
+            suggestedBots: Api.TypeStarRefProgram[];
             users: Api.TypeUser[];
+            nextOffset?: string;
+        }> {
+            CONSTRUCTOR_ID: 3033913433;
+            SUBCLASS_OF_ID: 1880658499;
+            classType: "constructor";
+            className: "payments.SuggestedStarRefBots";
+            static fromReader(reader: Reader): SuggestedStarRefBots;
+            // flags: null;
+            count: int;
+            suggestedBots: Api.TypeStarRefProgram[];
+            users: Api.TypeUser[];
+            nextOffset?: string;
+        }
+        export class StarGiftUpgradePreview extends VirtualClass<{
+            sampleAttributes: Api.TypeStarGiftAttribute[];
+            prices: Api.TypeStarGiftUpgradePrice[];
+            nextPrices: Api.TypeStarGiftUpgradePrice[];
+        }> {
+            CONSTRUCTOR_ID: 1038213101;
+            SUBCLASS_OF_ID: 1579903175;
+            classType: "constructor";
+            className: "payments.StarGiftUpgradePreview";
+            static fromReader(reader: Reader): StarGiftUpgradePreview;
+            sampleAttributes: Api.TypeStarGiftAttribute[];
+            prices: Api.TypeStarGiftUpgradePrice[];
+            nextPrices: Api.TypeStarGiftUpgradePrice[];
+        }
+        export class UniqueStarGift extends VirtualClass<{
+            gift: Api.TypeStarGift;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 1097619176;
+            SUBCLASS_OF_ID: 2024850939;
+            classType: "constructor";
+            className: "payments.UniqueStarGift";
+            static fromReader(reader: Reader): UniqueStarGift;
+            gift: Api.TypeStarGift;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }
+        export class SavedStarGifts extends VirtualClass<{
+            // flags: null;
+            count: int;
+            chatNotificationsEnabled?: Bool;
+            gifts: Api.TypeSavedStarGift[];
+            nextOffset?: string;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 2515765681;
+            SUBCLASS_OF_ID: 3574671511;
+            classType: "constructor";
+            className: "payments.SavedStarGifts";
+            static fromReader(reader: Reader): SavedStarGifts;
+            // flags: null;
+            count: int;
+            chatNotificationsEnabled?: Bool;
+            gifts: Api.TypeSavedStarGift[];
+            nextOffset?: string;
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }
+        export class StarGiftWithdrawalUrl extends VirtualClass<{
+            url: string;
+        }> {
+            CONSTRUCTOR_ID: 2225748636;
+            SUBCLASS_OF_ID: 2726440389;
+            classType: "constructor";
+            className: "payments.StarGiftWithdrawalUrl";
+            static fromReader(reader: Reader): StarGiftWithdrawalUrl;
+            url: string;
+        }
+        export class ResaleStarGifts extends VirtualClass<{
+            // flags: null;
+            count: int;
+            gifts: Api.TypeStarGift[];
+            nextOffset?: string;
+            attributes?: Api.TypeStarGiftAttribute[];
+            attributesHash?: long;
+            chats: Api.TypeChat[];
+            counters?: Api.TypeStarGiftAttributeCounter[];
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 2491028191;
+            SUBCLASS_OF_ID: 3000743907;
+            classType: "constructor";
+            className: "payments.ResaleStarGifts";
+            static fromReader(reader: Reader): ResaleStarGifts;
+            // flags: null;
+            count: int;
+            gifts: Api.TypeStarGift[];
+            nextOffset?: string;
+            attributes?: Api.TypeStarGiftAttribute[];
+            attributesHash?: long;
+            chats: Api.TypeChat[];
+            counters?: Api.TypeStarGiftAttributeCounter[];
+            users: Api.TypeUser[];
+        }
+        export class StarGiftCollectionsNotModified extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 2696564503;
+            SUBCLASS_OF_ID: 4028047852;
+            classType: "constructor";
+            className: "payments.StarGiftCollectionsNotModified";
+            static fromReader(reader: Reader): StarGiftCollectionsNotModified;
+        }
+        export class StarGiftCollections extends VirtualClass<{
+            collections: Api.TypeStarGiftCollection[];
+        }> {
+            CONSTRUCTOR_ID: 2317955827;
+            SUBCLASS_OF_ID: 4028047852;
+            classType: "constructor";
+            className: "payments.StarGiftCollections";
+            static fromReader(reader: Reader): StarGiftCollections;
+            collections: Api.TypeStarGiftCollection[];
+        }
+        export class UniqueStarGiftValueInfo extends VirtualClass<{
+            // flags: null;
+            lastSaleOnFragment?: boolean;
+            valueIsAverage?: boolean;
+            currency: string;
+            value: long;
+            initialSaleDate: int;
+            initialSaleStars: long;
+            initialSalePrice: long;
+            lastSaleDate?: int;
+            lastSalePrice?: long;
+            floorPrice?: long;
+            averagePrice?: long;
+            listedCount?: int;
+            fragmentListedCount?: int;
+            fragmentListedUrl?: string;
+        }> {
+            CONSTRUCTOR_ID: 1362093126;
+            SUBCLASS_OF_ID: 372595652;
+            classType: "constructor";
+            className: "payments.UniqueStarGiftValueInfo";
+            static fromReader(reader: Reader): UniqueStarGiftValueInfo;
+            // flags: null;
+            lastSaleOnFragment?: boolean;
+            valueIsAverage?: boolean;
+            currency: string;
+            value: long;
+            initialSaleDate: int;
+            initialSaleStars: long;
+            initialSalePrice: long;
+            lastSaleDate?: int;
+            lastSalePrice?: long;
+            floorPrice?: long;
+            averagePrice?: long;
+            listedCount?: int;
+            fragmentListedCount?: int;
+            fragmentListedUrl?: string;
+        }
+        export class CheckCanSendGiftResultOk extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 927967149;
+            SUBCLASS_OF_ID: 1664023088;
+            classType: "constructor";
+            className: "payments.CheckCanSendGiftResultOk";
+            static fromReader(reader: Reader): CheckCanSendGiftResultOk;
+        }
+        export class CheckCanSendGiftResultFail extends VirtualClass<{
+            reason: Api.TypeTextWithEntities;
+        }> {
+            CONSTRUCTOR_ID: 3588588148;
+            SUBCLASS_OF_ID: 1664023088;
+            classType: "constructor";
+            className: "payments.CheckCanSendGiftResultFail";
+            static fromReader(reader: Reader): CheckCanSendGiftResultFail;
+            reason: Api.TypeTextWithEntities;
+        }
+        export class StarGiftAuctionState extends VirtualClass<{
+            gift: Api.TypeStarGift;
+            state: Api.TypeStarGiftAuctionState;
+            userState: Api.TypeStarGiftAuctionUserState;
+            timeout: int;
+            users: Api.TypeUser[];
+            chats: Api.TypeChat[];
+        }> {
+            CONSTRUCTOR_ID: 1798960364;
+            SUBCLASS_OF_ID: 439453081;
+            classType: "constructor";
+            className: "payments.StarGiftAuctionState";
+            static fromReader(reader: Reader): StarGiftAuctionState;
+            gift: Api.TypeStarGift;
+            state: Api.TypeStarGiftAuctionState;
+            userState: Api.TypeStarGiftAuctionUserState;
+            timeout: int;
+            users: Api.TypeUser[];
+            chats: Api.TypeChat[];
+        }
+        export class StarGiftAuctionAcquiredGifts extends VirtualClass<{
+            gifts: Api.TypeStarGiftAuctionAcquiredGift[];
+            users: Api.TypeUser[];
+            chats: Api.TypeChat[];
+        }> {
+            CONSTRUCTOR_ID: 2103169520;
+            SUBCLASS_OF_ID: 2802321947;
+            classType: "constructor";
+            className: "payments.StarGiftAuctionAcquiredGifts";
+            static fromReader(reader: Reader): StarGiftAuctionAcquiredGifts;
+            gifts: Api.TypeStarGiftAuctionAcquiredGift[];
+            users: Api.TypeUser[];
+            chats: Api.TypeChat[];
+        }
+        export class StarGiftActiveAuctionsNotModified extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 3677608656;
+            SUBCLASS_OF_ID: 2440941767;
+            classType: "constructor";
+            className: "payments.StarGiftActiveAuctionsNotModified";
+            static fromReader(
+                reader: Reader
+            ): StarGiftActiveAuctionsNotModified;
+        }
+        export class StarGiftActiveAuctions extends VirtualClass<{
+            auctions: Api.TypeStarGiftActiveAuctionState[];
+            users: Api.TypeUser[];
+            chats: Api.TypeChat[];
+        }> {
+            CONSTRUCTOR_ID: 2935401404;
+            SUBCLASS_OF_ID: 2440941767;
+            classType: "constructor";
+            className: "payments.StarGiftActiveAuctions";
+            static fromReader(reader: Reader): StarGiftActiveAuctions;
+            auctions: Api.TypeStarGiftActiveAuctionState[];
+            users: Api.TypeUser[];
+            chats: Api.TypeChat[];
+        }
+        export class StarGiftUpgradeAttributes extends VirtualClass<{
+            attributes: Api.TypeStarGiftAttribute[];
+        }> {
+            CONSTRUCTOR_ID: 1187439471;
+            SUBCLASS_OF_ID: 256290031;
+            classType: "constructor";
+            className: "payments.StarGiftUpgradeAttributes";
+            static fromReader(reader: Reader): StarGiftUpgradeAttributes;
+            attributes: Api.TypeStarGiftAttribute[];
         }
     }
 
@@ -19948,6 +22734,22 @@ export namespace Api {
             static fromReader(reader: Reader): GroupCallStreamRtmpUrl;
             url: string;
             key: string;
+        }
+        export class GroupCallStars extends VirtualClass<{
+            totalStars: long;
+            topDonors: Api.TypeGroupCallDonor[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 2635971878;
+            SUBCLASS_OF_ID: 3024584730;
+            classType: "constructor";
+            className: "phone.GroupCallStars";
+            static fromReader(reader: Reader): GroupCallStars;
+            totalStars: long;
+            topDonors: Api.TypeGroupCallDonor[];
+            chats: Api.TypeChat[];
+            users: Api.TypeUser[];
         }
     }
 
@@ -20090,44 +22892,6 @@ export namespace Api {
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }
-        export class BroadcastRevenueStats extends VirtualClass<{
-            topHoursGraph: Api.TypeStatsGraph;
-            revenueGraph: Api.TypeStatsGraph;
-            balances: Api.TypeBroadcastRevenueBalances;
-            usdRate: double;
-        }> {
-            CONSTRUCTOR_ID: 1409802903;
-            SUBCLASS_OF_ID: 753807480;
-            classType: "constructor";
-            className: "stats.BroadcastRevenueStats";
-            static fromReader(reader: Reader): BroadcastRevenueStats;
-            topHoursGraph: Api.TypeStatsGraph;
-            revenueGraph: Api.TypeStatsGraph;
-            balances: Api.TypeBroadcastRevenueBalances;
-            usdRate: double;
-        }
-        export class BroadcastRevenueWithdrawalUrl extends VirtualClass<{
-            url: string;
-        }> {
-            CONSTRUCTOR_ID: 3966080823;
-            SUBCLASS_OF_ID: 3512518885;
-            classType: "constructor";
-            className: "stats.BroadcastRevenueWithdrawalUrl";
-            static fromReader(reader: Reader): BroadcastRevenueWithdrawalUrl;
-            url: string;
-        }
-        export class BroadcastRevenueTransactions extends VirtualClass<{
-            count: int;
-            transactions: Api.TypeBroadcastRevenueTransaction[];
-        }> {
-            CONSTRUCTOR_ID: 2266334310;
-            SUBCLASS_OF_ID: 108456469;
-            classType: "constructor";
-            className: "stats.BroadcastRevenueTransactions";
-            static fromReader(reader: Reader): BroadcastRevenueTransactions;
-            count: int;
-            transactions: Api.TypeBroadcastRevenueTransaction[];
-        }
     }
 
     export namespace stickers {
@@ -20157,6 +22921,50 @@ export namespace Api {
             fullUser: Api.TypeUserFull;
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
+        }
+        export class Users extends VirtualClass<{
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 1658259128;
+            SUBCLASS_OF_ID: 4065063104;
+            classType: "constructor";
+            className: "users.Users";
+            static fromReader(reader: Reader): Users;
+            users: Api.TypeUser[];
+        }
+        export class UsersSlice extends VirtualClass<{
+            count: int;
+            users: Api.TypeUser[];
+        }> {
+            CONSTRUCTOR_ID: 828000628;
+            SUBCLASS_OF_ID: 4065063104;
+            classType: "constructor";
+            className: "users.UsersSlice";
+            static fromReader(reader: Reader): UsersSlice;
+            count: int;
+            users: Api.TypeUser[];
+        }
+        export class SavedMusicNotModified extends VirtualClass<{
+            count: int;
+        }> {
+            CONSTRUCTOR_ID: 3817310884;
+            SUBCLASS_OF_ID: 4162039351;
+            classType: "constructor";
+            className: "users.SavedMusicNotModified";
+            static fromReader(reader: Reader): SavedMusicNotModified;
+            count: int;
+        }
+        export class SavedMusic extends VirtualClass<{
+            count: int;
+            documents: Api.TypeDocument[];
+        }> {
+            CONSTRUCTOR_ID: 883094167;
+            SUBCLASS_OF_ID: 4162039351;
+            classType: "constructor";
+            className: "users.SavedMusic";
+            static fromReader(reader: Reader): SavedMusic;
+            count: int;
+            documents: Api.TypeDocument[];
         }
     }
 
@@ -20207,19 +23015,21 @@ export namespace Api {
         }
         export class ChatlistInvite extends VirtualClass<{
             // flags: null;
-            title: string;
+            titleNoanimate?: boolean;
+            title: Api.TypeTextWithEntities;
             emoticon?: string;
             peers: Api.TypePeer[];
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }> {
-            CONSTRUCTOR_ID: 500007837;
+            CONSTRUCTOR_ID: 4044279343;
             SUBCLASS_OF_ID: 1097993845;
             classType: "constructor";
             className: "chatlists.ChatlistInvite";
             static fromReader(reader: Reader): ChatlistInvite;
             // flags: null;
-            title: string;
+            titleNoanimate?: boolean;
+            title: Api.TypeTextWithEntities;
             emoticon?: string;
             peers: Api.TypePeer[];
             chats: Api.TypeChat[];
@@ -20435,6 +23245,35 @@ export namespace Api {
             chats: Api.TypeChat[];
             users: Api.TypeUser[];
         }
+        export class CanSendStoryCount extends VirtualClass<{
+            countRemains: int;
+        }> {
+            CONSTRUCTOR_ID: 3280453710;
+            SUBCLASS_OF_ID: 3411255960;
+            classType: "constructor";
+            className: "stories.CanSendStoryCount";
+            static fromReader(reader: Reader): CanSendStoryCount;
+            countRemains: int;
+        }
+        export class AlbumsNotModified extends VirtualClass<void> {
+            CONSTRUCTOR_ID: 1448008427;
+            SUBCLASS_OF_ID: 94846265;
+            classType: "constructor";
+            className: "stories.AlbumsNotModified";
+            static fromReader(reader: Reader): AlbumsNotModified;
+        }
+        export class Albums extends VirtualClass<{
+            hash: long;
+            albums: Api.TypeStoryAlbum[];
+        }> {
+            CONSTRUCTOR_ID: 3281549882;
+            SUBCLASS_OF_ID: 94846265;
+            classType: "constructor";
+            className: "stories.Albums";
+            static fromReader(reader: Reader): Albums;
+            hash: long;
+            albums: Api.TypeStoryAlbum[];
+        }
     }
 
     export namespace premium {
@@ -20581,7 +23420,10 @@ export namespace Api {
     }
 
     export namespace auth {
-        export type TypeSentCode = auth.SentCode | auth.SentCodeSuccess;
+        export type TypeSentCode =
+            | auth.SentCode
+            | auth.SentCodeSuccess
+            | auth.SentCodePaymentRequired;
         export type TypeAuthorization =
             | auth.Authorization
             | auth.AuthorizationSignUpRequired;
@@ -20610,6 +23452,7 @@ export namespace Api {
             | auth.LoginTokenMigrateTo
             | auth.LoginTokenSuccess;
         export type TypeLoggedOut = auth.LoggedOut;
+        export type TypePasskeyLoginOptions = auth.PasskeyLoginOptions;
     }
 
     export namespace contacts {
@@ -20625,6 +23468,9 @@ export namespace Api {
             | contacts.TopPeers
             | contacts.TopPeersDisabled;
         export type TypeContactBirthdays = contacts.ContactBirthdays;
+        export type TypeSponsoredPeers =
+            | contacts.SponsoredPeersEmpty
+            | contacts.SponsoredPeers;
     }
 
     export namespace messages {
@@ -20737,6 +23583,14 @@ export namespace Api {
         export type TypeBotPreparedInlineMessage =
             messages.BotPreparedInlineMessage;
         export type TypePreparedInlineMessage = messages.PreparedInlineMessage;
+        export type TypeFoundStickers =
+            | messages.FoundStickersNotModified
+            | messages.FoundStickers;
+        export type TypeWebPagePreview = messages.WebPagePreview;
+        export type TypeEmojiGameOutcome = messages.EmojiGameOutcome;
+        export type TypeEmojiGameInfo =
+            | messages.EmojiGameUnavailable
+            | messages.EmojiGameDiceInfo;
     }
 
     export namespace updates {
@@ -20822,6 +23676,9 @@ export namespace Api {
             | account.ResetPasswordFailedWait
             | account.ResetPasswordRequestedWait
             | account.ResetPasswordOk;
+        export type TypeChatThemes =
+            | account.ChatThemesNotModified
+            | account.ChatThemes;
         export type TypeSavedRingtones =
             | account.SavedRingtonesNotModified
             | account.SavedRingtones;
@@ -20839,6 +23696,13 @@ export namespace Api {
         export type TypeBusinessChatLinks = account.BusinessChatLinks;
         export type TypeResolvedBusinessChatLinks =
             account.ResolvedBusinessChatLinks;
+        export type TypePaidMessagesRevenue = account.PaidMessagesRevenue;
+        export type TypeSavedMusicIds =
+            | account.SavedMusicIdsNotModified
+            | account.SavedMusicIds;
+        export type TypePasskeys = account.Passkeys;
+        export type TypePasskeyRegistrationOptions =
+            account.PasskeyRegistrationOptions;
     }
 
     export namespace channels {
@@ -20883,7 +23747,30 @@ export namespace Api {
         export type TypeStarGifts =
             | payments.StarGiftsNotModified
             | payments.StarGifts;
-        export type TypeUserStarGifts = payments.UserStarGifts;
+        export type TypeConnectedStarRefBots = payments.ConnectedStarRefBots;
+        export type TypeSuggestedStarRefBots = payments.SuggestedStarRefBots;
+        export type TypeStarGiftUpgradePreview =
+            payments.StarGiftUpgradePreview;
+        export type TypeUniqueStarGift = payments.UniqueStarGift;
+        export type TypeSavedStarGifts = payments.SavedStarGifts;
+        export type TypeStarGiftWithdrawalUrl = payments.StarGiftWithdrawalUrl;
+        export type TypeResaleStarGifts = payments.ResaleStarGifts;
+        export type TypeStarGiftCollections =
+            | payments.StarGiftCollectionsNotModified
+            | payments.StarGiftCollections;
+        export type TypeUniqueStarGiftValueInfo =
+            payments.UniqueStarGiftValueInfo;
+        export type TypeCheckCanSendGiftResult =
+            | payments.CheckCanSendGiftResultOk
+            | payments.CheckCanSendGiftResultFail;
+        export type TypeStarGiftAuctionState = payments.StarGiftAuctionState;
+        export type TypeStarGiftAuctionAcquiredGifts =
+            payments.StarGiftAuctionAcquiredGifts;
+        export type TypeStarGiftActiveAuctions =
+            | payments.StarGiftActiveAuctionsNotModified
+            | payments.StarGiftActiveAuctions;
+        export type TypeStarGiftUpgradeAttributes =
+            payments.StarGiftUpgradeAttributes;
     }
 
     export namespace phone {
@@ -20894,6 +23781,7 @@ export namespace Api {
         export type TypeExportedGroupCallInvite = phone.ExportedGroupCallInvite;
         export type TypeGroupCallStreamChannels = phone.GroupCallStreamChannels;
         export type TypeGroupCallStreamRtmpUrl = phone.GroupCallStreamRtmpUrl;
+        export type TypeGroupCallStars = phone.GroupCallStars;
     }
 
     export namespace stats {
@@ -20902,11 +23790,6 @@ export namespace Api {
         export type TypeMessageStats = stats.MessageStats;
         export type TypeStoryStats = stats.StoryStats;
         export type TypePublicForwards = stats.PublicForwards;
-        export type TypeBroadcastRevenueStats = stats.BroadcastRevenueStats;
-        export type TypeBroadcastRevenueWithdrawalUrl =
-            stats.BroadcastRevenueWithdrawalUrl;
-        export type TypeBroadcastRevenueTransactions =
-            stats.BroadcastRevenueTransactions;
     }
 
     export namespace stickers {
@@ -20915,6 +23798,10 @@ export namespace Api {
 
     export namespace users {
         export type TypeUserFull = users.UserFull;
+        export type TypeUsers = users.Users | users.UsersSlice;
+        export type TypeSavedMusic =
+            | users.SavedMusicNotModified
+            | users.SavedMusic;
     }
 
     export namespace chatlists {
@@ -20943,6 +23830,8 @@ export namespace Api {
         export type TypePeerStories = stories.PeerStories;
         export type TypeStoryReactionsList = stories.StoryReactionsList;
         export type TypeFoundStories = stories.FoundStories;
+        export type TypeCanSendStoryCount = stories.CanSendStoryCount;
+        export type TypeAlbums = stories.AlbumsNotModified | stories.Albums;
     }
 
     export namespace premium {
@@ -21318,6 +24207,57 @@ export namespace Api {
             phoneNumber: string;
             phoneCodeHash: string;
             mnc: string;
+        }
+        export class CheckPaidAuth extends Request<
+            Partial<{
+                phoneNumber: string;
+                phoneCodeHash: string;
+                formId: long;
+            }>,
+            auth.TypeSentCode
+        > {
+            CONSTRUCTOR_ID: 1457889180;
+            SUBCLASS_OF_ID: 1827172481;
+            classType: "request";
+            className: "auth.CheckPaidAuth";
+            static fromReader(reader: Reader): CheckPaidAuth;
+            phoneNumber: string;
+            phoneCodeHash: string;
+            formId: long;
+        }
+        export class InitPasskeyLogin extends Request<
+            Partial<{
+                apiId: int;
+                apiHash: string;
+            }>,
+            auth.TypePasskeyLoginOptions
+        > {
+            CONSTRUCTOR_ID: 1368051895;
+            SUBCLASS_OF_ID: 3648598066;
+            classType: "request";
+            className: "auth.InitPasskeyLogin";
+            static fromReader(reader: Reader): InitPasskeyLogin;
+            apiId: int;
+            apiHash: string;
+        }
+        export class FinishPasskeyLogin extends Request<
+            Partial<{
+                // flags: null;
+                credential: Api.TypeInputPasskeyCredential;
+                fromDcId?: int;
+                fromAuthKeyId?: long;
+            }>,
+            auth.TypeAuthorization
+        > {
+            CONSTRUCTOR_ID: 2555882759;
+            SUBCLASS_OF_ID: 3118485049;
+            classType: "request";
+            className: "auth.FinishPasskeyLogin";
+            static fromReader(reader: Reader): FinishPasskeyLogin;
+            // flags: null;
+            credential: Api.TypeInputPasskeyCredential;
+            fromDcId?: int;
+            fromAuthKeyId?: long;
         }
     }
 
@@ -22573,20 +25513,18 @@ export namespace Api {
             Partial<{
                 // flags: null;
                 forProfile?: boolean;
-                color?: int;
-                backgroundEmojiId?: long;
+                color?: Api.TypePeerColor;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 2096079197;
+            CONSTRUCTOR_ID: 1749885262;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "account.UpdateColor";
             static fromReader(reader: Reader): UpdateColor;
             // flags: null;
             forProfile?: boolean;
-            color?: int;
-            backgroundEmojiId?: long;
+            color?: Api.TypePeerColor;
         }
         export class GetDefaultBackgroundEmojis extends Request<
             Partial<{
@@ -22692,21 +25630,21 @@ export namespace Api {
         export class UpdateConnectedBot extends Request<
             Partial<{
                 // flags: null;
-                canReply?: boolean;
                 deleted?: boolean;
+                rights?: Api.TypeBusinessBotRights;
                 bot: Api.TypeEntityLike;
                 recipients: Api.TypeInputBusinessBotRecipients;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 1138250269;
+            CONSTRUCTOR_ID: 1721797758;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "account.UpdateConnectedBot";
             static fromReader(reader: Reader): UpdateConnectedBot;
             // flags: null;
-            canReply?: boolean;
             deleted?: boolean;
+            rights?: Api.TypeBusinessBotRights;
             bot: Api.TypeEntityLike;
             recipients: Api.TypeInputBusinessBotRecipients;
         }
@@ -22904,6 +25842,162 @@ export namespace Api {
             static fromReader(reader: Reader): SetReactionsNotifySettings;
             settings: Api.TypeReactionsNotifySettings;
         }
+        export class GetCollectibleEmojiStatuses extends Request<
+            Partial<{
+                hash: long;
+            }>,
+            account.TypeEmojiStatuses
+        > {
+            CONSTRUCTOR_ID: 779830595;
+            SUBCLASS_OF_ID: 3554674122;
+            classType: "request";
+            className: "account.GetCollectibleEmojiStatuses";
+            static fromReader(reader: Reader): GetCollectibleEmojiStatuses;
+            hash: long;
+        }
+        export class GetPaidMessagesRevenue extends Request<
+            Partial<{
+                // flags: null;
+                parentPeer?: Api.TypeEntityLike;
+                userId: Api.TypeEntityLike;
+            }>,
+            account.TypePaidMessagesRevenue
+        > {
+            CONSTRUCTOR_ID: 431639143;
+            SUBCLASS_OF_ID: 355404887;
+            classType: "request";
+            className: "account.GetPaidMessagesRevenue";
+            static fromReader(reader: Reader): GetPaidMessagesRevenue;
+            // flags: null;
+            parentPeer?: Api.TypeEntityLike;
+            userId: Api.TypeEntityLike;
+        }
+        export class ToggleNoPaidMessagesException extends Request<
+            Partial<{
+                // flags: null;
+                refundCharged?: boolean;
+                requirePayment?: boolean;
+                parentPeer?: Api.TypeEntityLike;
+                userId: Api.TypeEntityLike;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 4264483446;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "account.ToggleNoPaidMessagesException";
+            static fromReader(reader: Reader): ToggleNoPaidMessagesException;
+            // flags: null;
+            refundCharged?: boolean;
+            requirePayment?: boolean;
+            parentPeer?: Api.TypeEntityLike;
+            userId: Api.TypeEntityLike;
+        }
+        export class SetMainProfileTab extends Request<
+            Partial<{
+                tab: Api.TypeProfileTab;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 1575909552;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "account.SetMainProfileTab";
+            static fromReader(reader: Reader): SetMainProfileTab;
+            tab: Api.TypeProfileTab;
+        }
+        export class SaveMusic extends Request<
+            Partial<{
+                // flags: null;
+                unsave?: boolean;
+                id: Api.TypeInputDocument;
+                afterId?: Api.TypeInputDocument;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 2993107625;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "account.SaveMusic";
+            static fromReader(reader: Reader): SaveMusic;
+            // flags: null;
+            unsave?: boolean;
+            id: Api.TypeInputDocument;
+            afterId?: Api.TypeInputDocument;
+        }
+        export class GetSavedMusicIds extends Request<
+            Partial<{
+                hash: long;
+            }>,
+            account.TypeSavedMusicIds
+        > {
+            CONSTRUCTOR_ID: 3768410031;
+            SUBCLASS_OF_ID: 1263203986;
+            classType: "request";
+            className: "account.GetSavedMusicIds";
+            static fromReader(reader: Reader): GetSavedMusicIds;
+            hash: long;
+        }
+        export class GetUniqueGiftChatThemes extends Request<
+            Partial<{
+                offset: string;
+                limit: int;
+                hash: long;
+            }>,
+            account.TypeChatThemes
+        > {
+            CONSTRUCTOR_ID: 3828148681;
+            SUBCLASS_OF_ID: 364989096;
+            classType: "request";
+            className: "account.GetUniqueGiftChatThemes";
+            static fromReader(reader: Reader): GetUniqueGiftChatThemes;
+            offset: string;
+            limit: int;
+            hash: long;
+        }
+        export class InitPasskeyRegistration extends Request<
+            void,
+            account.TypePasskeyRegistrationOptions
+        > {
+            CONSTRUCTOR_ID: 1117079528;
+            SUBCLASS_OF_ID: 874349540;
+            classType: "request";
+            className: "account.InitPasskeyRegistration";
+            static fromReader(reader: Reader): InitPasskeyRegistration;
+        }
+        export class RegisterPasskey extends Request<
+            Partial<{
+                credential: Api.TypeInputPasskeyCredential;
+            }>,
+            Api.TypePasskey
+        > {
+            CONSTRUCTOR_ID: 1437867990;
+            SUBCLASS_OF_ID: 3476557280;
+            classType: "request";
+            className: "account.RegisterPasskey";
+            static fromReader(reader: Reader): RegisterPasskey;
+            credential: Api.TypeInputPasskeyCredential;
+        }
+        export class GetPasskeys extends Request<void, account.TypePasskeys> {
+            CONSTRUCTOR_ID: 3927903314;
+            SUBCLASS_OF_ID: 618471518;
+            classType: "request";
+            className: "account.GetPasskeys";
+            static fromReader(reader: Reader): GetPasskeys;
+        }
+        export class DeletePasskey extends Request<
+            Partial<{
+                id: string;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 4122302015;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "account.DeletePasskey";
+            static fromReader(reader: Reader): DeletePasskey;
+            id: string;
+        }
     }
 
     export namespace users {
@@ -22948,18 +26042,67 @@ export namespace Api {
             id: Api.TypeEntityLike;
             errors: Api.TypeSecureValueError[];
         }
-        export class GetIsPremiumRequiredToContact extends Request<
+        export class GetRequirementsToContact extends Request<
             Partial<{
                 id: Api.TypeEntityLike[];
             }>,
-            Bool[]
+            Api.TypeRequirementToContact[]
         > {
-            CONSTRUCTOR_ID: 2787289616;
-            SUBCLASS_OF_ID: 366986225;
+            CONSTRUCTOR_ID: 3634004899;
+            SUBCLASS_OF_ID: 841360323;
             classType: "request";
-            className: "users.GetIsPremiumRequiredToContact";
-            static fromReader(reader: Reader): GetIsPremiumRequiredToContact;
+            className: "users.GetRequirementsToContact";
+            static fromReader(reader: Reader): GetRequirementsToContact;
             id: Api.TypeEntityLike[];
+        }
+        export class GetSavedMusic extends Request<
+            Partial<{
+                id: Api.TypeEntityLike;
+                offset: int;
+                limit: int;
+                hash: long;
+            }>,
+            users.TypeSavedMusic
+        > {
+            CONSTRUCTOR_ID: 2022539235;
+            SUBCLASS_OF_ID: 4162039351;
+            classType: "request";
+            className: "users.GetSavedMusic";
+            static fromReader(reader: Reader): GetSavedMusic;
+            id: Api.TypeEntityLike;
+            offset: int;
+            limit: int;
+            hash: long;
+        }
+        export class GetSavedMusicByID extends Request<
+            Partial<{
+                id: Api.TypeEntityLike;
+                documents: Api.TypeInputDocument[];
+            }>,
+            users.TypeSavedMusic
+        > {
+            CONSTRUCTOR_ID: 1970513129;
+            SUBCLASS_OF_ID: 4162039351;
+            classType: "request";
+            className: "users.GetSavedMusicByID";
+            static fromReader(reader: Reader): GetSavedMusicByID;
+            id: Api.TypeEntityLike;
+            documents: Api.TypeInputDocument[];
+        }
+        export class SuggestBirthday extends Request<
+            Partial<{
+                id: Api.TypeEntityLike;
+                birthday: Api.TypeBirthday;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 4233311090;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "users.SuggestBirthday";
+            static fromReader(reader: Reader): SuggestBirthday;
+            id: Api.TypeEntityLike;
+            birthday: Api.TypeBirthday;
         }
     }
 
@@ -23109,16 +26252,20 @@ export namespace Api {
         }
         export class ResolveUsername extends Request<
             Partial<{
+                // flags: null;
                 username: string;
+                referer?: string;
             }>,
             contacts.TypeResolvedPeer
         > {
-            CONSTRUCTOR_ID: 4181511075;
+            CONSTRUCTOR_ID: 1918565308;
             SUBCLASS_OF_ID: 4033196968;
             classType: "request";
             className: "contacts.ResolveUsername";
             static fromReader(reader: Reader): ResolveUsername;
+            // flags: null;
             username: string;
+            referer?: string;
         }
         export class GetTopPeers extends Request<
             Partial<{
@@ -23207,10 +26354,11 @@ export namespace Api {
                 firstName: string;
                 lastName: string;
                 phone: string;
+                note?: Api.TypeTextWithEntities;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 3908330448;
+            CONSTRUCTOR_ID: 3652857428;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "contacts.AddContact";
@@ -23221,6 +26369,7 @@ export namespace Api {
             firstName: string;
             lastName: string;
             phone: string;
+            note?: Api.TypeTextWithEntities;
         }
         export class AcceptContact extends Request<
             Partial<{
@@ -23352,6 +26501,34 @@ export namespace Api {
             classType: "request";
             className: "contacts.GetBirthdays";
             static fromReader(reader: Reader): GetBirthdays;
+        }
+        export class GetSponsoredPeers extends Request<
+            Partial<{
+                q: string;
+            }>,
+            contacts.TypeSponsoredPeers
+        > {
+            CONSTRUCTOR_ID: 3066610579;
+            SUBCLASS_OF_ID: 3026017484;
+            classType: "request";
+            className: "contacts.GetSponsoredPeers";
+            static fromReader(reader: Reader): GetSponsoredPeers;
+            q: string;
+        }
+        export class UpdateContactNote extends Request<
+            Partial<{
+                id: Api.TypeEntityLike;
+                note: Api.TypeTextWithEntities;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 329212923;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "contacts.UpdateContactNote";
+            static fromReader(reader: Reader): UpdateContactNote;
+            id: Api.TypeEntityLike;
+            note: Api.TypeTextWithEntities;
         }
     }
 
@@ -23573,13 +26750,16 @@ export namespace Api {
                 replyMarkup?: Api.TypeReplyMarkup;
                 entities?: Api.TypeMessageEntity[];
                 scheduleDate?: int;
+                scheduleRepeatPeriod?: int;
                 sendAs?: Api.TypeEntityLike;
                 quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
                 effect?: long;
+                allowPaidStars?: long;
+                suggestedPost?: Api.TypeSuggestedPost;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 2554304325;
+            CONSTRUCTOR_ID: 1415369050;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.SendMessage";
@@ -23600,9 +26780,12 @@ export namespace Api {
             replyMarkup?: Api.TypeReplyMarkup;
             entities?: Api.TypeMessageEntity[];
             scheduleDate?: int;
+            scheduleRepeatPeriod?: int;
             sendAs?: Api.TypeEntityLike;
             quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
             effect?: long;
+            allowPaidStars?: long;
+            suggestedPost?: Api.TypeSuggestedPost;
         }
         export class SendMedia extends Request<
             Partial<{
@@ -23622,13 +26805,16 @@ export namespace Api {
                 replyMarkup?: Api.TypeReplyMarkup;
                 entities?: Api.TypeMessageEntity[];
                 scheduleDate?: int;
+                scheduleRepeatPeriod?: int;
                 sendAs?: Api.TypeEntityLike;
                 quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
                 effect?: long;
+                allowPaidStars?: long;
+                suggestedPost?: Api.TypeSuggestedPost;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 2018673486;
+            CONSTRUCTOR_ID: 53536639;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.SendMedia";
@@ -23649,9 +26835,12 @@ export namespace Api {
             replyMarkup?: Api.TypeReplyMarkup;
             entities?: Api.TypeMessageEntity[];
             scheduleDate?: int;
+            scheduleRepeatPeriod?: int;
             sendAs?: Api.TypeEntityLike;
             quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
             effect?: long;
+            allowPaidStars?: long;
+            suggestedPost?: Api.TypeSuggestedPost;
         }
         export class ForwardMessages extends Request<
             Partial<{
@@ -23668,13 +26857,19 @@ export namespace Api {
                 randomId: long[];
                 toPeer: Api.TypeEntityLike;
                 topMsgId?: MessageIDLike;
+                replyTo?: Api.TypeInputReplyTo;
                 scheduleDate?: int;
+                scheduleRepeatPeriod?: int;
                 sendAs?: Api.TypeEntityLike;
                 quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
+                effect?: long;
+                videoTimestamp?: int;
+                allowPaidStars?: long;
+                suggestedPost?: Api.TypeSuggestedPost;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 3573781000;
+            CONSTRUCTOR_ID: 326126204;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.ForwardMessages";
@@ -23692,9 +26887,15 @@ export namespace Api {
             randomId: long[];
             toPeer: Api.TypeEntityLike;
             topMsgId?: MessageIDLike;
+            replyTo?: Api.TypeInputReplyTo;
             scheduleDate?: int;
+            scheduleRepeatPeriod?: int;
             sendAs?: Api.TypeEntityLike;
             quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
+            effect?: long;
+            videoTimestamp?: int;
+            allowPaidStars?: long;
+            suggestedPost?: Api.TypeSuggestedPost;
         }
         export class ReportSpam extends Request<
             Partial<{
@@ -24082,10 +27283,10 @@ export namespace Api {
                 message: string;
                 entities?: Api.TypeMessageEntity[];
             }>,
-            Api.TypeMessageMedia
+            messages.TypeWebPagePreview
         > {
-            CONSTRUCTOR_ID: 2338894028;
-            SUBCLASS_OF_ID: 1198308914;
+            CONSTRUCTOR_ID: 1460498287;
+            SUBCLASS_OF_ID: 3801354434;
             classType: "request";
             className: "messages.GetWebPagePreview";
             static fromReader(reader: Reader): GetWebPagePreview;
@@ -24259,6 +27460,8 @@ export namespace Api {
             Partial<{
                 // flags: null;
                 broadcastsOnly?: boolean;
+                groupsOnly?: boolean;
+                usersOnly?: boolean;
                 folderId?: int;
                 q: string;
                 filter: Api.TypeMessagesFilter;
@@ -24278,6 +27481,8 @@ export namespace Api {
             static fromReader(reader: Reader): SearchGlobal;
             // flags: null;
             broadcastsOnly?: boolean;
+            groupsOnly?: boolean;
+            usersOnly?: boolean;
             folderId?: int;
             q: string;
             filter: Api.TypeMessagesFilter;
@@ -24419,10 +27624,11 @@ export namespace Api {
                 scheduleDate?: int;
                 sendAs?: Api.TypeEntityLike;
                 quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
+                allowPaidStars?: long;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 1052698730;
+            CONSTRUCTOR_ID: 3234821702;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.SendInlineBotResult";
@@ -24440,6 +27646,7 @@ export namespace Api {
             scheduleDate?: int;
             sendAs?: Api.TypeEntityLike;
             quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
+            allowPaidStars?: long;
         }
         export class GetMessageEditData extends Request<
             Partial<{
@@ -24468,11 +27675,12 @@ export namespace Api {
                 replyMarkup?: Api.TypeReplyMarkup;
                 entities?: Api.TypeMessageEntity[];
                 scheduleDate?: int;
+                scheduleRepeatPeriod?: int;
                 quickReplyShortcutId?: int;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 3755032581;
+            CONSTRUCTOR_ID: 1374175969;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.EditMessage";
@@ -24487,6 +27695,7 @@ export namespace Api {
             replyMarkup?: Api.TypeReplyMarkup;
             entities?: Api.TypeMessageEntity[];
             scheduleDate?: int;
+            scheduleRepeatPeriod?: int;
             quickReplyShortcutId?: int;
         }
         export class EditInlineBotMessage extends Request<
@@ -24586,10 +27795,11 @@ export namespace Api {
                 entities?: Api.TypeMessageEntity[];
                 media?: Api.TypeInputMedia;
                 effect?: long;
+                suggestedPost?: Api.TypeSuggestedPost;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 3547514318;
+            CONSTRUCTOR_ID: 1420701838;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "messages.SaveDraft";
@@ -24603,6 +27813,7 @@ export namespace Api {
             entities?: Api.TypeMessageEntity[];
             media?: Api.TypeInputMedia;
             effect?: long;
+            suggestedPost?: Api.TypeSuggestedPost;
         }
         export class GetAllDrafts extends Request<void, Api.TypeUpdates> {
             CONSTRUCTOR_ID: 1782549861;
@@ -25076,10 +28287,11 @@ export namespace Api {
                 sendAs?: Api.TypeEntityLike;
                 quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
                 effect?: long;
+                allowPaidStars?: long;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 934757205;
+            CONSTRUCTOR_ID: 469278068;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.SendMultiMedia";
@@ -25099,6 +28311,7 @@ export namespace Api {
             sendAs?: Api.TypeEntityLike;
             quickReplyShortcut?: Api.TypeInputQuickReplyShortcut;
             effect?: long;
+            allowPaidStars?: long;
         }
         export class UploadEncryptedFile extends Request<
             Partial<{
@@ -25148,28 +28361,35 @@ export namespace Api {
             Partial<{
                 // flags: null;
                 unread?: boolean;
+                parentPeer?: Api.TypeEntityLike;
                 peer: Api.TypeInputDialogPeer;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 3263617423;
+            CONSTRUCTOR_ID: 2354054904;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "messages.MarkDialogUnread";
             static fromReader(reader: Reader): MarkDialogUnread;
             // flags: null;
             unread?: boolean;
+            parentPeer?: Api.TypeEntityLike;
             peer: Api.TypeInputDialogPeer;
         }
         export class GetDialogUnreadMarks extends Request<
-            void,
+            Partial<{
+                // flags: null;
+                parentPeer?: Api.TypeEntityLike;
+            }>,
             Api.TypeDialogPeer[]
         > {
-            CONSTRUCTOR_ID: 585256482;
+            CONSTRUCTOR_ID: 555754018;
             SUBCLASS_OF_ID: 3200666329;
             classType: "request";
             className: "messages.GetDialogUnreadMarks";
             static fromReader(reader: Reader): GetDialogUnreadMarks;
+            // flags: null;
+            parentPeer?: Api.TypeEntityLike;
         }
         export class ClearAllDrafts extends Request<void, Bool> {
             CONSTRUCTOR_ID: 2119757468;
@@ -25358,10 +28578,11 @@ export namespace Api {
                 msgId?: MessageIDLike;
                 buttonId?: int;
                 url?: string;
+                inAppOrigin?: string;
             }>,
             Api.TypeUrlAuthResult
         > {
-            CONSTRUCTOR_ID: 428848198;
+            CONSTRUCTOR_ID: 2303510940;
             SUBCLASS_OF_ID: 2003159838;
             classType: "request";
             className: "messages.RequestUrlAuth";
@@ -25371,29 +28592,34 @@ export namespace Api {
             msgId?: MessageIDLike;
             buttonId?: int;
             url?: string;
+            inAppOrigin?: string;
         }
         export class AcceptUrlAuth extends Request<
             Partial<{
                 // flags: null;
                 writeAllowed?: boolean;
+                sharePhoneNumber?: boolean;
                 peer?: Api.TypeEntityLike;
                 msgId?: MessageIDLike;
                 buttonId?: int;
                 url?: string;
+                matchCode?: string;
             }>,
             Api.TypeUrlAuthResult
         > {
-            CONSTRUCTOR_ID: 2972479781;
+            CONSTRUCTOR_ID: 1738797278;
             SUBCLASS_OF_ID: 2003159838;
             classType: "request";
             className: "messages.AcceptUrlAuth";
             static fromReader(reader: Reader): AcceptUrlAuth;
             // flags: null;
             writeAllowed?: boolean;
+            sharePhoneNumber?: boolean;
             peer?: Api.TypeEntityLike;
             msgId?: MessageIDLike;
             buttonId?: int;
             url?: string;
+            matchCode?: string;
         }
         export class HidePeerSettingsBar extends Request<
             Partial<{
@@ -25645,10 +28871,11 @@ export namespace Api {
                 // flags: null;
                 peer: Api.TypeEntityLike;
                 topMsgId?: MessageIDLike;
+                savedPeerId?: Api.TypeEntityLike;
             }>,
             messages.TypeAffectedHistory
         > {
-            CONSTRUCTOR_ID: 3995253160;
+            CONSTRUCTOR_ID: 103667527;
             SUBCLASS_OF_ID: 743031062;
             classType: "request";
             className: "messages.UnpinAllMessages";
@@ -25656,6 +28883,7 @@ export namespace Api {
             // flags: null;
             peer: Api.TypeEntityLike;
             topMsgId?: MessageIDLike;
+            savedPeerId?: Api.TypeEntityLike;
         }
         export class DeleteChat extends Request<
             Partial<{
@@ -25919,17 +29147,17 @@ export namespace Api {
         export class SetChatTheme extends Request<
             Partial<{
                 peer: Api.TypeEntityLike;
-                emoticon: string;
+                theme: Api.TypeInputChatTheme;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 3862683967;
+            CONSTRUCTOR_ID: 135398089;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.SetChatTheme";
             static fromReader(reader: Reader): SetChatTheme;
             peer: Api.TypeEntityLike;
-            emoticon: string;
+            theme: Api.TypeInputChatTheme;
         }
         export class GetMessageReadParticipants extends Request<
             Partial<{
@@ -26032,18 +29260,22 @@ export namespace Api {
         }
         export class ToggleNoForwards extends Request<
             Partial<{
+                // flags: null;
                 peer: Api.TypeEntityLike;
                 enabled: Bool;
+                requestMsgId?: MessageIDLike;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 2971578274;
+            CONSTRUCTOR_ID: 2986875445;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.ToggleNoForwards";
             static fromReader(reader: Reader): ToggleNoForwards;
+            // flags: null;
             peer: Api.TypeEntityLike;
             enabled: Bool;
+            requestMsgId?: MessageIDLike;
         }
         export class SaveDefaultSendAs extends Request<
             Partial<{
@@ -26194,6 +29426,7 @@ export namespace Api {
                 // flags: null;
                 peer: Api.TypeEntityLike;
                 topMsgId?: MessageIDLike;
+                savedPeerId?: Api.TypeEntityLike;
                 offsetId: int;
                 addOffset: int;
                 limit: int;
@@ -26202,7 +29435,7 @@ export namespace Api {
             }>,
             messages.TypeMessages
         > {
-            CONSTRUCTOR_ID: 841173339;
+            CONSTRUCTOR_ID: 3179253932;
             SUBCLASS_OF_ID: 3568569182;
             classType: "request";
             className: "messages.GetUnreadReactions";
@@ -26210,6 +29443,7 @@ export namespace Api {
             // flags: null;
             peer: Api.TypeEntityLike;
             topMsgId?: MessageIDLike;
+            savedPeerId?: Api.TypeEntityLike;
             offsetId: int;
             addOffset: int;
             limit: int;
@@ -26221,10 +29455,11 @@ export namespace Api {
                 // flags: null;
                 peer: Api.TypeEntityLike;
                 topMsgId?: MessageIDLike;
+                savedPeerId?: Api.TypeEntityLike;
             }>,
             messages.TypeAffectedHistory
         > {
-            CONSTRUCTOR_ID: 1420459918;
+            CONSTRUCTOR_ID: 2663665555;
             SUBCLASS_OF_ID: 743031062;
             classType: "request";
             className: "messages.ReadReactions";
@@ -26232,6 +29467,7 @@ export namespace Api {
             // flags: null;
             peer: Api.TypeEntityLike;
             topMsgId?: MessageIDLike;
+            savedPeerId?: Api.TypeEntityLike;
         }
         export class SearchSentMedia extends Request<
             Partial<{
@@ -26769,6 +30005,7 @@ export namespace Api {
             Partial<{
                 // flags: null;
                 excludePinned?: boolean;
+                parentPeer?: Api.TypeEntityLike;
                 offsetDate: int;
                 offsetId: int;
                 offsetPeer: Api.TypeEntityLike;
@@ -26777,13 +30014,14 @@ export namespace Api {
             }>,
             messages.TypeSavedDialogs
         > {
-            CONSTRUCTOR_ID: 1401016858;
+            CONSTRUCTOR_ID: 512883865;
             SUBCLASS_OF_ID: 1632352382;
             classType: "request";
             className: "messages.GetSavedDialogs";
             static fromReader(reader: Reader): GetSavedDialogs;
             // flags: null;
             excludePinned?: boolean;
+            parentPeer?: Api.TypeEntityLike;
             offsetDate: int;
             offsetId: int;
             offsetPeer: Api.TypeEntityLike;
@@ -26792,6 +30030,8 @@ export namespace Api {
         }
         export class GetSavedHistory extends Request<
             Partial<{
+                // flags: null;
+                parentPeer?: Api.TypeEntityLike;
                 peer: Api.TypeEntityLike;
                 offsetId: int;
                 offsetDate: int;
@@ -26803,11 +30043,13 @@ export namespace Api {
             }>,
             messages.TypeMessages
         > {
-            CONSTRUCTOR_ID: 1033519437;
+            CONSTRUCTOR_ID: 2576003081;
             SUBCLASS_OF_ID: 3568569182;
             classType: "request";
             className: "messages.GetSavedHistory";
             static fromReader(reader: Reader): GetSavedHistory;
+            // flags: null;
+            parentPeer?: Api.TypeEntityLike;
             peer: Api.TypeEntityLike;
             offsetId: int;
             offsetDate: int;
@@ -26820,6 +30062,7 @@ export namespace Api {
         export class DeleteSavedHistory extends Request<
             Partial<{
                 // flags: null;
+                parentPeer?: Api.TypeEntityLike;
                 peer: Api.TypeEntityLike;
                 maxId: int;
                 minDate?: int;
@@ -26827,12 +30070,13 @@ export namespace Api {
             }>,
             messages.TypeAffectedHistory
         > {
-            CONSTRUCTOR_ID: 1855459371;
+            CONSTRUCTOR_ID: 1304758367;
             SUBCLASS_OF_ID: 743031062;
             classType: "request";
             className: "messages.DeleteSavedHistory";
             static fromReader(reader: Reader): DeleteSavedHistory;
             // flags: null;
+            parentPeer?: Api.TypeEntityLike;
             peer: Api.TypeEntityLike;
             maxId: int;
             minDate?: int;
@@ -27199,11 +30443,11 @@ export namespace Api {
                 msgId: MessageIDLike;
                 count: int;
                 randomId?: long;
-                private?: Bool;
+                private?: Api.TypePaidReactionPrivacy;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 2648090235;
+            CONSTRUCTOR_ID: 1488702288;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "messages.SendPaidReaction";
@@ -27213,24 +30457,24 @@ export namespace Api {
             msgId: MessageIDLike;
             count: int;
             randomId?: long;
-            private?: Bool;
+            private?: Api.TypePaidReactionPrivacy;
         }
         export class TogglePaidReactionPrivacy extends Request<
             Partial<{
                 peer: Api.TypeEntityLike;
                 msgId: MessageIDLike;
-                private: Bool;
+                private: Api.TypePaidReactionPrivacy;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 2224739223;
+            CONSTRUCTOR_ID: 1129874869;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "messages.TogglePaidReactionPrivacy";
             static fromReader(reader: Reader): TogglePaidReactionPrivacy;
             peer: Api.TypeEntityLike;
             msgId: MessageIDLike;
-            private: Bool;
+            private: Api.TypePaidReactionPrivacy;
         }
         export class GetPaidReactionPrivacy extends Request<
             void,
@@ -27244,17 +30488,15 @@ export namespace Api {
         }
         export class ViewSponsoredMessage extends Request<
             Partial<{
-                peer: Api.TypeEntityLike;
                 randomId: bytes;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 1731909873;
+            CONSTRUCTOR_ID: 647902787;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "messages.ViewSponsoredMessage";
             static fromReader(reader: Reader): ViewSponsoredMessage;
-            peer: Api.TypeEntityLike;
             randomId: bytes;
         }
         export class ClickSponsoredMessage extends Request<
@@ -27262,12 +30504,11 @@ export namespace Api {
                 // flags: null;
                 media?: boolean;
                 fullscreen?: boolean;
-                peer: Api.TypeEntityLike;
                 randomId: bytes;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 252261477;
+            CONSTRUCTOR_ID: 2184512894;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "messages.ClickSponsoredMessage";
@@ -27275,38 +30516,39 @@ export namespace Api {
             // flags: null;
             media?: boolean;
             fullscreen?: boolean;
-            peer: Api.TypeEntityLike;
             randomId: bytes;
         }
         export class ReportSponsoredMessage extends Request<
             Partial<{
-                peer: Api.TypeEntityLike;
                 randomId: bytes;
                 option: bytes;
             }>,
             channels.TypeSponsoredMessageReportResult
         > {
-            CONSTRUCTOR_ID: 452189112;
+            CONSTRUCTOR_ID: 315355332;
             SUBCLASS_OF_ID: 639834146;
             classType: "request";
             className: "messages.ReportSponsoredMessage";
             static fromReader(reader: Reader): ReportSponsoredMessage;
-            peer: Api.TypeEntityLike;
             randomId: bytes;
             option: bytes;
         }
         export class GetSponsoredMessages extends Request<
             Partial<{
+                // flags: null;
                 peer: Api.TypeEntityLike;
+                msgId?: MessageIDLike;
             }>,
             messages.TypeSponsoredMessages
         > {
-            CONSTRUCTOR_ID: 2614293561;
+            CONSTRUCTOR_ID: 1030547536;
             SUBCLASS_OF_ID: 2134993376;
             classType: "request";
             className: "messages.GetSponsoredMessages";
             static fromReader(reader: Reader): GetSponsoredMessages;
+            // flags: null;
             peer: Api.TypeEntityLike;
+            msgId?: MessageIDLike;
         }
         export class SavePreparedInlineMessage extends Request<
             Partial<{
@@ -27341,6 +30583,392 @@ export namespace Api {
             static fromReader(reader: Reader): GetPreparedInlineMessage;
             bot: Api.TypeEntityLike;
             id: string;
+        }
+        export class SearchStickers extends Request<
+            Partial<{
+                // flags: null;
+                emojis?: boolean;
+                q: string;
+                emoticon: string;
+                langCode: string[];
+                offset: int;
+                limit: int;
+                hash: long;
+            }>,
+            messages.TypeFoundStickers
+        > {
+            CONSTRUCTOR_ID: 699516522;
+            SUBCLASS_OF_ID: 104866129;
+            classType: "request";
+            className: "messages.SearchStickers";
+            static fromReader(reader: Reader): SearchStickers;
+            // flags: null;
+            emojis?: boolean;
+            q: string;
+            emoticon: string;
+            langCode: string[];
+            offset: int;
+            limit: int;
+            hash: long;
+        }
+        export class ReportMessagesDelivery extends Request<
+            Partial<{
+                // flags: null;
+                push?: boolean;
+                peer: Api.TypeEntityLike;
+                id: int[];
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 1517122453;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "messages.ReportMessagesDelivery";
+            static fromReader(reader: Reader): ReportMessagesDelivery;
+            // flags: null;
+            push?: boolean;
+            peer: Api.TypeEntityLike;
+            id: int[];
+        }
+        export class GetSavedDialogsByID extends Request<
+            Partial<{
+                // flags: null;
+                parentPeer?: Api.TypeEntityLike;
+                ids: Api.TypeEntityLike[];
+            }>,
+            messages.TypeSavedDialogs
+        > {
+            CONSTRUCTOR_ID: 1869585558;
+            SUBCLASS_OF_ID: 1632352382;
+            classType: "request";
+            className: "messages.GetSavedDialogsByID";
+            static fromReader(reader: Reader): GetSavedDialogsByID;
+            // flags: null;
+            parentPeer?: Api.TypeEntityLike;
+            ids: Api.TypeEntityLike[];
+        }
+        export class ReadSavedHistory extends Request<
+            Partial<{
+                parentPeer: Api.TypeEntityLike;
+                peer: Api.TypeEntityLike;
+                maxId: int;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 3125427035;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "messages.ReadSavedHistory";
+            static fromReader(reader: Reader): ReadSavedHistory;
+            parentPeer: Api.TypeEntityLike;
+            peer: Api.TypeEntityLike;
+            maxId: int;
+        }
+        export class ToggleTodoCompleted extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                msgId: MessageIDLike;
+                completed: int[];
+                incompleted: int[];
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 3554685220;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.ToggleTodoCompleted";
+            static fromReader(reader: Reader): ToggleTodoCompleted;
+            peer: Api.TypeEntityLike;
+            msgId: MessageIDLike;
+            completed: int[];
+            incompleted: int[];
+        }
+        export class AppendTodoList extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                msgId: MessageIDLike;
+                list: Api.TypeTodoItem[];
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 564531287;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.AppendTodoList";
+            static fromReader(reader: Reader): AppendTodoList;
+            peer: Api.TypeEntityLike;
+            msgId: MessageIDLike;
+            list: Api.TypeTodoItem[];
+        }
+        export class ToggleSuggestedPostApproval extends Request<
+            Partial<{
+                // flags: null;
+                reject?: boolean;
+                peer: Api.TypeEntityLike;
+                msgId: MessageIDLike;
+                scheduleDate?: int;
+                rejectComment?: string;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2164737372;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.ToggleSuggestedPostApproval";
+            static fromReader(reader: Reader): ToggleSuggestedPostApproval;
+            // flags: null;
+            reject?: boolean;
+            peer: Api.TypeEntityLike;
+            msgId: MessageIDLike;
+            scheduleDate?: int;
+            rejectComment?: string;
+        }
+        export class GetForumTopics extends Request<
+            Partial<{
+                // flags: null;
+                peer: Api.TypeEntityLike;
+                q?: string;
+                offsetDate: int;
+                offsetId: int;
+                offsetTopic: int;
+                limit: int;
+            }>,
+            messages.TypeForumTopics
+        > {
+            CONSTRUCTOR_ID: 1000635391;
+            SUBCLASS_OF_ID: 2384281118;
+            classType: "request";
+            className: "messages.GetForumTopics";
+            static fromReader(reader: Reader): GetForumTopics;
+            // flags: null;
+            peer: Api.TypeEntityLike;
+            q?: string;
+            offsetDate: int;
+            offsetId: int;
+            offsetTopic: int;
+            limit: int;
+        }
+        export class GetForumTopicsByID extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                topics: int[];
+            }>,
+            messages.TypeForumTopics
+        > {
+            CONSTRUCTOR_ID: 2936687112;
+            SUBCLASS_OF_ID: 2384281118;
+            classType: "request";
+            className: "messages.GetForumTopicsByID";
+            static fromReader(reader: Reader): GetForumTopicsByID;
+            peer: Api.TypeEntityLike;
+            topics: int[];
+        }
+        export class EditForumTopic extends Request<
+            Partial<{
+                // flags: null;
+                peer: Api.TypeEntityLike;
+                topicId: int;
+                title?: string;
+                iconEmojiId?: long;
+                closed?: Bool;
+                hidden?: Bool;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 3469480244;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.EditForumTopic";
+            static fromReader(reader: Reader): EditForumTopic;
+            // flags: null;
+            peer: Api.TypeEntityLike;
+            topicId: int;
+            title?: string;
+            iconEmojiId?: long;
+            closed?: Bool;
+            hidden?: Bool;
+        }
+        export class UpdatePinnedForumTopic extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                topicId: int;
+                pinned: Bool;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 392032849;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.UpdatePinnedForumTopic";
+            static fromReader(reader: Reader): UpdatePinnedForumTopic;
+            peer: Api.TypeEntityLike;
+            topicId: int;
+            pinned: Bool;
+        }
+        export class ReorderPinnedForumTopics extends Request<
+            Partial<{
+                // flags: null;
+                force?: boolean;
+                peer: Api.TypeEntityLike;
+                order: int[];
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 242762224;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.ReorderPinnedForumTopics";
+            static fromReader(reader: Reader): ReorderPinnedForumTopics;
+            // flags: null;
+            force?: boolean;
+            peer: Api.TypeEntityLike;
+            order: int[];
+        }
+        export class CreateForumTopic extends Request<
+            Partial<{
+                // flags: null;
+                titleMissing?: boolean;
+                peer: Api.TypeEntityLike;
+                title: string;
+                iconColor?: int;
+                iconEmojiId?: long;
+                randomId?: long;
+                sendAs?: Api.TypeEntityLike;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 798540757;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.CreateForumTopic";
+            static fromReader(reader: Reader): CreateForumTopic;
+            // flags: null;
+            titleMissing?: boolean;
+            peer: Api.TypeEntityLike;
+            title: string;
+            iconColor?: int;
+            iconEmojiId?: long;
+            randomId?: long;
+            sendAs?: Api.TypeEntityLike;
+        }
+        export class DeleteTopicHistory extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                topMsgId: MessageIDLike;
+            }>,
+            messages.TypeAffectedHistory
+        > {
+            CONSTRUCTOR_ID: 3531697936;
+            SUBCLASS_OF_ID: 743031062;
+            classType: "request";
+            className: "messages.DeleteTopicHistory";
+            static fromReader(reader: Reader): DeleteTopicHistory;
+            peer: Api.TypeEntityLike;
+            topMsgId: MessageIDLike;
+        }
+        export class GetEmojiGameInfo extends Request<
+            void,
+            messages.TypeEmojiGameInfo
+        > {
+            CONSTRUCTOR_ID: 4219374759;
+            SUBCLASS_OF_ID: 105590818;
+            classType: "request";
+            className: "messages.GetEmojiGameInfo";
+            static fromReader(reader: Reader): GetEmojiGameInfo;
+        }
+        export class SummarizeText extends Request<
+            Partial<{
+                // flags: null;
+                peer: Api.TypeEntityLike;
+                id: int;
+                toLang?: string;
+            }>,
+            Api.TypeTextWithEntities
+        > {
+            CONSTRUCTOR_ID: 2638284002;
+            SUBCLASS_OF_ID: 2513062661;
+            classType: "request";
+            className: "messages.SummarizeText";
+            static fromReader(reader: Reader): SummarizeText;
+            // flags: null;
+            peer: Api.TypeEntityLike;
+            id: int;
+            toLang?: string;
+        }
+        export class EditChatCreator extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                userId: Api.TypeEntityLike;
+                password: Api.TypeInputCheckPasswordSRP;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 4148410455;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.EditChatCreator";
+            static fromReader(reader: Reader): EditChatCreator;
+            peer: Api.TypeEntityLike;
+            userId: Api.TypeEntityLike;
+            password: Api.TypeInputCheckPasswordSRP;
+        }
+        export class GetFutureChatCreatorAfterLeave extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+            }>,
+            Api.TypeUser
+        > {
+            CONSTRUCTOR_ID: 998051494;
+            SUBCLASS_OF_ID: 765557111;
+            classType: "request";
+            className: "messages.GetFutureChatCreatorAfterLeave";
+            static fromReader(reader: Reader): GetFutureChatCreatorAfterLeave;
+            peer: Api.TypeEntityLike;
+        }
+        export class EditChatParticipantRank extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                participant: Api.TypeEntityLike;
+                rank: string;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2685350576;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "messages.EditChatParticipantRank";
+            static fromReader(reader: Reader): EditChatParticipantRank;
+            peer: Api.TypeEntityLike;
+            participant: Api.TypeEntityLike;
+            rank: string;
+        }
+        export class DeclineUrlAuth extends Request<
+            Partial<{
+                url: string;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 893610940;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "messages.DeclineUrlAuth";
+            static fromReader(reader: Reader): DeclineUrlAuth;
+            url: string;
+        }
+        export class CheckUrlAuthMatchCode extends Request<
+            Partial<{
+                url: string;
+                matchCode: string;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 3382999819;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "messages.CheckUrlAuthMatchCode";
+            static fromReader(reader: Reader): CheckUrlAuthMatchCode;
+            url: string;
+            matchCode: string;
         }
     }
 
@@ -28100,22 +31728,24 @@ export namespace Api {
         }
         export class EditAdmin extends Request<
             Partial<{
+                // flags: null;
                 channel: Api.TypeEntityLike;
                 userId: Api.TypeEntityLike;
                 adminRights: Api.TypeChatAdminRights;
-                rank: string;
+                rank?: string;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 3543959810;
+            CONSTRUCTOR_ID: 2593697128;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "channels.EditAdmin";
             static fromReader(reader: Reader): EditAdmin;
+            // flags: null;
             channel: Api.TypeEntityLike;
             userId: Api.TypeEntityLike;
             adminRights: Api.TypeChatAdminRights;
-            rank: string;
+            rank?: string;
         }
         export class EditTitle extends Request<
             Partial<{
@@ -28436,23 +32066,6 @@ export namespace Api {
             broadcast: Api.TypeEntityLike;
             group: Api.TypeEntityLike;
         }
-        export class EditCreator extends Request<
-            Partial<{
-                channel: Api.TypeEntityLike;
-                userId: Api.TypeEntityLike;
-                password: Api.TypeInputCheckPasswordSRP;
-            }>,
-            Api.TypeUpdates
-        > {
-            CONSTRUCTOR_ID: 2402864415;
-            SUBCLASS_OF_ID: 2331323052;
-            classType: "request";
-            className: "channels.EditCreator";
-            static fromReader(reader: Reader): EditCreator;
-            channel: Api.TypeEntityLike;
-            userId: Api.TypeEntityLike;
-            password: Api.TypeInputCheckPasswordSRP;
-        }
         export class EditLocation extends Request<
             Partial<{
                 channel: Api.TypeEntityLike;
@@ -28510,15 +32123,21 @@ export namespace Api {
         }
         export class GetSendAs extends Request<
             Partial<{
+                // flags: null;
+                forPaidReactions?: boolean;
+                forLiveStories?: boolean;
                 peer: Api.TypeEntityLike;
             }>,
             channels.TypeSendAsPeers
         > {
-            CONSTRUCTOR_ID: 231174382;
+            CONSTRUCTOR_ID: 3884295231;
             SUBCLASS_OF_ID: 952864033;
             classType: "request";
             className: "channels.GetSendAs";
             static fromReader(reader: Reader): GetSendAs;
+            // flags: null;
+            forPaidReactions?: boolean;
+            forLiveStories?: boolean;
             peer: Api.TypeEntityLike;
         }
         export class DeleteParticipantHistory extends Request<
@@ -28615,157 +32234,18 @@ export namespace Api {
             Partial<{
                 channel: Api.TypeEntityLike;
                 enabled: Bool;
+                tabs: Bool;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 2754186025;
+            CONSTRUCTOR_ID: 1073174324;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "channels.ToggleForum";
             static fromReader(reader: Reader): ToggleForum;
             channel: Api.TypeEntityLike;
             enabled: Bool;
-        }
-        export class CreateForumTopic extends Request<
-            Partial<{
-                // flags: null;
-                channel: Api.TypeEntityLike;
-                title: string;
-                iconColor?: int;
-                iconEmojiId?: long;
-                randomId?: long;
-                sendAs?: Api.TypeEntityLike;
-            }>,
-            Api.TypeUpdates
-        > {
-            CONSTRUCTOR_ID: 4094427684;
-            SUBCLASS_OF_ID: 2331323052;
-            classType: "request";
-            className: "channels.CreateForumTopic";
-            static fromReader(reader: Reader): CreateForumTopic;
-            // flags: null;
-            channel: Api.TypeEntityLike;
-            title: string;
-            iconColor?: int;
-            iconEmojiId?: long;
-            randomId?: long;
-            sendAs?: Api.TypeEntityLike;
-        }
-        export class GetForumTopics extends Request<
-            Partial<{
-                // flags: null;
-                channel: Api.TypeEntityLike;
-                q?: string;
-                offsetDate: int;
-                offsetId: int;
-                offsetTopic: int;
-                limit: int;
-            }>,
-            messages.TypeForumTopics
-        > {
-            CONSTRUCTOR_ID: 233136337;
-            SUBCLASS_OF_ID: 2384281118;
-            classType: "request";
-            className: "channels.GetForumTopics";
-            static fromReader(reader: Reader): GetForumTopics;
-            // flags: null;
-            channel: Api.TypeEntityLike;
-            q?: string;
-            offsetDate: int;
-            offsetId: int;
-            offsetTopic: int;
-            limit: int;
-        }
-        export class GetForumTopicsByID extends Request<
-            Partial<{
-                channel: Api.TypeEntityLike;
-                topics: int[];
-            }>,
-            messages.TypeForumTopics
-        > {
-            CONSTRUCTOR_ID: 2961383097;
-            SUBCLASS_OF_ID: 2384281118;
-            classType: "request";
-            className: "channels.GetForumTopicsByID";
-            static fromReader(reader: Reader): GetForumTopicsByID;
-            channel: Api.TypeEntityLike;
-            topics: int[];
-        }
-        export class EditForumTopic extends Request<
-            Partial<{
-                // flags: null;
-                channel: Api.TypeEntityLike;
-                topicId: int;
-                title?: string;
-                iconEmojiId?: long;
-                closed?: Bool;
-                hidden?: Bool;
-            }>,
-            Api.TypeUpdates
-        > {
-            CONSTRUCTOR_ID: 4108296581;
-            SUBCLASS_OF_ID: 2331323052;
-            classType: "request";
-            className: "channels.EditForumTopic";
-            static fromReader(reader: Reader): EditForumTopic;
-            // flags: null;
-            channel: Api.TypeEntityLike;
-            topicId: int;
-            title?: string;
-            iconEmojiId?: long;
-            closed?: Bool;
-            hidden?: Bool;
-        }
-        export class UpdatePinnedForumTopic extends Request<
-            Partial<{
-                channel: Api.TypeEntityLike;
-                topicId: int;
-                pinned: Bool;
-            }>,
-            Api.TypeUpdates
-        > {
-            CONSTRUCTOR_ID: 1814925350;
-            SUBCLASS_OF_ID: 2331323052;
-            classType: "request";
-            className: "channels.UpdatePinnedForumTopic";
-            static fromReader(reader: Reader): UpdatePinnedForumTopic;
-            channel: Api.TypeEntityLike;
-            topicId: int;
-            pinned: Bool;
-        }
-        export class DeleteTopicHistory extends Request<
-            Partial<{
-                channel: Api.TypeEntityLike;
-                topMsgId: MessageIDLike;
-            }>,
-            messages.TypeAffectedHistory
-        > {
-            CONSTRUCTOR_ID: 876830509;
-            SUBCLASS_OF_ID: 743031062;
-            classType: "request";
-            className: "channels.DeleteTopicHistory";
-            static fromReader(reader: Reader): DeleteTopicHistory;
-            channel: Api.TypeEntityLike;
-            topMsgId: MessageIDLike;
-        }
-        export class ReorderPinnedForumTopics extends Request<
-            Partial<{
-                // flags: null;
-                force?: boolean;
-                channel: Api.TypeEntityLike;
-                order: int[];
-            }>,
-            Api.TypeUpdates
-        > {
-            CONSTRUCTOR_ID: 693150095;
-            SUBCLASS_OF_ID: 2331323052;
-            classType: "request";
-            className: "channels.ReorderPinnedForumTopics";
-            static fromReader(reader: Reader): ReorderPinnedForumTopics;
-            // flags: null;
-            force?: boolean;
-            channel: Api.TypeEntityLike;
-            order: int[];
+            tabs: Bool;
         }
         export class ToggleAntiSpam extends Request<
             Partial<{
@@ -28925,24 +32405,109 @@ export namespace Api {
         }
         export class SearchPosts extends Request<
             Partial<{
-                hashtag: string;
+                // flags: null;
+                hashtag?: string;
+                query?: string;
                 offsetRate: int;
                 offsetPeer: Api.TypeEntityLike;
                 offsetId: int;
                 limit: int;
+                allowPaidStars?: long;
             }>,
             messages.TypeMessages
         > {
-            CONSTRUCTOR_ID: 3516897403;
+            CONSTRUCTOR_ID: 4072993357;
             SUBCLASS_OF_ID: 3568569182;
             classType: "request";
             className: "channels.SearchPosts";
             static fromReader(reader: Reader): SearchPosts;
-            hashtag: string;
+            // flags: null;
+            hashtag?: string;
+            query?: string;
             offsetRate: int;
             offsetPeer: Api.TypeEntityLike;
             offsetId: int;
             limit: int;
+            allowPaidStars?: long;
+        }
+        export class UpdatePaidMessagesPrice extends Request<
+            Partial<{
+                // flags: null;
+                broadcastMessagesAllowed?: boolean;
+                channel: Api.TypeEntityLike;
+                sendPaidMessagesStars: long;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 1259483771;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "channels.UpdatePaidMessagesPrice";
+            static fromReader(reader: Reader): UpdatePaidMessagesPrice;
+            // flags: null;
+            broadcastMessagesAllowed?: boolean;
+            channel: Api.TypeEntityLike;
+            sendPaidMessagesStars: long;
+        }
+        export class ToggleAutotranslation extends Request<
+            Partial<{
+                channel: Api.TypeEntityLike;
+                enabled: Bool;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 377471137;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "channels.ToggleAutotranslation";
+            static fromReader(reader: Reader): ToggleAutotranslation;
+            channel: Api.TypeEntityLike;
+            enabled: Bool;
+        }
+        export class GetMessageAuthor extends Request<
+            Partial<{
+                channel: Api.TypeEntityLike;
+                id: int;
+            }>,
+            Api.TypeUser
+        > {
+            CONSTRUCTOR_ID: 3974275302;
+            SUBCLASS_OF_ID: 765557111;
+            classType: "request";
+            className: "channels.GetMessageAuthor";
+            static fromReader(reader: Reader): GetMessageAuthor;
+            channel: Api.TypeEntityLike;
+            id: int;
+        }
+        export class CheckSearchPostsFlood extends Request<
+            Partial<{
+                // flags: null;
+                query?: string;
+            }>,
+            Api.TypeSearchPostsFlood
+        > {
+            CONSTRUCTOR_ID: 576090389;
+            SUBCLASS_OF_ID: 3267415233;
+            classType: "request";
+            className: "channels.CheckSearchPostsFlood";
+            static fromReader(reader: Reader): CheckSearchPostsFlood;
+            // flags: null;
+            query?: string;
+        }
+        export class SetMainProfileTab extends Request<
+            Partial<{
+                channel: Api.TypeEntityLike;
+                tab: Api.TypeProfileTab;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 897842353;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "channels.SetMainProfileTab";
+            static fromReader(reader: Reader): SetMainProfileTab;
+            channel: Api.TypeEntityLike;
+            tab: Api.TypeProfileTab;
         }
     }
 
@@ -29355,6 +32920,66 @@ export namespace Api {
             fileName: string;
             url: string;
         }
+        export class GetAdminedBots extends Request<void, Api.TypeUser[]> {
+            CONSTRUCTOR_ID: 2960203139;
+            SUBCLASS_OF_ID: 67557965;
+            classType: "request";
+            className: "bots.GetAdminedBots";
+            static fromReader(reader: Reader): GetAdminedBots;
+        }
+        export class UpdateStarRefProgram extends Request<
+            Partial<{
+                // flags: null;
+                bot: Api.TypeEntityLike;
+                commissionPermille: int;
+                durationMonths?: int;
+            }>,
+            Api.TypeStarRefProgram
+        > {
+            CONSTRUCTOR_ID: 2005621427;
+            SUBCLASS_OF_ID: 2559107074;
+            classType: "request";
+            className: "bots.UpdateStarRefProgram";
+            static fromReader(reader: Reader): UpdateStarRefProgram;
+            // flags: null;
+            bot: Api.TypeEntityLike;
+            commissionPermille: int;
+            durationMonths?: int;
+        }
+        export class SetCustomVerification extends Request<
+            Partial<{
+                // flags: null;
+                enabled?: boolean;
+                bot?: Api.TypeEntityLike;
+                peer: Api.TypeEntityLike;
+                customDescription?: string;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 2341068733;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "bots.SetCustomVerification";
+            static fromReader(reader: Reader): SetCustomVerification;
+            // flags: null;
+            enabled?: boolean;
+            bot?: Api.TypeEntityLike;
+            peer: Api.TypeEntityLike;
+            customDescription?: string;
+        }
+        export class GetBotRecommendations extends Request<
+            Partial<{
+                bot: Api.TypeEntityLike;
+            }>,
+            users.TypeUsers
+        > {
+            CONSTRUCTOR_ID: 2713126933;
+            SUBCLASS_OF_ID: 4065063104;
+            classType: "request";
+            className: "bots.GetBotRecommendations";
+            static fromReader(reader: Reader): GetBotRecommendations;
+            bot: Api.TypeEntityLike;
+        }
     }
 
     export namespace payments {
@@ -29517,19 +33142,6 @@ export namespace Api {
             receipt: Api.TypeDataJSON;
             purpose: Api.TypeInputStorePaymentPurpose;
         }
-        export class CanPurchasePremium extends Request<
-            Partial<{
-                purpose: Api.TypeInputStorePaymentPurpose;
-            }>,
-            Bool
-        > {
-            CONSTRUCTOR_ID: 2680266422;
-            SUBCLASS_OF_ID: 4122188204;
-            classType: "request";
-            className: "payments.CanPurchasePremium";
-            static fromReader(reader: Reader): CanPurchasePremium;
-            purpose: Api.TypeInputStorePaymentPurpose;
-        }
         export class GetPremiumGiftCodeOptions extends Request<
             Partial<{
                 // flags: null;
@@ -29615,15 +33227,19 @@ export namespace Api {
         }
         export class GetStarsStatus extends Request<
             Partial<{
+                // flags: null;
+                ton?: boolean;
                 peer: Api.TypeEntityLike;
             }>,
             payments.TypeStarsStatus
         > {
-            CONSTRUCTOR_ID: 273665959;
+            CONSTRUCTOR_ID: 1319744447;
             SUBCLASS_OF_ID: 1855724911;
             classType: "request";
             className: "payments.GetStarsStatus";
             static fromReader(reader: Reader): GetStarsStatus;
+            // flags: null;
+            ton?: boolean;
             peer: Api.TypeEntityLike;
         }
         export class GetStarsTransactions extends Request<
@@ -29632,6 +33248,7 @@ export namespace Api {
                 inbound?: boolean;
                 outbound?: boolean;
                 ascending?: boolean;
+                ton?: boolean;
                 subscriptionId?: string;
                 peer: Api.TypeEntityLike;
                 offset: string;
@@ -29648,6 +33265,7 @@ export namespace Api {
             inbound?: boolean;
             outbound?: boolean;
             ascending?: boolean;
+            ton?: boolean;
             subscriptionId?: string;
             peer: Api.TypeEntityLike;
             offset: string;
@@ -29687,6 +33305,7 @@ export namespace Api {
             Partial<{
                 // flags: null;
                 dark?: boolean;
+                ton?: boolean;
                 peer: Api.TypeEntityLike;
             }>,
             payments.TypeStarsRevenueStats
@@ -29698,23 +33317,28 @@ export namespace Api {
             static fromReader(reader: Reader): GetStarsRevenueStats;
             // flags: null;
             dark?: boolean;
+            ton?: boolean;
             peer: Api.TypeEntityLike;
         }
         export class GetStarsRevenueWithdrawalUrl extends Request<
             Partial<{
+                // flags: null;
+                ton?: boolean;
                 peer: Api.TypeEntityLike;
-                stars: long;
+                amount?: long;
                 password: Api.TypeInputCheckPasswordSRP;
             }>,
             payments.TypeStarsRevenueWithdrawalUrl
         > {
-            CONSTRUCTOR_ID: 331081907;
+            CONSTRUCTOR_ID: 607378578;
             SUBCLASS_OF_ID: 2221318382;
             classType: "request";
             className: "payments.GetStarsRevenueWithdrawalUrl";
             static fromReader(reader: Reader): GetStarsRevenueWithdrawalUrl;
+            // flags: null;
+            ton?: boolean;
             peer: Api.TypeEntityLike;
-            stars: long;
+            amount?: long;
             password: Api.TypeInputCheckPasswordSRP;
         }
         export class GetStarsRevenueAdsAccountUrl extends Request<
@@ -29732,16 +33356,20 @@ export namespace Api {
         }
         export class GetStarsTransactionsByID extends Request<
             Partial<{
+                // flags: null;
+                ton?: boolean;
                 peer: Api.TypeEntityLike;
                 id: Api.TypeInputStarsTransaction[];
             }>,
             payments.TypeStarsStatus
         > {
-            CONSTRUCTOR_ID: 662973742;
+            CONSTRUCTOR_ID: 768218808;
             SUBCLASS_OF_ID: 1855724911;
             classType: "request";
             className: "payments.GetStarsTransactionsByID";
             static fromReader(reader: Reader): GetStarsTransactionsByID;
+            // flags: null;
+            ton?: boolean;
             peer: Api.TypeEntityLike;
             id: Api.TypeInputStarsTransaction[];
         }
@@ -29836,68 +33464,46 @@ export namespace Api {
             static fromReader(reader: Reader): GetStarGifts;
             hash: int;
         }
-        export class GetUserStarGifts extends Request<
-            Partial<{
-                userId: Api.TypeEntityLike;
-                offset: string;
-                limit: int;
-            }>,
-            payments.TypeUserStarGifts
-        > {
-            CONSTRUCTOR_ID: 1584580577;
-            SUBCLASS_OF_ID: 17096492;
-            classType: "request";
-            className: "payments.GetUserStarGifts";
-            static fromReader(reader: Reader): GetUserStarGifts;
-            userId: Api.TypeEntityLike;
-            offset: string;
-            limit: int;
-        }
         export class SaveStarGift extends Request<
             Partial<{
                 // flags: null;
                 unsave?: boolean;
-                userId: Api.TypeEntityLike;
-                msgId: MessageIDLike;
+                stargift: Api.TypeInputSavedStarGift;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 2276257934;
+            CONSTRUCTOR_ID: 707422588;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "payments.SaveStarGift";
             static fromReader(reader: Reader): SaveStarGift;
             // flags: null;
             unsave?: boolean;
-            userId: Api.TypeEntityLike;
-            msgId: MessageIDLike;
+            stargift: Api.TypeInputSavedStarGift;
         }
         export class ConvertStarGift extends Request<
             Partial<{
-                userId: Api.TypeEntityLike;
-                msgId: MessageIDLike;
+                stargift: Api.TypeInputSavedStarGift;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 69328935;
+            CONSTRUCTOR_ID: 1958676331;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "payments.ConvertStarGift";
             static fromReader(reader: Reader): ConvertStarGift;
-            userId: Api.TypeEntityLike;
-            msgId: MessageIDLike;
+            stargift: Api.TypeInputSavedStarGift;
         }
         export class BotCancelStarsSubscription extends Request<
             Partial<{
                 // flags: null;
                 restore?: boolean;
                 userId: Api.TypeEntityLike;
-                invoiceSlug?: string;
-                chargeId?: string;
+                chargeId: string;
             }>,
             Bool
         > {
-            CONSTRUCTOR_ID: 1475996902;
+            CONSTRUCTOR_ID: 1845102114;
             SUBCLASS_OF_ID: 4122188204;
             classType: "request";
             className: "payments.BotCancelStarsSubscription";
@@ -29905,8 +33511,553 @@ export namespace Api {
             // flags: null;
             restore?: boolean;
             userId: Api.TypeEntityLike;
-            invoiceSlug?: string;
-            chargeId?: string;
+            chargeId: string;
+        }
+        export class GetConnectedStarRefBots extends Request<
+            Partial<{
+                // flags: null;
+                peer: Api.TypeEntityLike;
+                offsetDate?: int;
+                offsetLink?: string;
+                limit: int;
+            }>,
+            payments.TypeConnectedStarRefBots
+        > {
+            CONSTRUCTOR_ID: 1483318611;
+            SUBCLASS_OF_ID: 593369703;
+            classType: "request";
+            className: "payments.GetConnectedStarRefBots";
+            static fromReader(reader: Reader): GetConnectedStarRefBots;
+            // flags: null;
+            peer: Api.TypeEntityLike;
+            offsetDate?: int;
+            offsetLink?: string;
+            limit: int;
+        }
+        export class GetConnectedStarRefBot extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                bot: Api.TypeEntityLike;
+            }>,
+            payments.TypeConnectedStarRefBots
+        > {
+            CONSTRUCTOR_ID: 3084490992;
+            SUBCLASS_OF_ID: 593369703;
+            classType: "request";
+            className: "payments.GetConnectedStarRefBot";
+            static fromReader(reader: Reader): GetConnectedStarRefBot;
+            peer: Api.TypeEntityLike;
+            bot: Api.TypeEntityLike;
+        }
+        export class GetSuggestedStarRefBots extends Request<
+            Partial<{
+                // flags: null;
+                orderByRevenue?: boolean;
+                orderByDate?: boolean;
+                peer: Api.TypeEntityLike;
+                offset: string;
+                limit: int;
+            }>,
+            payments.TypeSuggestedStarRefBots
+        > {
+            CONSTRUCTOR_ID: 225134839;
+            SUBCLASS_OF_ID: 1880658499;
+            classType: "request";
+            className: "payments.GetSuggestedStarRefBots";
+            static fromReader(reader: Reader): GetSuggestedStarRefBots;
+            // flags: null;
+            orderByRevenue?: boolean;
+            orderByDate?: boolean;
+            peer: Api.TypeEntityLike;
+            offset: string;
+            limit: int;
+        }
+        export class ConnectStarRefBot extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                bot: Api.TypeEntityLike;
+            }>,
+            payments.TypeConnectedStarRefBots
+        > {
+            CONSTRUCTOR_ID: 2127901834;
+            SUBCLASS_OF_ID: 593369703;
+            classType: "request";
+            className: "payments.ConnectStarRefBot";
+            static fromReader(reader: Reader): ConnectStarRefBot;
+            peer: Api.TypeEntityLike;
+            bot: Api.TypeEntityLike;
+        }
+        export class EditConnectedStarRefBot extends Request<
+            Partial<{
+                // flags: null;
+                revoked?: boolean;
+                peer: Api.TypeEntityLike;
+                link: string;
+            }>,
+            payments.TypeConnectedStarRefBots
+        > {
+            CONSTRUCTOR_ID: 3841762467;
+            SUBCLASS_OF_ID: 593369703;
+            classType: "request";
+            className: "payments.EditConnectedStarRefBot";
+            static fromReader(reader: Reader): EditConnectedStarRefBot;
+            // flags: null;
+            revoked?: boolean;
+            peer: Api.TypeEntityLike;
+            link: string;
+        }
+        export class GetStarGiftUpgradePreview extends Request<
+            Partial<{
+                giftId: long;
+            }>,
+            payments.TypeStarGiftUpgradePreview
+        > {
+            CONSTRUCTOR_ID: 2627386545;
+            SUBCLASS_OF_ID: 1579903175;
+            classType: "request";
+            className: "payments.GetStarGiftUpgradePreview";
+            static fromReader(reader: Reader): GetStarGiftUpgradePreview;
+            giftId: long;
+        }
+        export class UpgradeStarGift extends Request<
+            Partial<{
+                // flags: null;
+                keepOriginalDetails?: boolean;
+                stargift: Api.TypeInputSavedStarGift;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2933318901;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "payments.UpgradeStarGift";
+            static fromReader(reader: Reader): UpgradeStarGift;
+            // flags: null;
+            keepOriginalDetails?: boolean;
+            stargift: Api.TypeInputSavedStarGift;
+        }
+        export class TransferStarGift extends Request<
+            Partial<{
+                stargift: Api.TypeInputSavedStarGift;
+                toId: Api.TypeEntityLike;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2132285290;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "payments.TransferStarGift";
+            static fromReader(reader: Reader): TransferStarGift;
+            stargift: Api.TypeInputSavedStarGift;
+            toId: Api.TypeEntityLike;
+        }
+        export class GetUniqueStarGift extends Request<
+            Partial<{
+                slug: string;
+            }>,
+            payments.TypeUniqueStarGift
+        > {
+            CONSTRUCTOR_ID: 2711047538;
+            SUBCLASS_OF_ID: 2024850939;
+            classType: "request";
+            className: "payments.GetUniqueStarGift";
+            static fromReader(reader: Reader): GetUniqueStarGift;
+            slug: string;
+        }
+        export class GetSavedStarGifts extends Request<
+            Partial<{
+                // flags: null;
+                excludeUnsaved?: boolean;
+                excludeSaved?: boolean;
+                excludeUnlimited?: boolean;
+                excludeUnique?: boolean;
+                sortByValue?: boolean;
+                excludeUpgradable?: boolean;
+                excludeUnupgradable?: boolean;
+                peerColorAvailable?: boolean;
+                excludeHosted?: boolean;
+                peer: Api.TypeEntityLike;
+                collectionId?: int;
+                offset: string;
+                limit: int;
+            }>,
+            payments.TypeSavedStarGifts
+        > {
+            CONSTRUCTOR_ID: 2736383337;
+            SUBCLASS_OF_ID: 3574671511;
+            classType: "request";
+            className: "payments.GetSavedStarGifts";
+            static fromReader(reader: Reader): GetSavedStarGifts;
+            // flags: null;
+            excludeUnsaved?: boolean;
+            excludeSaved?: boolean;
+            excludeUnlimited?: boolean;
+            excludeUnique?: boolean;
+            sortByValue?: boolean;
+            excludeUpgradable?: boolean;
+            excludeUnupgradable?: boolean;
+            peerColorAvailable?: boolean;
+            excludeHosted?: boolean;
+            peer: Api.TypeEntityLike;
+            collectionId?: int;
+            offset: string;
+            limit: int;
+        }
+        export class GetSavedStarGift extends Request<
+            Partial<{
+                stargift: Api.TypeInputSavedStarGift[];
+            }>,
+            payments.TypeSavedStarGifts
+        > {
+            CONSTRUCTOR_ID: 3025510662;
+            SUBCLASS_OF_ID: 3574671511;
+            classType: "request";
+            className: "payments.GetSavedStarGift";
+            static fromReader(reader: Reader): GetSavedStarGift;
+            stargift: Api.TypeInputSavedStarGift[];
+        }
+        export class GetStarGiftWithdrawalUrl extends Request<
+            Partial<{
+                stargift: Api.TypeInputSavedStarGift;
+                password: Api.TypeInputCheckPasswordSRP;
+            }>,
+            payments.TypeStarGiftWithdrawalUrl
+        > {
+            CONSTRUCTOR_ID: 3496907688;
+            SUBCLASS_OF_ID: 2726440389;
+            classType: "request";
+            className: "payments.GetStarGiftWithdrawalUrl";
+            static fromReader(reader: Reader): GetStarGiftWithdrawalUrl;
+            stargift: Api.TypeInputSavedStarGift;
+            password: Api.TypeInputCheckPasswordSRP;
+        }
+        export class ToggleChatStarGiftNotifications extends Request<
+            Partial<{
+                // flags: null;
+                enabled?: boolean;
+                peer: Api.TypeEntityLike;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 1626009505;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "payments.ToggleChatStarGiftNotifications";
+            static fromReader(reader: Reader): ToggleChatStarGiftNotifications;
+            // flags: null;
+            enabled?: boolean;
+            peer: Api.TypeEntityLike;
+        }
+        export class ToggleStarGiftsPinnedToTop extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                stargift: Api.TypeInputSavedStarGift[];
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 353626032;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "payments.ToggleStarGiftsPinnedToTop";
+            static fromReader(reader: Reader): ToggleStarGiftsPinnedToTop;
+            peer: Api.TypeEntityLike;
+            stargift: Api.TypeInputSavedStarGift[];
+        }
+        export class CanPurchaseStore extends Request<
+            Partial<{
+                purpose: Api.TypeInputStorePaymentPurpose;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 1339842215;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "payments.CanPurchaseStore";
+            static fromReader(reader: Reader): CanPurchaseStore;
+            purpose: Api.TypeInputStorePaymentPurpose;
+        }
+        export class GetResaleStarGifts extends Request<
+            Partial<{
+                // flags: null;
+                sortByPrice?: boolean;
+                sortByNum?: boolean;
+                forCraft?: boolean;
+                attributesHash?: long;
+                giftId: long;
+                attributes?: Api.TypeStarGiftAttributeId[];
+                offset: string;
+                limit: int;
+            }>,
+            payments.TypeResaleStarGifts
+        > {
+            CONSTRUCTOR_ID: 2053087798;
+            SUBCLASS_OF_ID: 3000743907;
+            classType: "request";
+            className: "payments.GetResaleStarGifts";
+            static fromReader(reader: Reader): GetResaleStarGifts;
+            // flags: null;
+            sortByPrice?: boolean;
+            sortByNum?: boolean;
+            forCraft?: boolean;
+            attributesHash?: long;
+            giftId: long;
+            attributes?: Api.TypeStarGiftAttributeId[];
+            offset: string;
+            limit: int;
+        }
+        export class UpdateStarGiftPrice extends Request<
+            Partial<{
+                stargift: Api.TypeInputSavedStarGift;
+                resellAmount: Api.TypeStarsAmount;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 3988679883;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "payments.UpdateStarGiftPrice";
+            static fromReader(reader: Reader): UpdateStarGiftPrice;
+            stargift: Api.TypeInputSavedStarGift;
+            resellAmount: Api.TypeStarsAmount;
+        }
+        export class CreateStarGiftCollection extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                title: string;
+                stargift: Api.TypeInputSavedStarGift[];
+            }>,
+            Api.TypeStarGiftCollection
+        > {
+            CONSTRUCTOR_ID: 524947079;
+            SUBCLASS_OF_ID: 1138805578;
+            classType: "request";
+            className: "payments.CreateStarGiftCollection";
+            static fromReader(reader: Reader): CreateStarGiftCollection;
+            peer: Api.TypeEntityLike;
+            title: string;
+            stargift: Api.TypeInputSavedStarGift[];
+        }
+        export class UpdateStarGiftCollection extends Request<
+            Partial<{
+                // flags: null;
+                peer: Api.TypeEntityLike;
+                collectionId: int;
+                title?: string;
+                deleteStargift?: Api.TypeInputSavedStarGift[];
+                addStargift?: Api.TypeInputSavedStarGift[];
+                order?: Api.TypeInputSavedStarGift[];
+            }>,
+            Api.TypeStarGiftCollection
+        > {
+            CONSTRUCTOR_ID: 1339932391;
+            SUBCLASS_OF_ID: 1138805578;
+            classType: "request";
+            className: "payments.UpdateStarGiftCollection";
+            static fromReader(reader: Reader): UpdateStarGiftCollection;
+            // flags: null;
+            peer: Api.TypeEntityLike;
+            collectionId: int;
+            title?: string;
+            deleteStargift?: Api.TypeInputSavedStarGift[];
+            addStargift?: Api.TypeInputSavedStarGift[];
+            order?: Api.TypeInputSavedStarGift[];
+        }
+        export class ReorderStarGiftCollections extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                order: int[];
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 3274372300;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "payments.ReorderStarGiftCollections";
+            static fromReader(reader: Reader): ReorderStarGiftCollections;
+            peer: Api.TypeEntityLike;
+            order: int[];
+        }
+        export class DeleteStarGiftCollection extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                collectionId: int;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 2908113128;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "payments.DeleteStarGiftCollection";
+            static fromReader(reader: Reader): DeleteStarGiftCollection;
+            peer: Api.TypeEntityLike;
+            collectionId: int;
+        }
+        export class GetStarGiftCollections extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                hash: long;
+            }>,
+            payments.TypeStarGiftCollections
+        > {
+            CONSTRUCTOR_ID: 2551943645;
+            SUBCLASS_OF_ID: 4028047852;
+            classType: "request";
+            className: "payments.GetStarGiftCollections";
+            static fromReader(reader: Reader): GetStarGiftCollections;
+            peer: Api.TypeEntityLike;
+            hash: long;
+        }
+        export class GetUniqueStarGiftValueInfo extends Request<
+            Partial<{
+                slug: string;
+            }>,
+            payments.TypeUniqueStarGiftValueInfo
+        > {
+            CONSTRUCTOR_ID: 1130737515;
+            SUBCLASS_OF_ID: 372595652;
+            classType: "request";
+            className: "payments.GetUniqueStarGiftValueInfo";
+            static fromReader(reader: Reader): GetUniqueStarGiftValueInfo;
+            slug: string;
+        }
+        export class CheckCanSendGift extends Request<
+            Partial<{
+                giftId: long;
+            }>,
+            payments.TypeCheckCanSendGiftResult
+        > {
+            CONSTRUCTOR_ID: 3234131401;
+            SUBCLASS_OF_ID: 1664023088;
+            classType: "request";
+            className: "payments.CheckCanSendGift";
+            static fromReader(reader: Reader): CheckCanSendGift;
+            giftId: long;
+        }
+        export class GetStarGiftAuctionState extends Request<
+            Partial<{
+                auction: Api.TypeInputStarGiftAuction;
+                version: int;
+            }>,
+            payments.TypeStarGiftAuctionState
+        > {
+            CONSTRUCTOR_ID: 1553986774;
+            SUBCLASS_OF_ID: 439453081;
+            classType: "request";
+            className: "payments.GetStarGiftAuctionState";
+            static fromReader(reader: Reader): GetStarGiftAuctionState;
+            auction: Api.TypeInputStarGiftAuction;
+            version: int;
+        }
+        export class GetStarGiftAuctionAcquiredGifts extends Request<
+            Partial<{
+                giftId: long;
+            }>,
+            payments.TypeStarGiftAuctionAcquiredGifts
+        > {
+            CONSTRUCTOR_ID: 1805831148;
+            SUBCLASS_OF_ID: 2802321947;
+            classType: "request";
+            className: "payments.GetStarGiftAuctionAcquiredGifts";
+            static fromReader(reader: Reader): GetStarGiftAuctionAcquiredGifts;
+            giftId: long;
+        }
+        export class GetStarGiftActiveAuctions extends Request<
+            Partial<{
+                hash: long;
+            }>,
+            payments.TypeStarGiftActiveAuctions
+        > {
+            CONSTRUCTOR_ID: 2781892941;
+            SUBCLASS_OF_ID: 2440941767;
+            classType: "request";
+            className: "payments.GetStarGiftActiveAuctions";
+            static fromReader(reader: Reader): GetStarGiftActiveAuctions;
+            hash: long;
+        }
+        export class ResolveStarGiftOffer extends Request<
+            Partial<{
+                // flags: null;
+                decline?: boolean;
+                offerMsgId: MessageIDLike;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 3922622492;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "payments.ResolveStarGiftOffer";
+            static fromReader(reader: Reader): ResolveStarGiftOffer;
+            // flags: null;
+            decline?: boolean;
+            offerMsgId: MessageIDLike;
+        }
+        export class SendStarGiftOffer extends Request<
+            Partial<{
+                // flags: null;
+                peer: Api.TypeEntityLike;
+                slug: string;
+                price: Api.TypeStarsAmount;
+                duration: int;
+                randomId?: long;
+                allowPaidStars?: long;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2411227969;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "payments.SendStarGiftOffer";
+            static fromReader(reader: Reader): SendStarGiftOffer;
+            // flags: null;
+            peer: Api.TypeEntityLike;
+            slug: string;
+            price: Api.TypeStarsAmount;
+            duration: int;
+            randomId?: long;
+            allowPaidStars?: long;
+        }
+        export class GetStarGiftUpgradeAttributes extends Request<
+            Partial<{
+                giftId: long;
+            }>,
+            payments.TypeStarGiftUpgradeAttributes
+        > {
+            CONSTRUCTOR_ID: 1828948824;
+            SUBCLASS_OF_ID: 256290031;
+            classType: "request";
+            className: "payments.GetStarGiftUpgradeAttributes";
+            static fromReader(reader: Reader): GetStarGiftUpgradeAttributes;
+            giftId: long;
+        }
+        export class GetCraftStarGifts extends Request<
+            Partial<{
+                giftId: long;
+                offset: string;
+                limit: int;
+            }>,
+            payments.TypeSavedStarGifts
+        > {
+            CONSTRUCTOR_ID: 4245019904;
+            SUBCLASS_OF_ID: 3574671511;
+            classType: "request";
+            className: "payments.GetCraftStarGifts";
+            static fromReader(reader: Reader): GetCraftStarGifts;
+            giftId: long;
+            offset: string;
+            limit: int;
+        }
+        export class CraftStarGift extends Request<
+            Partial<{
+                stargift: Api.TypeInputSavedStarGift[];
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2969135183;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "payments.CraftStarGift";
+            static fromReader(reader: Reader): CraftStarGift;
+            stargift: Api.TypeInputSavedStarGift[];
         }
     }
 
@@ -30281,11 +34432,13 @@ export namespace Api {
                 call: Api.TypeInputGroupCall;
                 joinAs: Api.TypeEntityLike;
                 inviteHash?: string;
+                publicKey?: int256;
+                block?: bytes;
                 params: Api.TypeDataJSON;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 2972909435;
+            CONSTRUCTOR_ID: 2411016279;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "phone.JoinGroupCall";
@@ -30296,6 +34449,8 @@ export namespace Api {
             call: Api.TypeInputGroupCall;
             joinAs: Api.TypeEntityLike;
             inviteHash?: string;
+            publicKey?: int256;
+            block?: bytes;
             params: Api.TypeDataJSON;
         }
         export class LeaveGroupCall extends Request<
@@ -30347,10 +34502,12 @@ export namespace Api {
                 resetInviteHash?: boolean;
                 call: Api.TypeInputGroupCall;
                 joinMuted?: Bool;
+                messagesEnabled?: Bool;
+                sendPaidMessagesStars?: long;
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 1958458429;
+            CONSTRUCTOR_ID: 2537788146;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "phone.ToggleGroupCallSettings";
@@ -30359,6 +34516,8 @@ export namespace Api {
             resetInviteHash?: boolean;
             call: Api.TypeInputGroupCall;
             joinMuted?: Bool;
+            messagesEnabled?: Bool;
+            sendPaidMessagesStars?: long;
         }
         export class GetGroupCall extends Request<
             Partial<{
@@ -30594,16 +34753,20 @@ export namespace Api {
         }
         export class GetGroupCallStreamRtmpUrl extends Request<
             Partial<{
+                // flags: null;
+                liveStory?: boolean;
                 peer: Api.TypeEntityLike;
                 revoke: Bool;
             }>,
             phone.TypeGroupCallStreamRtmpUrl
         > {
-            CONSTRUCTOR_ID: 3736316863;
+            CONSTRUCTOR_ID: 1525991226;
             SUBCLASS_OF_ID: 3522500043;
             classType: "request";
             className: "phone.GetGroupCallStreamRtmpUrl";
             static fromReader(reader: Reader): GetGroupCallStreamRtmpUrl;
+            // flags: null;
+            liveStory?: boolean;
             peer: Api.TypeEntityLike;
             revoke: Bool;
         }
@@ -30621,6 +34784,228 @@ export namespace Api {
             static fromReader(reader: Reader): SaveCallLog;
             peer: Api.TypeInputPhoneCall;
             file: Api.TypeInputFile;
+        }
+        export class CreateConferenceCall extends Request<
+            Partial<{
+                // flags: null;
+                muted?: boolean;
+                videoStopped?: boolean;
+                join?: boolean;
+                randomId: int;
+                publicKey?: int256;
+                block?: bytes;
+                params?: Api.TypeDataJSON;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2097431739;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.CreateConferenceCall";
+            static fromReader(reader: Reader): CreateConferenceCall;
+            // flags: null;
+            muted?: boolean;
+            videoStopped?: boolean;
+            join?: boolean;
+            randomId: int;
+            publicKey?: int256;
+            block?: bytes;
+            params?: Api.TypeDataJSON;
+        }
+        export class DeleteConferenceCallParticipants extends Request<
+            Partial<{
+                // flags: null;
+                onlyLeft?: boolean;
+                kick?: boolean;
+                call: Api.TypeInputGroupCall;
+                ids: long[];
+                block: bytes;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2359690533;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.DeleteConferenceCallParticipants";
+            static fromReader(reader: Reader): DeleteConferenceCallParticipants;
+            // flags: null;
+            onlyLeft?: boolean;
+            kick?: boolean;
+            call: Api.TypeInputGroupCall;
+            ids: long[];
+            block: bytes;
+        }
+        export class SendConferenceCallBroadcast extends Request<
+            Partial<{
+                call: Api.TypeInputGroupCall;
+                block: bytes;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 3329235200;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.SendConferenceCallBroadcast";
+            static fromReader(reader: Reader): SendConferenceCallBroadcast;
+            call: Api.TypeInputGroupCall;
+            block: bytes;
+        }
+        export class InviteConferenceCallParticipant extends Request<
+            Partial<{
+                // flags: null;
+                video?: boolean;
+                call: Api.TypeInputGroupCall;
+                userId: Api.TypeEntityLike;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 3169986181;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.InviteConferenceCallParticipant";
+            static fromReader(reader: Reader): InviteConferenceCallParticipant;
+            // flags: null;
+            video?: boolean;
+            call: Api.TypeInputGroupCall;
+            userId: Api.TypeEntityLike;
+        }
+        export class DeclineConferenceCallInvite extends Request<
+            Partial<{
+                msgId: MessageIDLike;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 1011325297;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.DeclineConferenceCallInvite";
+            static fromReader(reader: Reader): DeclineConferenceCallInvite;
+            msgId: MessageIDLike;
+        }
+        export class GetGroupCallChainBlocks extends Request<
+            Partial<{
+                call: Api.TypeInputGroupCall;
+                subChainId: int;
+                offset: int;
+                limit: int;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 4003432614;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.GetGroupCallChainBlocks";
+            static fromReader(reader: Reader): GetGroupCallChainBlocks;
+            call: Api.TypeInputGroupCall;
+            subChainId: int;
+            offset: int;
+            limit: int;
+        }
+        export class SendGroupCallMessage extends Request<
+            Partial<{
+                // flags: null;
+                call: Api.TypeInputGroupCall;
+                randomId?: long;
+                message: Api.TypeTextWithEntities;
+                allowPaidStars?: long;
+                sendAs?: Api.TypeEntityLike;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 2983269392;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.SendGroupCallMessage";
+            static fromReader(reader: Reader): SendGroupCallMessage;
+            // flags: null;
+            call: Api.TypeInputGroupCall;
+            randomId?: long;
+            message: Api.TypeTextWithEntities;
+            allowPaidStars?: long;
+            sendAs?: Api.TypeEntityLike;
+        }
+        export class SendGroupCallEncryptedMessage extends Request<
+            Partial<{
+                call: Api.TypeInputGroupCall;
+                encryptedMessage: bytes;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 3853493613;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "phone.SendGroupCallEncryptedMessage";
+            static fromReader(reader: Reader): SendGroupCallEncryptedMessage;
+            call: Api.TypeInputGroupCall;
+            encryptedMessage: bytes;
+        }
+        export class DeleteGroupCallMessages extends Request<
+            Partial<{
+                // flags: null;
+                reportSpam?: boolean;
+                call: Api.TypeInputGroupCall;
+                messages: int[];
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 4132394231;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.DeleteGroupCallMessages";
+            static fromReader(reader: Reader): DeleteGroupCallMessages;
+            // flags: null;
+            reportSpam?: boolean;
+            call: Api.TypeInputGroupCall;
+            messages: int[];
+        }
+        export class DeleteGroupCallParticipantMessages extends Request<
+            Partial<{
+                // flags: null;
+                reportSpam?: boolean;
+                call: Api.TypeInputGroupCall;
+                participant: Api.TypeEntityLike;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 499117216;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "phone.DeleteGroupCallParticipantMessages";
+            static fromReader(
+                reader: Reader
+            ): DeleteGroupCallParticipantMessages;
+            // flags: null;
+            reportSpam?: boolean;
+            call: Api.TypeInputGroupCall;
+            participant: Api.TypeEntityLike;
+        }
+        export class GetGroupCallStars extends Request<
+            Partial<{
+                call: Api.TypeInputGroupCall;
+            }>,
+            phone.TypeGroupCallStars
+        > {
+            CONSTRUCTOR_ID: 1868784386;
+            SUBCLASS_OF_ID: 3024584730;
+            classType: "request";
+            className: "phone.GetGroupCallStars";
+            static fromReader(reader: Reader): GetGroupCallStars;
+            call: Api.TypeInputGroupCall;
+        }
+        export class SaveDefaultSendAs extends Request<
+            Partial<{
+                call: Api.TypeInputGroupCall;
+                sendAs: Api.TypeEntityLike;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 1097313745;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "phone.SaveDefaultSendAs";
+            static fromReader(reader: Reader): SaveDefaultSendAs;
+            call: Api.TypeInputGroupCall;
+            sendAs: Api.TypeEntityLike;
         }
     }
 
@@ -30848,55 +35233,6 @@ export namespace Api {
             offset: string;
             limit: int;
         }
-        export class GetBroadcastRevenueStats extends Request<
-            Partial<{
-                // flags: null;
-                dark?: boolean;
-                peer: Api.TypeEntityLike;
-            }>,
-            stats.TypeBroadcastRevenueStats
-        > {
-            CONSTRUCTOR_ID: 4152946201;
-            SUBCLASS_OF_ID: 753807480;
-            classType: "request";
-            className: "stats.GetBroadcastRevenueStats";
-            static fromReader(reader: Reader): GetBroadcastRevenueStats;
-            // flags: null;
-            dark?: boolean;
-            peer: Api.TypeEntityLike;
-        }
-        export class GetBroadcastRevenueWithdrawalUrl extends Request<
-            Partial<{
-                peer: Api.TypeEntityLike;
-                password: Api.TypeInputCheckPasswordSRP;
-            }>,
-            stats.TypeBroadcastRevenueWithdrawalUrl
-        > {
-            CONSTRUCTOR_ID: 2650077869;
-            SUBCLASS_OF_ID: 3512518885;
-            classType: "request";
-            className: "stats.GetBroadcastRevenueWithdrawalUrl";
-            static fromReader(reader: Reader): GetBroadcastRevenueWithdrawalUrl;
-            peer: Api.TypeEntityLike;
-            password: Api.TypeInputCheckPasswordSRP;
-        }
-        export class GetBroadcastRevenueTransactions extends Request<
-            Partial<{
-                peer: Api.TypeEntityLike;
-                offset: int;
-                limit: int;
-            }>,
-            stats.TypeBroadcastRevenueTransactions
-        > {
-            CONSTRUCTOR_ID: 1889078125;
-            SUBCLASS_OF_ID: 108456469;
-            classType: "request";
-            className: "stats.GetBroadcastRevenueTransactions";
-            static fromReader(reader: Reader): GetBroadcastRevenueTransactions;
-            peer: Api.TypeEntityLike;
-            offset: int;
-            limit: int;
-        }
     }
 
     export namespace chatlists {
@@ -31070,10 +35406,10 @@ export namespace Api {
             Partial<{
                 peer: Api.TypeEntityLike;
             }>,
-            Bool
+            stories.TypeCanSendStoryCount
         > {
-            CONSTRUCTOR_ID: 3353337821;
-            SUBCLASS_OF_ID: 4122188204;
+            CONSTRUCTOR_ID: 820732912;
+            SUBCLASS_OF_ID: 3411255960;
             classType: "request";
             className: "stories.CanSendStory";
             static fromReader(reader: Reader): CanSendStory;
@@ -31095,10 +35431,11 @@ export namespace Api {
                 period?: int;
                 fwdFromId?: Api.TypeEntityLike;
                 fwdFromStory?: int;
+                albums?: int[];
             }>,
             Api.TypeUpdates
         > {
-            CONSTRUCTOR_ID: 3840305483;
+            CONSTRUCTOR_ID: 1937752812;
             SUBCLASS_OF_ID: 2331323052;
             classType: "request";
             className: "stories.SendStory";
@@ -31117,6 +35454,7 @@ export namespace Api {
             period?: int;
             fwdFromId?: Api.TypeEntityLike;
             fwdFromStory?: int;
+            albums?: int[];
         }
         export class EditStory extends Request<
             Partial<{
@@ -31431,10 +35769,10 @@ export namespace Api {
             Partial<{
                 id: Api.TypeEntityLike[];
             }>,
-            int[]
+            Api.TypeRecentStory[]
         > {
-            CONSTRUCTOR_ID: 1398375363;
-            SUBCLASS_OF_ID: 1344696591;
+            CONSTRUCTOR_ID: 2018087280;
+            SUBCLASS_OF_ID: 1018597718;
             classType: "request";
             className: "stories.GetPeerMaxIDs";
             static fromReader(reader: Reader): GetPeerMaxIDs;
@@ -31524,6 +35862,145 @@ export namespace Api {
             peer?: Api.TypeEntityLike;
             offset: string;
             limit: int;
+        }
+        export class CreateAlbum extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                title: string;
+                stories: int[];
+            }>,
+            Api.TypeStoryAlbum
+        > {
+            CONSTRUCTOR_ID: 2741212901;
+            SUBCLASS_OF_ID: 2089574050;
+            classType: "request";
+            className: "stories.CreateAlbum";
+            static fromReader(reader: Reader): CreateAlbum;
+            peer: Api.TypeEntityLike;
+            title: string;
+            stories: int[];
+        }
+        export class UpdateAlbum extends Request<
+            Partial<{
+                // flags: null;
+                peer: Api.TypeEntityLike;
+                albumId: int;
+                title?: string;
+                deleteStories?: int[];
+                addStories?: int[];
+                order?: int[];
+            }>,
+            Api.TypeStoryAlbum
+        > {
+            CONSTRUCTOR_ID: 1582455222;
+            SUBCLASS_OF_ID: 2089574050;
+            classType: "request";
+            className: "stories.UpdateAlbum";
+            static fromReader(reader: Reader): UpdateAlbum;
+            // flags: null;
+            peer: Api.TypeEntityLike;
+            albumId: int;
+            title?: string;
+            deleteStories?: int[];
+            addStories?: int[];
+            order?: int[];
+        }
+        export class ReorderAlbums extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                order: int[];
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 2234907609;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "stories.ReorderAlbums";
+            static fromReader(reader: Reader): ReorderAlbums;
+            peer: Api.TypeEntityLike;
+            order: int[];
+        }
+        export class DeleteAlbum extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                albumId: int;
+            }>,
+            Bool
+        > {
+            CONSTRUCTOR_ID: 2369017552;
+            SUBCLASS_OF_ID: 4122188204;
+            classType: "request";
+            className: "stories.DeleteAlbum";
+            static fromReader(reader: Reader): DeleteAlbum;
+            peer: Api.TypeEntityLike;
+            albumId: int;
+        }
+        export class GetAlbums extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                hash: long;
+            }>,
+            stories.TypeAlbums
+        > {
+            CONSTRUCTOR_ID: 632548039;
+            SUBCLASS_OF_ID: 94846265;
+            classType: "request";
+            className: "stories.GetAlbums";
+            static fromReader(reader: Reader): GetAlbums;
+            peer: Api.TypeEntityLike;
+            hash: long;
+        }
+        export class GetAlbumStories extends Request<
+            Partial<{
+                peer: Api.TypeEntityLike;
+                albumId: int;
+                offset: int;
+                limit: int;
+            }>,
+            stories.TypeStories
+        > {
+            CONSTRUCTOR_ID: 2894097761;
+            SUBCLASS_OF_ID: 622595116;
+            classType: "request";
+            className: "stories.GetAlbumStories";
+            static fromReader(reader: Reader): GetAlbumStories;
+            peer: Api.TypeEntityLike;
+            albumId: int;
+            offset: int;
+            limit: int;
+        }
+        export class StartLive extends Request<
+            Partial<{
+                // flags: null;
+                pinned?: boolean;
+                noforwards?: boolean;
+                rtmpStream?: boolean;
+                peer: Api.TypeEntityLike;
+                caption?: string;
+                entities?: Api.TypeMessageEntity[];
+                privacyRules: Api.TypeInputPrivacyRule[];
+                randomId?: long;
+                messagesEnabled?: Bool;
+                sendPaidMessagesStars?: long;
+            }>,
+            Api.TypeUpdates
+        > {
+            CONSTRUCTOR_ID: 3496594654;
+            SUBCLASS_OF_ID: 2331323052;
+            classType: "request";
+            className: "stories.StartLive";
+            static fromReader(reader: Reader): StartLive;
+            // flags: null;
+            pinned?: boolean;
+            noforwards?: boolean;
+            rtmpStream?: boolean;
+            peer: Api.TypeEntityLike;
+            caption?: string;
+            entities?: Api.TypeMessageEntity[];
+            privacyRules: Api.TypeInputPrivacyRule[];
+            randomId?: long;
+            messagesEnabled?: Bool;
+            sendPaidMessagesStars?: long;
         }
     }
 
@@ -31735,7 +36212,9 @@ export namespace Api {
         | InputMediaDice
         | InputMediaStory
         | InputMediaWebPage
-        | InputMediaPaidMedia;
+        | InputMediaPaidMedia
+        | InputMediaTodo
+        | InputMediaStakeDice;
     export type TypeInputChatPhoto =
         | InputChatPhotoEmpty
         | InputChatUploadedPhoto
@@ -31796,7 +36275,9 @@ export namespace Api {
         | MessageMediaStory
         | MessageMediaGiveaway
         | MessageMediaGiveawayResults
-        | MessageMediaPaidMedia;
+        | MessageMediaPaidMedia
+        | MessageMediaToDo
+        | MessageMediaVideoStream;
     export type TypeMessageAction =
         | MessageActionEmpty
         | MessageActionChatCreate
@@ -31844,7 +36325,24 @@ export namespace Api {
         | MessageActionPaymentRefunded
         | MessageActionGiftStars
         | MessageActionPrizeStars
-        | MessageActionStarGift;
+        | MessageActionStarGift
+        | MessageActionStarGiftUnique
+        | MessageActionPaidMessagesRefunded
+        | MessageActionPaidMessagesPrice
+        | MessageActionConferenceCall
+        | MessageActionTodoCompletions
+        | MessageActionTodoAppendTasks
+        | MessageActionSuggestedPostApproval
+        | MessageActionSuggestedPostSuccess
+        | MessageActionSuggestedPostRefund
+        | MessageActionGiftTon
+        | MessageActionSuggestBirthday
+        | MessageActionStarGiftPurchaseOffer
+        | MessageActionStarGiftPurchaseOfferDeclined
+        | MessageActionNewCreatorPending
+        | MessageActionChangeCreator
+        | MessageActionNoForwardsToggle
+        | MessageActionNoForwardsRequest;
     export type TypeDialog = Dialog | DialogFolder;
     export type TypePhoto = PhotoEmpty | Photo;
     export type TypePhotoSize =
@@ -32006,8 +36504,6 @@ export namespace Api {
         | UpdateRecentReactions
         | UpdateMoveStickerSetToTop
         | UpdateMessageExtendedMedia
-        | UpdateChannelPinnedTopic
-        | UpdateChannelPinnedTopics
         | UpdateUser
         | UpdateAutoSaveSettings
         | UpdateStory
@@ -32034,13 +36530,26 @@ export namespace Api {
         | UpdateBotEditBusinessMessage
         | UpdateBotDeleteBusinessMessage
         | UpdateNewStoryReaction
-        | UpdateBroadcastRevenueTransactions
         | UpdateStarsBalance
         | UpdateBusinessBotCallbackQuery
         | UpdateStarsRevenueStatus
         | UpdateBotPurchasedPaidMedia
         | UpdatePaidReactionPrivacy
-        | UpdateBotSubscriptionExpire;
+        | UpdateSentPhoneCode
+        | UpdateGroupCallChainBlocks
+        | UpdateReadMonoForumInbox
+        | UpdateReadMonoForumOutbox
+        | UpdateMonoForumNoPaidException
+        | UpdateGroupCallMessage
+        | UpdateGroupCallEncryptedMessage
+        | UpdatePinnedForumTopic
+        | UpdatePinnedForumTopics
+        | UpdateDeleteGroupCallMessages
+        | UpdateStarGiftAuctionState
+        | UpdateStarGiftAuctionUserState
+        | UpdateEmojiGameInfo
+        | UpdateStarGiftCraftFail
+        | UpdateChatParticipantRank;
     export type TypeUpdates =
         | UpdatesTooLong
         | UpdateShortMessage
@@ -32094,7 +36603,8 @@ export namespace Api {
         | SendMessageHistoryImportAction
         | SendMessageChooseStickerAction
         | SendMessageEmojiInteraction
-        | SendMessageEmojiInteractionSeen;
+        | SendMessageEmojiInteractionSeen
+        | SendMessageTextDraftAction;
     export type TypeInputPrivacyKey =
         | InputPrivacyKeyStatusTimestamp
         | InputPrivacyKeyChatInvite
@@ -32107,7 +36617,9 @@ export namespace Api {
         | InputPrivacyKeyVoiceMessages
         | InputPrivacyKeyAbout
         | InputPrivacyKeyBirthday
-        | InputPrivacyKeyStarGiftsAutoSave;
+        | InputPrivacyKeyStarGiftsAutoSave
+        | InputPrivacyKeyNoPaidMessages
+        | InputPrivacyKeySavedMusic;
     export type TypePrivacyKey =
         | PrivacyKeyStatusTimestamp
         | PrivacyKeyChatInvite
@@ -32120,7 +36632,9 @@ export namespace Api {
         | PrivacyKeyVoiceMessages
         | PrivacyKeyAbout
         | PrivacyKeyBirthday
-        | PrivacyKeyStarGiftsAutoSave;
+        | PrivacyKeyStarGiftsAutoSave
+        | PrivacyKeyNoPaidMessages
+        | PrivacyKeySavedMusic;
     export type TypeInputPrivacyRule =
         | InputPrivacyValueAllowContacts
         | InputPrivacyValueAllowAll
@@ -32183,7 +36697,8 @@ export namespace Api {
         | InputStickerSetEmojiGenericAnimations
         | InputStickerSetEmojiDefaultStatuses
         | InputStickerSetEmojiDefaultTopicIcons
-        | InputStickerSetEmojiChannelDefaultStatuses;
+        | InputStickerSetEmojiChannelDefaultStatuses
+        | InputStickerSetTonGifts;
     export type TypeStickerSet = StickerSet;
     export type TypeBotCommand = BotCommand;
     export type TypeBotInfo = BotInfo;
@@ -32233,7 +36748,8 @@ export namespace Api {
         | MessageEntityBankCard
         | MessageEntitySpoiler
         | MessageEntityCustomEmoji
-        | MessageEntityBlockquote;
+        | MessageEntityBlockquote
+        | MessageEntityFormattedDate;
     export type TypeInputChannel =
         | InputChannelEmpty
         | InputChannel
@@ -32363,7 +36879,8 @@ export namespace Api {
         | PhoneCallDiscardReasonMissed
         | PhoneCallDiscardReasonDisconnect
         | PhoneCallDiscardReasonHangup
-        | PhoneCallDiscardReasonBusy;
+        | PhoneCallDiscardReasonBusy
+        | PhoneCallDiscardReasonMigrateConferenceCall;
     export type TypeDataJSON = DataJSON;
     export type TypeLabeledPrice = LabeledPrice;
     export type TypeInvoice = Invoice;
@@ -32452,7 +36969,9 @@ export namespace Api {
         | ChannelAdminLogEventActionChangeEmojiStatus
         | ChannelAdminLogEventActionChangeEmojiStickerSet
         | ChannelAdminLogEventActionToggleSignatureProfiles
-        | ChannelAdminLogEventActionParticipantSubExtend;
+        | ChannelAdminLogEventActionParticipantSubExtend
+        | ChannelAdminLogEventActionToggleAutotranslation
+        | ChannelAdminLogEventActionParticipantEditRank;
     export type TypeChannelAdminLogEvent = ChannelAdminLogEvent;
     export type TypeChannelAdminLogEventsFilter = ChannelAdminLogEventsFilter;
     export type TypePopularContact = PopularContact;
@@ -32580,7 +37099,10 @@ export namespace Api {
     export type TypeWebPageAttribute =
         | WebPageAttributeTheme
         | WebPageAttributeStory
-        | WebPageAttributeStickerSet;
+        | WebPageAttributeStickerSet
+        | WebPageAttributeUniqueStarGift
+        | WebPageAttributeStarGiftCollection
+        | WebPageAttributeStarGiftAuction;
     export type TypeBankCardOpenUrl = BankCardOpenUrl;
     export type TypeDialogFilter =
         | DialogFilter
@@ -32606,7 +37128,10 @@ export namespace Api {
     export type TypeMessageReplies = MessageReplies;
     export type TypePeerBlocked = PeerBlocked;
     export type TypeGroupCall = GroupCallDiscarded | GroupCall;
-    export type TypeInputGroupCall = InputGroupCall;
+    export type TypeInputGroupCall =
+        | InputGroupCall
+        | InputGroupCallSlug
+        | InputGroupCallInviteMessage;
     export type TypeGroupCallParticipant = GroupCallParticipant;
     export type TypeInlineQueryPeerType =
         | InlineQueryPeerTypeSameBotPM
@@ -32628,6 +37153,7 @@ export namespace Api {
         | BotCommandScopePeer
         | BotCommandScopePeerAdmins
         | BotCommandScopePeerUser;
+    export type TypeChatTheme = ChatTheme | ChatThemeUniqueGift;
     export type TypeSponsoredMessage = SponsoredMessage;
     export type TypeSearchResultsCalendarPeriod = SearchResultsCalendarPeriod;
     export type TypeSearchResultsPosition = SearchResultPosition;
@@ -32664,7 +37190,16 @@ export namespace Api {
         | InputInvoicePremiumGiftCode
         | InputInvoiceStars
         | InputInvoiceChatInviteSubscription
-        | InputInvoiceStarGift;
+        | InputInvoiceStarGift
+        | InputInvoiceStarGiftUpgrade
+        | InputInvoiceStarGiftTransfer
+        | InputInvoicePremiumGiftStars
+        | InputInvoiceBusinessBotTransferStars
+        | InputInvoiceStarGiftResale
+        | InputInvoiceStarGiftPrepaidUpgrade
+        | InputInvoicePremiumAuthCode
+        | InputInvoiceStarGiftDropOriginalDetails
+        | InputInvoiceStarGiftAuctionBid;
     export type TypeInputStorePaymentPurpose =
         | InputStorePaymentPremiumSubscription
         | InputStorePaymentGiftPremium
@@ -32672,13 +37207,14 @@ export namespace Api {
         | InputStorePaymentPremiumGiveaway
         | InputStorePaymentStarsTopup
         | InputStorePaymentStarsGift
-        | InputStorePaymentStarsGiveaway;
-    export type TypePremiumGiftOption = PremiumGiftOption;
+        | InputStorePaymentStarsGiveaway
+        | InputStorePaymentAuthCode;
     export type TypePaymentFormMethod = PaymentFormMethod;
     export type TypeEmojiStatus =
         | EmojiStatusEmpty
         | EmojiStatus
-        | EmojiStatusUntil;
+        | EmojiStatusCollectible
+        | InputEmojiStatusCollectible;
     export type TypeReaction =
         | ReactionEmpty
         | ReactionEmoji
@@ -32734,7 +37270,10 @@ export namespace Api {
         | StoryView
         | StoryViewPublicForward
         | StoryViewPublicRepost;
-    export type TypeInputReplyTo = InputReplyToMessage | InputReplyToStory;
+    export type TypeInputReplyTo =
+        | InputReplyToMessage
+        | InputReplyToStory
+        | InputReplyToMonoForum;
     export type TypeExportedStoryLink = ExportedStoryLink;
     export type TypeStoriesStealthMode = StoriesStealthMode;
     export type TypeMediaAreaCoordinates = MediaAreaCoordinates;
@@ -32746,7 +37285,8 @@ export namespace Api {
         | MediaAreaChannelPost
         | InputMediaAreaChannelPost
         | MediaAreaUrl
-        | MediaAreaWeather;
+        | MediaAreaWeather
+        | MediaAreaStarGift;
     export type TypePeerStories = PeerStories;
     export type TypePremiumGiftCodeOption = PremiumGiftCodeOption;
     export type TypePrepaidGiveaway = PrepaidGiveaway | PrepaidStarsGiveaway;
@@ -32757,12 +37297,15 @@ export namespace Api {
         | PostInteractionCountersMessage
         | PostInteractionCountersStory;
     export type TypePublicForward = PublicForwardMessage | PublicForwardStory;
-    export type TypePeerColor = PeerColor;
+    export type TypePeerColor =
+        | PeerColor
+        | PeerColorCollectible
+        | InputPeerColorCollectible;
     export type TypeStoryReaction =
         | StoryReaction
         | StoryReactionPublicForward
         | StoryReactionPublicRepost;
-    export type TypeSavedDialog = SavedDialog;
+    export type TypeSavedDialog = SavedDialog | MonoForumDialog;
     export type TypeSavedReactionTag = SavedReactionTag;
     export type TypeOutboxReadDate = OutboxReadDate;
     export type TypeSmsJob = SmsJob;
@@ -32803,15 +37346,10 @@ export namespace Api {
         | RequestedPeerChat
         | RequestedPeerChannel;
     export type TypeSponsoredMessageReportOption = SponsoredMessageReportOption;
-    export type TypeBroadcastRevenueTransaction =
-        | BroadcastRevenueTransactionProceeds
-        | BroadcastRevenueTransactionWithdrawal
-        | BroadcastRevenueTransactionRefund;
     export type TypeReactionNotificationsFrom =
         | ReactionNotificationsFromContacts
         | ReactionNotificationsFromAll;
     export type TypeReactionsNotifySettings = ReactionsNotifySettings;
-    export type TypeBroadcastRevenueBalances = BroadcastRevenueBalances;
     export type TypeAvailableEffect = AvailableEffect;
     export type TypeFactCheck = FactCheck;
     export type TypeStarsTransactionPeer =
@@ -32836,14 +37374,99 @@ export namespace Api {
     export type TypeMessageReactor = MessageReactor;
     export type TypeStarsGiveawayOption = StarsGiveawayOption;
     export type TypeStarsGiveawayWinnersOption = StarsGiveawayWinnersOption;
-    export type TypeStarGift = StarGift;
-    export type TypeUserStarGift = UserStarGift;
+    export type TypeStarGift = StarGift | StarGiftUnique;
     export type TypeMessageReportOption = MessageReportOption;
     export type TypeReportResult =
         | ReportResultChooseOption
         | ReportResultAddComment
         | ReportResultReported;
     export type TypeBotAppSettings = BotAppSettings;
+    export type TypeStarRefProgram = StarRefProgram;
+    export type TypeConnectedBotStarRef = ConnectedBotStarRef;
+    export type TypeStarsAmount = StarsAmount | StarsTonAmount;
+    export type TypeBotVerifierSettings = BotVerifierSettings;
+    export type TypeBotVerification = BotVerification;
+    export type TypeStarGiftAttribute =
+        | StarGiftAttributeModel
+        | StarGiftAttributePattern
+        | StarGiftAttributeBackdrop
+        | StarGiftAttributeOriginalDetails;
+    export type TypeSavedStarGift = SavedStarGift;
+    export type TypeInputSavedStarGift =
+        | InputSavedStarGiftUser
+        | InputSavedStarGiftChat
+        | InputSavedStarGiftSlug;
+    export type TypePaidReactionPrivacy =
+        | PaidReactionPrivacyDefault
+        | PaidReactionPrivacyAnonymous
+        | PaidReactionPrivacyPeer;
+    export type TypeRequirementToContact =
+        | RequirementToContactEmpty
+        | RequirementToContactPremium
+        | RequirementToContactPaidMessages;
+    export type TypeBusinessBotRights = BusinessBotRights;
+    export type TypeDisallowedGiftsSettings = DisallowedGiftsSettings;
+    export type TypeSponsoredPeer = SponsoredPeer;
+    export type TypeStarGiftAttributeId =
+        | StarGiftAttributeIdModel
+        | StarGiftAttributeIdPattern
+        | StarGiftAttributeIdBackdrop;
+    export type TypeStarGiftAttributeCounter = StarGiftAttributeCounter;
+    export type TypePendingSuggestion = PendingSuggestion;
+    export type TypeTodoItem = TodoItem;
+    export type TypeTodoList = TodoList;
+    export type TypeTodoCompletion = TodoCompletion;
+    export type TypeSuggestedPost = SuggestedPost;
+    export type TypeStarsRating = StarsRating;
+    export type TypeStarGiftCollection = StarGiftCollection;
+    export type TypeStoryAlbum = StoryAlbum;
+    export type TypeSearchPostsFlood = SearchPostsFlood;
+    export type TypeProfileTab =
+        | ProfileTabPosts
+        | ProfileTabGifts
+        | ProfileTabMedia
+        | ProfileTabFiles
+        | ProfileTabMusic
+        | ProfileTabVoice
+        | ProfileTabLinks
+        | ProfileTabGifs;
+    export type TypeInputChatTheme =
+        | InputChatThemeEmpty
+        | InputChatTheme
+        | InputChatThemeUniqueGift;
+    export type TypeStarGiftUpgradePrice = StarGiftUpgradePrice;
+    export type TypeGroupCallMessage = GroupCallMessage;
+    export type TypeGroupCallDonor = GroupCallDonor;
+    export type TypeRecentStory = RecentStory;
+    export type TypeAuctionBidLevel = AuctionBidLevel;
+    export type TypeStarGiftAuctionState =
+        | StarGiftAuctionStateNotModified
+        | StarGiftAuctionState
+        | StarGiftAuctionStateFinished;
+    export type TypeStarGiftAuctionUserState = StarGiftAuctionUserState;
+    export type TypeStarGiftAuctionAcquiredGift = StarGiftAuctionAcquiredGift;
+    export type TypeStarGiftActiveAuctionState = StarGiftActiveAuctionState;
+    export type TypeInputStarGiftAuction =
+        | InputStarGiftAuction
+        | InputStarGiftAuctionSlug;
+    export type TypePasskey = Passkey;
+    export type TypeInputPasskeyResponse =
+        | InputPasskeyResponseRegister
+        | InputPasskeyResponseLogin;
+    export type TypeInputPasskeyCredential =
+        | InputPasskeyCredentialPublicKey
+        | InputPasskeyCredentialFirebasePNV;
+    export type TypeStarGiftBackground = StarGiftBackground;
+    export type TypeStarGiftAuctionRound =
+        | StarGiftAuctionRound
+        | StarGiftAuctionRoundExtendable;
+    export type TypeStarGiftAttributeRarity =
+        | StarGiftAttributeRarity
+        | StarGiftAttributeRarityUncommon
+        | StarGiftAttributeRarityRare
+        | StarGiftAttributeRarityEpic
+        | StarGiftAttributeRarityLegendary;
+    export type TypeKeyboardButtonStyle = KeyboardButtonStyle;
     export type TypeResPQ = ResPQ;
     export type TypeP_Q_inner_data =
         | PQInnerData
@@ -32904,6 +37527,7 @@ export namespace Api {
         | InvokeWithBusinessConnection
         | InvokeWithGooglePlayIntegrity
         | InvokeWithApnsSecret
+        | InvokeWithReCaptcha
         | ReqPq
         | ReqPqMulti
         | ReqDHParams
@@ -32937,6 +37561,9 @@ export namespace Api {
         | auth.RequestFirebaseSms
         | auth.ResetLoginEmail
         | auth.ReportMissingCode
+        | auth.CheckPaidAuth
+        | auth.InitPasskeyLogin
+        | auth.FinishPasskeyLogin
         | account.RegisterDevice
         | account.UnregisterDevice
         | account.UpdateNotifySettings
@@ -33049,10 +37676,24 @@ export namespace Api {
         | account.ToggleSponsoredMessages
         | account.GetReactionsNotifySettings
         | account.SetReactionsNotifySettings
+        | account.GetCollectibleEmojiStatuses
+        | account.GetPaidMessagesRevenue
+        | account.ToggleNoPaidMessagesException
+        | account.SetMainProfileTab
+        | account.SaveMusic
+        | account.GetSavedMusicIds
+        | account.GetUniqueGiftChatThemes
+        | account.InitPasskeyRegistration
+        | account.RegisterPasskey
+        | account.GetPasskeys
+        | account.DeletePasskey
         | users.GetUsers
         | users.GetFullUser
         | users.SetSecureValueErrors
-        | users.GetIsPremiumRequiredToContact
+        | users.GetRequirementsToContact
+        | users.GetSavedMusic
+        | users.GetSavedMusicByID
+        | users.SuggestBirthday
         | contacts.GetContactIDs
         | contacts.GetStatuses
         | contacts.GetContacts
@@ -33079,6 +37720,8 @@ export namespace Api {
         | contacts.EditCloseFriends
         | contacts.SetBlocked
         | contacts.GetBirthdays
+        | contacts.GetSponsoredPeers
+        | contacts.UpdateContactNote
         | messages.GetMessages
         | messages.GetDialogs
         | messages.GetHistory
@@ -33302,6 +37945,27 @@ export namespace Api {
         | messages.GetSponsoredMessages
         | messages.SavePreparedInlineMessage
         | messages.GetPreparedInlineMessage
+        | messages.SearchStickers
+        | messages.ReportMessagesDelivery
+        | messages.GetSavedDialogsByID
+        | messages.ReadSavedHistory
+        | messages.ToggleTodoCompleted
+        | messages.AppendTodoList
+        | messages.ToggleSuggestedPostApproval
+        | messages.GetForumTopics
+        | messages.GetForumTopicsByID
+        | messages.EditForumTopic
+        | messages.UpdatePinnedForumTopic
+        | messages.ReorderPinnedForumTopics
+        | messages.CreateForumTopic
+        | messages.DeleteTopicHistory
+        | messages.GetEmojiGameInfo
+        | messages.SummarizeText
+        | messages.EditChatCreator
+        | messages.GetFutureChatCreatorAfterLeave
+        | messages.EditChatParticipantRank
+        | messages.DeclineUrlAuth
+        | messages.CheckUrlAuthMatchCode
         | updates.GetState
         | updates.GetDifference
         | updates.GetChannelDifference
@@ -33373,7 +38037,6 @@ export namespace Api {
         | channels.GetLeftChannels
         | channels.GetGroupsForDiscussion
         | channels.SetDiscussionGroup
-        | channels.EditCreator
         | channels.EditLocation
         | channels.ToggleSlowMode
         | channels.GetInactiveChannels
@@ -33386,13 +38049,6 @@ export namespace Api {
         | channels.ToggleUsername
         | channels.DeactivateAllUsernames
         | channels.ToggleForum
-        | channels.CreateForumTopic
-        | channels.GetForumTopics
-        | channels.GetForumTopicsByID
-        | channels.EditForumTopic
-        | channels.UpdatePinnedForumTopic
-        | channels.DeleteTopicHistory
-        | channels.ReorderPinnedForumTopics
         | channels.ToggleAntiSpam
         | channels.ReportAntiSpamFalsePositive
         | channels.ToggleParticipantsHidden
@@ -33404,6 +38060,11 @@ export namespace Api {
         | channels.SetEmojiStickers
         | channels.RestrictSponsoredMessages
         | channels.SearchPosts
+        | channels.UpdatePaidMessagesPrice
+        | channels.ToggleAutotranslation
+        | channels.GetMessageAuthor
+        | channels.CheckSearchPostsFlood
+        | channels.SetMainProfileTab
         | bots.SendCustomRequest
         | bots.AnswerWebhookJSONQuery
         | bots.SetBotCommands
@@ -33430,6 +38091,10 @@ export namespace Api {
         | bots.UpdateUserEmojiStatus
         | bots.ToggleUserEmojiStatusPermission
         | bots.CheckDownloadFileParams
+        | bots.GetAdminedBots
+        | bots.UpdateStarRefProgram
+        | bots.SetCustomVerification
+        | bots.GetBotRecommendations
         | payments.GetPaymentForm
         | payments.GetPaymentReceipt
         | payments.ValidateRequestedInfo
@@ -33440,7 +38105,6 @@ export namespace Api {
         | payments.ExportInvoice
         | payments.AssignAppStoreTransaction
         | payments.AssignPlayMarketTransaction
-        | payments.CanPurchasePremium
         | payments.GetPremiumGiftCodeOptions
         | payments.CheckGiftCode
         | payments.ApplyGiftCode
@@ -33461,10 +38125,41 @@ export namespace Api {
         | payments.FulfillStarsSubscription
         | payments.GetStarsGiveawayOptions
         | payments.GetStarGifts
-        | payments.GetUserStarGifts
         | payments.SaveStarGift
         | payments.ConvertStarGift
         | payments.BotCancelStarsSubscription
+        | payments.GetConnectedStarRefBots
+        | payments.GetConnectedStarRefBot
+        | payments.GetSuggestedStarRefBots
+        | payments.ConnectStarRefBot
+        | payments.EditConnectedStarRefBot
+        | payments.GetStarGiftUpgradePreview
+        | payments.UpgradeStarGift
+        | payments.TransferStarGift
+        | payments.GetUniqueStarGift
+        | payments.GetSavedStarGifts
+        | payments.GetSavedStarGift
+        | payments.GetStarGiftWithdrawalUrl
+        | payments.ToggleChatStarGiftNotifications
+        | payments.ToggleStarGiftsPinnedToTop
+        | payments.CanPurchaseStore
+        | payments.GetResaleStarGifts
+        | payments.UpdateStarGiftPrice
+        | payments.CreateStarGiftCollection
+        | payments.UpdateStarGiftCollection
+        | payments.ReorderStarGiftCollections
+        | payments.DeleteStarGiftCollection
+        | payments.GetStarGiftCollections
+        | payments.GetUniqueStarGiftValueInfo
+        | payments.CheckCanSendGift
+        | payments.GetStarGiftAuctionState
+        | payments.GetStarGiftAuctionAcquiredGifts
+        | payments.GetStarGiftActiveAuctions
+        | payments.ResolveStarGiftOffer
+        | payments.SendStarGiftOffer
+        | payments.GetStarGiftUpgradeAttributes
+        | payments.GetCraftStarGifts
+        | payments.CraftStarGift
         | stickers.CreateStickerSet
         | stickers.RemoveStickerFromSet
         | stickers.ChangeStickerPosition
@@ -33507,6 +38202,18 @@ export namespace Api {
         | phone.GetGroupCallStreamChannels
         | phone.GetGroupCallStreamRtmpUrl
         | phone.SaveCallLog
+        | phone.CreateConferenceCall
+        | phone.DeleteConferenceCallParticipants
+        | phone.SendConferenceCallBroadcast
+        | phone.InviteConferenceCallParticipant
+        | phone.DeclineConferenceCallInvite
+        | phone.GetGroupCallChainBlocks
+        | phone.SendGroupCallMessage
+        | phone.SendGroupCallEncryptedMessage
+        | phone.DeleteGroupCallMessages
+        | phone.DeleteGroupCallParticipantMessages
+        | phone.GetGroupCallStars
+        | phone.SaveDefaultSendAs
         | langpack.GetLangPack
         | langpack.GetStrings
         | langpack.GetDifference
@@ -33520,9 +38227,6 @@ export namespace Api {
         | stats.GetMessageStats
         | stats.GetStoryStats
         | stats.GetStoryPublicForwards
-        | stats.GetBroadcastRevenueStats
-        | stats.GetBroadcastRevenueWithdrawalUrl
-        | stats.GetBroadcastRevenueTransactions
         | chatlists.ExportChatlistInvite
         | chatlists.DeleteExportedInvite
         | chatlists.EditExportedInvite
@@ -33560,6 +38264,13 @@ export namespace Api {
         | stories.GetStoryReactionsList
         | stories.TogglePinnedToTop
         | stories.SearchPosts
+        | stories.CreateAlbum
+        | stories.UpdateAlbum
+        | stories.ReorderAlbums
+        | stories.DeleteAlbum
+        | stories.GetAlbums
+        | stories.GetAlbumStories
+        | stories.StartLive
         | premium.GetBoostsList
         | premium.GetMyBoosts
         | premium.ApplyBoost
